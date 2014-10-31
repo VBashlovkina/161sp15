@@ -23,17 +23,18 @@ const int obstacleLimit = 800;
 int 
 main()
 {
-  rConnect("/dev/rfcomm0");
+  rConnect("/dev/rfcomm0"); 
+  rSetForwardnessTxt("fluke-forward");
  
   int i = 0;
 
   // loop to stop at the second obstacle seen
   while(i<2)
     {
-      rForward(1.0,1.0);
-      if (rGetObstacleTxt("center", 3)>obstacleLimit)//fixme
+      rForward(1,1);
+      if (rGetObstacleNum(1)>obstacleLimit)
         {
-          rTurnRight(1.0,1.0);
+          rTurnRight(1,1);
           i++;
         }
     }

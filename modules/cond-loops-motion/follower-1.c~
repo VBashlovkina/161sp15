@@ -21,8 +21,8 @@ main()
 
   while (1)
     {
-      left = rGetIRTxt ("left", 3);
-      right = rGetIRTxt ("right", 3);
+      left = rGetIRTxt ("left");
+      right = rGetIRTxt ("right");
 
       printf ("left = %d", left);
       printf ("\tright = %d\n", right);

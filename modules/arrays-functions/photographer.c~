@@ -4,7 +4,8 @@
 int
 main()
 {
-  rConnect("/dev/rfcomm0");
+  //  rConnect("/dev/rfcomm0");
+  rConnect ("00:1E:19:01:0E:13"); // wilkes
 
   Picture * pics[3]; /* This is an array of pictures. Picture is a type just like char and int, but it is for storing Scribbler pictures. */
   int i; 

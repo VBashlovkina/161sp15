@@ -17,6 +17,7 @@ main()
 {
 
   rConnect("/dev/rfcomm0");
+  rSetForwardnessTxt("fluke-forward");
 
   int numMoves = 8; // the number of moves that the Scribbler will do.
   int i;

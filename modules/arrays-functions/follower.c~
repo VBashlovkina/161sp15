@@ -15,13 +15,13 @@ int
 main()
 {
   rConnect("/dev/rfcomm0");
-
+  rSetForwardnessTxt ("scribbler-forward");
 
   int IRs[2];
 
   while (1)
     {
-      rGetIRAll (IRs, 3);
+      rGetIRAll (IRs);
 
       if (!IRs[0] && !IRs[1] )        // if both sensors don't sense obstacles
         rForward (1,1);              // move forward for 1 second
