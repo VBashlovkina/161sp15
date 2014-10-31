@@ -1,0 +1,333 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>Working with Strings</title>
+    <link rev="made" href="mailto:walker@cs.grinnell.edu">
+</head>
+<div class="body">
+
+<!--#include file="header.inc"-->
+
+<div class="labcontent">
+
+<H2>Working with Strings</H2>
+
+<p>
+This page outlines a variety of techniques that are available within C for
+working with strings.  Discussion of techniques falls into several categories:
+</p>
+
+
+<ul>
+<li>
+Characters and Substrings
+<ul>
+<li>
+<a href="#char-extraction">Extraction of a character</a>
+
+<li>
+<a href="#string-extraction">Extraction of a substring</a>
+<li>
+<a href="#division">Breaking a string into pieces</a>
+</ul>
+<li>
+<a href="#numbers">Conversion to numbers</a>
+
+<!--
+<li>
+<a href="#robot-commands">Example:  Deciphering a Robot Command</a>
+-->
+
+</ul>
+
+<p>
+All examples that follow may be found in the C-program, 
+<a href="string-processing.c">string-processing.c</a>
+</p>
+
+<h2>Characters and Substrings</h2>
+
+<a name="char-extraction"></a>
+<h3>Extraction of a character</h3>
+
+<p>
+In C, a string is an array of characters, and each character can be
+accessed directly through in index within the array.
+</p>
+
+<p>
+Example:
+</p>
+
+<pre>
+  char myArray[17] = "computer science";
+  int i;  for (i = 0; i < strlen(myArray); i++)
+    printf ("\tmyArray[%d] = %c\n", i, myArray[i]);
+</pre>
+
+
+
+<a name="string-extraction"></a>
+<h3>Extraction of a substring</h3>
+
+<p>
+Given a string, a common task is to extract a substring from a string.
+For example, in Scheme, one might use the substring function:
+</p>
+
+<pre>
+   (substring str start end)
+</pre>
+
+<p>
+According to
+the <a href="http://people.csail.mit.edu/jaffer/r5rs_8.html#IDX391">Scheme
+    R5 documentation</a>, 
+"`Substring' returns a newly allocated string formed from the characters
+of <i>string</i> beginning with index <i>start</i> (inclusive) and ending with index <i>end</i> (exclusive)."
+</p>
+
+<p>
+In C, there is not a function with the name <tt>substring</tt>, but the
+function <tt>strncpy</tt> accomplishes the same result; one
+copies <tt>end-start</tt> characters from <tt>str</tt>, starting with the
+offset <tt>start</tt>.  If the extracted string does not go to the end
+of <tt>str</tt>, then one must remember to add a null character at the end.
+</p>
+
+<p>
+The header of <tt>strncpy</tt> reads:
+</p>
+
+<pre>
+   char *strncpy(char *result, const char *original, int numberCharacters);
+</pre>
+
+<p>
+In addition to copying the characters from <tt>original</tt>
+to <tt>result</tt>, the function returns a pointer to <tt>result</tt>.
+</p>
+
+<p>
+Several examples follow:
+</p>
+
+<pre>
+  /* extracting substrings from a string */
+  /* the example uses myArray from above as the starting point */
+  printf ("extracting substrings from a string\n");
+  char subArray[20];  /* for a string copy, remember to have allocated space! */
+  strncpy (subArray, myArray, 8);
+  subArray[8] = 0; /* null terminate array */
+  printf ("\t extract the first 8 characters (plus the null): %s\n", subArray);
+
+  strncpy (subArray, myArray+3, strlen(myArray)); /* copying past end of myArray fills will nulls */
+  printf ("\t extract all characters after the first 3: %s\n", subArray);
+  
+  int start = strlen(myArray) - 8;
+  strncpy (subArray, myArray+start, 8);
+  subArray[strlen(myArray)-8] = 0; /* null terminate array */
+  printf ("\t extract the last 8 characters (plus the null): %s\n", subArray);
+</pre>
+
+<a name="division"></a>
+<h3>Breaking a string into pieces</h3>
+
+<p>
+Some applications require a string to be separated into pieces.  For
+example, consider the string 
+</p>
+<center>
+<tt>"January,February,March,April,May,June,July,August,September,October,November,December" </tt>
+</center>
+
+<p>
+We might want to break it into a sequence of substrings, separated by a
+given separator or delimiter.  This task is accomplished by the following
+function:
+</p>
+
+<pre>
+   char *strtok(char *strptr, const char *delimiter);
+</pre>
+
+<p>
+The first call to <tt>strtok</tt> returns the first string before the given
+delimiter.  For subsequent calls, a null string is used for
+the <tt>strptr</tt> parameter, and these calls return the next elements in
+the sequence.  When no more elements are present, <tt>strtok</tt>
+returns <tt>NULL</tt>.
+</p>
+
+<p>
+<i>Warnings:</i>  
+</p>
+
+<ul>
+<li>
+Calls to <tt>strtok</tt> can change the first parameter.
+<li>
+Since <tt>strtok</tt> changes the parameter, standard practice is to copy
+the original string first and use the copy when using <tt>strtok</tt>
+</ul>
+
+<p>
+The following example places the months given above into an array of 12
+string points:
+</p>
+
+<pre>
+  char year[] = "January,February,March,April,May,June,July,August,September,October,November,December" ;
+  /* copy original array */  
+  char * yearCopy = malloc(sizeof(char)*(strlen(year) + 1));
+  strcpy (yearCopy, year);
+  /* array to receive the string pieces, including space for NULL strtok at end */
+  char * months[13];
+  /* loop puts strings into successive elements of months array */
+  months[0] = strtok(yearCopy, ",");
+  i = 1;
+  while (months[i] = strtok(NULL, ",")) /* continue as long as token not NULL */
+    {
+      i++;
+    }
+  printf ("result of using strtok to break up a string of months\n");
+  for (i = 0; i < 12; i++)
+    printf ("\t month %d: %s\n", i, months[i]);
+  printf ("original year array:  %s\n", year);
+</pre>
+
+
+
+<a name="numbers"></a>
+<h2>Conversion to numbers</h2>
+
+<p>
+Input from a command line (and input from <tt>scanf</tt> using <tt>%s</tt>
+format) is considered a string.  The <tt>stdlib.h</tt> library contains
+several functions to convert strings to numbers:
+</p>
+
+<ul>
+<li>convert a character string to an <tt>int</tt>
+<pre> 
+    int atoi(const char *strptr);  /* converts a string to an int */
+</pre>
+<li>convert a character string to a <tt>double</tt>
+<pre> 
+    double atof(const char *strptr);  /* converts a string to a double */
+</pre>
+</ul>
+<table>
+<tr>
+  <th>Examples:
+</tr>
+<tr>
+  <th>
+  <th>&nbsp;&nbsp;Function call&nbsp;&nbsp;
+  <th>&nbsp;&nbsp;Result&nbsp;&nbsp;
+  <th>&nbsp;&nbsp;Comments&nbsp;&nbsp;
+</tr>
+<tr>
+  <td>
+  <td><tt>atoi("1234")</tt>
+  <td align=center>1234
+  <td><tt>int</tt> type returned
+</tr>
+
+<tr>
+  <td>
+  <td><tt>atoi("3.14")</tt>
+  <td align=center>3
+  <td><tt>int</tt> type returned; digits after the decimal point ignored
+</tr>
+
+<tr>
+  <td>
+  <td><tt>atof("1234")</tt>
+  <td align=center>1234.0
+  <td><tt>double</tt> type returned
+</tr>
+
+<tr>
+  <td>
+  <td><tt>atof("3.14")</tt>
+  <td align=center>3.14
+  <td><tt>double</tt> type returned
+</tr>
+</table>
+
+<!--
+<a name="robot-commands"></a>
+<h2>Example:  Deciphering a Robot Command</h2>
+
+<p>
+Suppose a robot command has the form "command number1 number2 ...".<br>
+That is, the command comes first followed by numbers, as required by the
+command.
+<br>
+If only one number follows a command, there may or may not be white space
+between the command name and the number.
+</p>
+
+<p>
+In what follows, we consider progressively more complex command
+expressions. 
+</p>
+
+<ul>
+<li>
+<p>
+Robot commands are single letters, and the following number is separated
+from the command by white space:
+</p>
+-->
+
+<!--#include file="body-footer.inc" -->
+
+</div> <!--labcontent-->
+
+<div class="footer">
+
+<hr><p>
+
+This document is available on the World Wide Web as
+
+<div class="address">
+<PRE>
+    http://www.math.grin.edu/~walker/courses/161.sp12/string-processing.shtml
+</PRE>
+</div> <!--address-->
+
+<hr>
+<table width="100%">
+<tr><td>
+   <em>created 1 May 2012</em><br>
+   <em>last revised 1 May 2012</em>
+   </td>
+   <td rowspan="2" align="right">
+   <a href="http://validator.w3.org/check/referer"><img border="0" 
+      src="/~walker/valid-html401-blue.png" alt="Valid HTML 4.01!" height="31"
+      width="88"></a>
+   <a href="http://jigsaw.w3.org/css-validator/"><img border="0"
+       src="/~walker/vcss-blue.png" 
+       alt="Valid CSS!" height="31"
+       width="88"></a>
+   </td>
+</tr>
+
+<tr><td>
+   For more information, please contact
+   <a class="footer-a" href="http://www.cs.grinnell.edu/%7Ewalker/">Henry M. Walker</a> at
+   <a class="footer-a" href="mailto:walker@cs.grinnell.edu">walker@cs.grinnell.edu</a>.
+   </td></tr>
+</table>
+
+<hr>
+<!--#include file="copyright-notice.inc"-->
+
+</div> <!--footer-->
+</div> <!--body-->
+</body>
+</html>

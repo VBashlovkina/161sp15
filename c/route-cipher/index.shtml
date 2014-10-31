@@ -1,0 +1,360 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>Implementing a Simple Route Cipher</title>
+    <link rev="made" href="mailto:walker@cs.grinnell.edu">
+</head>
+
+<body>
+<div class="body">
+<!--#include file="header.inc"-->
+
+<div class="labcontent">
+
+<h1>Implementing a Simple Route Cipher</h1>
+
+<h2>Introduction</h2>
+
+<p>
+A <i>Route Cipher</i> is a technique for rearranging letters in a message.
+The basic approach is to divide the message into blocks of letters, copy
+the letters of each block into a 2-dimensional table (or array) in one way
+(e.g., row-by-row) and then take the letters out of the table in another
+way (e.g., column-by-column).
+</p>
+
+<h2>Problem Description and Example</h2>
+
+<p>
+An exercise to program a simple route cipher is given as 
+<a href="/~walker/courses/161.fa12/suppl-prob.shtml#4">Problem 4</a> in the
+Supplemental Problems assigned in CSC 161 during Fall 2012.
+</p>
+
+<h2>Decryption</h2>
+
+<p>
+<i>Basic Encryption Outline:</i> Assume that a basic Route Cipher places
+successive letters into an m by n table row by row and then removes the
+letters from the table column by column.
+</p>
+
+<p>
+<i>Basic Decryption Outline:</i>  Successive of the encrypted message
+should be placed in an m by n table column by column (this restores the
+original table).  The original message then can be obtained by reading the
+table row by row.
+</p>
+
+<p>
+<i>Observations:</i>  
+</p>
+
+<ul>
+<li>
+Both encryption and decryption work by putting letters into a table in one
+order (row by row or column by column) and removing the letters in the
+opposite.
+<li>
+Taking the transpose of a matrix (interchanging rows and columns) changes an
+m by n matrix to an n by m matrix, and the rows of the original matrix
+become the column of the other.
+<li>
+Decryption of a Basic Route Cipher can be performed by using the same
+encryption program, if the number of rows and columns are switched.
+</ul>
+
+<h2>Program Solutions</h2>
+
+<p>
+The following table documents eight C programs that perform basic
+encryption using a Route Cipher.  
+</p>
+
+<ul>
+<li>
+All programs ask the user to provide the number of rows and columns plus
+one line of text.
+<li>
+The programs differ regarding the data structures used, where input is
+placed, and how input characters flow to a final printed output.
+<li>
+The programs require different pre-conditions.
+</ul>
+
+<p>
+<i>Additional Notes</i>
+<ul>
+<li>
+All programs compile with the gcc C compiler, using a flag that checks
+conformance with the ISO C 1999 Standard.
+<li>
+Programs 2-8 use variable-length arrays (mandatory in the ISO C 1999
+Standard and a compiler option in ISO C 2011).
+See <a href="http://gcc.gnu.org/onlinedocs/gcc/Variable-Length.html">GCC
+documentation on "Arrays of Variable Length"</a> for details.
+<li>
+In the notes, "none" for "pre-conditions" assumes that main memory is large
+enough to user input of any reasonable size and that an array of a
+specified size (m by n) can be allocated within main memory.  That is, the
+only constraints on the size of input come from the size of main memory,
+not from constraints within the program.
+<li>
+<a href="programTest">Script programTest</a> provides a convenient
+mechanism to test a program, using data from the 
+<a href="/~walker/courses/161.fa12/suppl-prob.shtml#4">Problem
+  Statement</a>.  
+<ul>
+<li>
+The script takes a version number (1, ..., 8) as parameter.
+<li>
+Expected output is
+<pre>
+t ehenixdstedae m epsxlhotfwhusel  l oharmliagtb
+</pre>
+</ul>
+</ul>
+
+<table border>
+<tr>
+  <th>Program
+  <th>Data Structure(s)
+  <th>Pre-conditions
+  <th>Reading of User Input
+  <th>Internal Flow of Data
+  <th>Printing of Encrypted Output
+  <td>Programming notes
+  <th>Lines of code (including comments, formatting)
+</tr>
+
+<tr>
+  <td valign=top><a href="route-cipher-1.c">route-cipher-1.c</a>
+  <td valign=top>fixed size 1D array for entire input<br>
+      fixed size 2D array for table<br>
+      number of excess elements in table <= 26
+  <td valign=top>length of input string <= maxSize constant<br>
+      # rows, # columns <= maxSize constant
+  <td valign=top>entire user input read initially into 1D array
+  <td valign=top>working block by block:
+    <ul>
+    <li>characters read into table (row by row)
+    <li>characters printed from table (column by column)
+    </ul>
+  <td valign=top>characters printed directly from table
+  <td valign=top>
+    <ul>
+      <li>steps organized into procedures
+      <li><code>malloc</code> not used
+      <li>neither div (/) nor modulo (%) used
+    </ul>
+  <td valign=top align=center>115
+</tr>
+         
+<tr>
+  <td valign=top><a href="route-cipher-2.c">route-cipher-2.c</a>
+  <td valign=top>fixed size array for entire input<br>
+      variable size 2D array for table<br>
+      variable size 1D array for output
+  <td valign=top>length of input string <= maxSize constant<br>
+      number of excess elements in table <= 26
+  <td valign=top>entire user input read initially into 1D array
+  <td valign=top>working block by block:
+    <ul>
+    <li>characters read into table (row by row)
+    <li>characters moved from table (column by column) to output string
+    </ul>
+  <td valign=top>entire output string printed at once
+  <td valign=top>
+    <ul>
+      <li>steps organized into sections within main
+      <li><code>malloc</code> not used
+      <li>neither div (/) nor modulo (%) used
+    </ul>
+  <td valign=top align=center>86
+</tr>
+         
+<tr>
+  <td valign=top><a href="route-cipher-3.c">route-cipher-3.c</a>
+  <td valign=top>variable size array for block of input<br>
+      variable size 2D array for table
+  <td valign=top align=center>none
+  <td valign=top>user input read block by block into variable-length 1D array
+  <td valign=top>
+    <ul>
+    <li>characters in block moved into table (row by row)
+    <li>characters printed directly from table (column by column)
+    </ul>
+  <td valign=top>output printed block by block, character by character from table
+  <td valign=top>
+    <ul>
+      <li>steps organized into sections within main
+      <li><code>malloc</code> not used
+      <li>neither div (/) nor modulo (%) used
+    </ul>
+  <td valign=top align=center>81
+</tr>
+         
+<tr>
+  <td valign=top><a href="route-cipher-4.c">route-cipher-4.c</a>
+  <td valign=top>variable size 2D array for table
+  <td valign=top align=center>none
+  <td valign=top>user input read block by block into 2D array
+  <td valign=top>
+    <ul>
+    <li>characters in block read from input into table (row by row)
+    <li>characters printed directly from table (column by column)
+    </ul>
+  <td valign=top>output printed block by block, character by character from table
+  <td valign=top>
+    <ul>
+      <li>steps organized into sections within main
+      <li><code>malloc</code> not used
+      <li>neither div (/) nor modulo (%) used
+    </ul>
+  <td valign=top align=center>69
+</tr>
+         
+<tr>
+  <td valign=top><a href="route-cipher-5.c">route-cipher-5.c</a>
+  <td valign=top>variable size 2D array for table
+  <td valign=top align=center>none
+  <td valign=top>user input read block by block into 2D array
+  <td valign=top>
+    <ul>
+    <li>characters in block read from input into table (row by row)
+    <li>characters printed directly from table (column by column)
+    </ul>
+  <td valign=top>output printed block by block, character by character from table
+  <td valign=top>
+    <ul>
+      <li>separate procedures for reading a block into a table and
+  writing a block from the table
+      <li><code>malloc</code> not used
+      <li>neither div (/) nor modulo (%) used
+    </ul>
+  <td valign=top align=center>115
+</tr>
+         
+<tr>
+  <td valign=top><a href="route-cipher-6.c">route-cipher-6.c</a>
+  <td valign=top>variable size 1D array for output
+  <td valign=top align=center>none
+  <td valign=top>user input read block by block into 1D input array
+  <td valign=top>
+   characters  moved from input array to correct location within 1D
+   output array
+  <td valign=top>string for block printed in one operation
+  <td valign=top>
+    <ul>
+      <li>algorithm organized into logical sections within main
+      <li><code>malloc</code> not used
+      <li>neither div (/) nor modulo (%) used
+    </ul>
+  <td valign=top align=center>75
+</tr>
+         
+<tr>
+  <td valign=top><a href="route-cipher-7.c">route-cipher-7.c</a>
+  <td valign=top>variable size 1D array for input<br>
+    variable size 1D array for output
+  <td valign=top align=center>none
+  <td valign=top>user input read block by block into 1D output array
+  <td valign=top>
+    characters in block moved from input into output string
+    <ul>
+      <li>input string scanned in order 
+      <li>logical placement based on row, column computation
+    </ul>
+  <td valign=top>output printed block by block from single output string
+  <td valign=top>
+    <ul>
+      <li>algorithm organized into logical sections within main
+      <li><code>malloc</code> not used
+      <li>neither div (/) nor modulo (%) used
+    </ul>
+  <td valign=top align=center>83
+</tr>
+         
+<tr>
+  <td valign=top><a href="route-cipher-8.c">route-cipher-8.c</a>
+  <td valign=top>variable size 1D array for output
+  <td valign=top align=center>none
+  <td valign=top>user input read block by block into 1D output array
+  <td valign=top>
+    characters in block moved from input into output string
+    <ul>
+    <li>output string filled in order
+    <li>logical placement based on row, column computation
+    </ul>
+  <td valign=top>output printed block by block from single output string
+  <td valign=top>
+    <ul>
+      <li>algorithm organized into logical sections within main
+      <li><code>malloc</code> not used
+      <li>div (/) and modulo (%) used to compute location of desired
+        character in input array
+    </ul>
+  <td valign=top align=center>84
+</tr>
+         
+
+</table>
+
+
+</div> <!-- labcontent-->
+
+<div class="footer">
+<hr>
+
+<p>
+This document is available on the World Wide Web as
+</p>
+
+<div class="address">
+<PRE>
+http://www.cs.grinnell.edu/~walker/courses/161.sp12/c/
+</PRE>
+</div> <!-- address -->
+<hr>
+<table width="100%">
+<tr><td>
+   <em>created created 14 November 2012 by Henry M. Walker</em><br>
+   <em>last revised 14 November 2012 by Henry M. Walker</em>
+   </td>
+   <td rowspan="2" align="right">
+   <a href="http://validator.w3.org/check/referer"><img border="0"
+      src="/~walker/valid-html401-blue.png" alt="Valid HTML 4.01!" height="31"
+      width="88"></a>
+   <a href="http://jigsaw.w3.org/css-validator/"><img border="0"
+       src="/~walker/vcss-blue.png"
+       alt="Valid CSS!" height="31"
+       width="88"></a>
+   </td>
+</tr>
+
+<tr><td>
+   For more information, please contact 
+   <a class="footer-a" href="/~walker/">Henry M. Walker</a> at
+   <a  class="footer-a" href="mailto:walker@cs.grinnell.edu">walker@cs.grinnell.edu</a>.
+   </tr>
+</table>
+
+</div> <!-- footer -->
+</div> <!-- body -->
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

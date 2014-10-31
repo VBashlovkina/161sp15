@@ -1,0 +1,252 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>Laboratory Exercise on Linked Lists for a Movie</title>
+    <link rev="made" href="mailto:walker@cs.grinnell.edu">
+</head>
+
+<body>
+<div class="body">
+<!--#include file="header.inc"-->
+<div class="labcontent">
+
+
+<h1>Laboratory Exercise on Linked Lists for a Movie</h1>
+
+<h2>Goals:</h2>  
+
+<p>
+This laboratory helps you gain more experience with the use of lists and
+pointers in the context of a movie &mdash; a sequence of pictures.
+</p>
+
+<h2>Introduction</h2>
+
+<p>
+Back in the <a href="../arrays-functions/lab-arrays.shtml">Lab on
+    Arrays</a>, a program (in step 5) took a sequence of pictures, stored
+    them in a <tt>Picture *</tt> array, and played the pictures back from
+    first to last and from last to first.
+</p>
+
+<p>
+In this lab, pictures are stored in a linked list:
+</p>
+
+<ul>
+<li>
+Each new picture is placed at the end of the list.
+<li>
+A separate variable <tt>count</tt> is used to keep track of how many
+pictures are on the current list.
+<li>
+The sequence of pictures is displayed whenever ten more pictures have been
+taken.  
+<li>
+A <tt>printForward</tt> and/or <tt>printReverse</tt> procedure displays all
+pictures on the list from first to last or last to first, respectively.
+</ul>
+
+<p>
+Schematically, a movie is a sequence of nodes, and each node contains both
+a frame (or picture) and an indication of what frame comes next:
+</p>
+
+<center>
+<img src="movie-list-1.png" alt="movie as linked list with first pointer">
+</center>
+
+<p>
+File <a href="scribbler-list-movie.c">scribbler-list-movie.c</a> contains
+the basic elements of this linked-list-based movie program.
+</p>
+
+<h2>Work Started in Class</h2>
+
+<ol>
+<li>
+<p>
+Copy <a href="scribbler-list-movie.c">scribbler-list-movie.c</a> to your
+account, compile it, and run it.  (Not much will happen, but you can check
+that the main program shell is syntactically correct.)
+</p>
+
+<li>
+<p>
+Write the details for <i>addPicture (movieList * first, Picture * frame)</i>
+</p>
+
+<p>
+Although writing this code requires some care, you already have seen most
+elements of this work:
+</p>
+
+<ul>
+<li>
+Refer to the <tt>cons</tt> procedure in
+program <a href="scheme-lists.c">scheme-lists.c</a> from the
+previous <a href="lab-lists-c-1.shtml">Scheme-like Lists</a> lab for
+<ul>
+<li>
+how to use <tt>malloc</tt> to create a new node
+<li>
+how to reference a <tt>pic</tt> or <tt>data</tt> field<br>
+(no <tt>strcpy</tt> is needed to copy a reference to a <tt>Picture</tt>
+&mdash; why?)
+<li>
+how to reference the <tt>next</tt> field and how to set the field
+to <tt>NULL</tt>.
+</ul>
+<li>
+Addition of the new node to the movie involves two cases:
+<ul>
+<li>
+  If the first pointer is <tt>NULL</tt>, then the first pointer is changed
+      to point to the new node .
+<li>
+  Otherwise, 
+<ul>
+<li>
+Follow the approach of <tt>last</tt> procedure in the
+previous <a href="lab-lists-c-1.shtml">Scheme-like Lists</a> lab to locate
+the last node on the list.
+<li>Set the next field of the last node is set to the new node
+</ul>
+</ul>
+</ul>
+
+<li>
+<p>
+Write the details for <i>void printForward (movieList first);</i>
+which displays all pictures taken from the first to the most recent.
+</p>
+
+<ul>
+<li>
+Refer to the <tt>listPrint</tt> procedure in
+program <a href="scheme-lists.c">scheme-lists.c</a> from the
+previous <a href="lab-lists-c-1.shtml">Scheme-like Lists</a> lab for an
+appropriate iterative algorithm (changing printing to the display of pictures).
+</ul>
+<li>
+<p>
+Write the details for function <i>void printReverse (movieList first);</i>
+which displays all pictures taken from the most recent to the first.
+</p>
+
+<p>
+<i>Hints:</i> 
+</p>
+
+<ul>
+<li>
+Using your experience from Scheme and the recent Homework exercise
+in <a href="lab-lists-c-2.shtml">recent lab on Linked Lists in C</a>, think
+recursively.  The C code here can be similar, except that the list contains
+pictures rather than strings.
+<li>
+Do NOT write loops for this procedure!
+<li>
+What is a simple base case?
+<li>
+How can a recursive case process something simple and call the procedure
+recursively to do the rest of the work?
+</ul>
+</ul>
+</ol>
+
+<h2>Homework</h2>
+
+<ol start=5>
+<li>
+<p>
+Although the algorithm given in Step 2 works, it is inefficient.  In
+particular, the entire list of pictures must be traversed every time a new
+picture is added.  To avoid this repeated movement through the list, an
+additional variable can be added to point to the last item of the list.
+The revised algorithm to add a picture follows:
+</p>
+
+<ul>
+<li>
+Create a new node, initialize the <tt>pic</tt> to the new picture, and
+initialize the <tt>next</tt> field to <tt>NULL</tt>, as in part 2 of this
+lab (above).
+<li>
+Addition of the new node to the movie involves two cases:
+<ul>
+<li>
+  If the first pointer is <tt>NULL</tt>, then the first pointer is changed
+      to point to the new node , and the pointer to the last node is
+      changed to point to the new node.
+<li>
+  Otherwise, 
+<ul>
+<li>
+Use the last pointer to identify the last node on the list.
+<li>
+Set the next field of the last node is set to the new node
+<li>
+Update the last pointer to designate the new node (now included at the end
+of the list).
+</ul>
+</ul>
+</ul>
+
+<p>
+Schematically, a movie is a sequence of nodes, as illustrated before, but
+now a <tt>last</tt> pointer is included as well as the <tt>first</tt>:
+</p>
+
+<center>
+<img src="movie-list-2.png" alt="movie as linked list with first and last pointers">
+</center>
+
+</ol>
+
+<!--#include file="body-footer.inc" -->
+
+</div>
+
+<div class="footer">
+<p>
+<hr><p>
+
+This document is available on the World Wide Web as
+
+<PRE>
+     http://www.cs.grinnell.edu/~walker/courses/162.sp14/modules/module-lists/lab-lists-c-movie.shtml
+</PRE>
+
+<hr>
+<table width="100%">
+<tr><td>
+   <em>created 21 August 2012 by Henry M. Walker</em><br>
+   <em>revised 22 August 2012 by Henry M. Walker</em><br>
+   <em>reformatted with modest editing 9 February 2014 by Henry M. Walker</em>
+   </td>
+   <td rowspan="2" align="right">
+   <a href="http://validator.w3.org/check/referer"><img border="0"
+      src="/~walker/valid-html401-blue.png" alt="Valid HTML 4.01!" height="31"
+      width="88"></a>
+   <a href="http://jigsaw.w3.org/css-validator/"><img border="0"
+       src="/~walker/vcss-blue.png"
+       alt="Valid CSS!" height="31"
+       width="88"></a>
+   </td>
+</tr>
+<tr><td>
+   For more information, please contact
+   <a class="footer-a" href="/~walker/">Henry M. Walker</a> at
+   <a class="footer-a" href="mailto:walker@cs.grinnell.edu">walker@cs.grinnell.edu</a>.
+   </ class="footer-a"tr>
+</table>
+
+</div>
+</div>
+</body>
+</html>
+

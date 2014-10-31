@@ -1,0 +1,500 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>CSC 161:  Imperative Problem Solving and Data Structures</title>
+    <link rev="made" href="mailto:walker@cs.grinnell.edu">
+</head>
+
+<body>
+<div class="body">
+<!--#include file="header.inc"-->
+
+<div class="labcontent">
+
+<h1>Detailed Coursework Instructions</h1>
+
+<p>
+CSC 161 requires students to turn several types of assignments:
+</p>
+
+<ul>
+<li>
+Laboratory exercises
+<li>
+Module projects
+<li>
+Supplemental problems
+</ul>
+
+<p>
+Although general expectations of structure, documentation, and formatting
+apply for all coursework, details vary according to the type of exercise.
+This page provides detailed instructions for each type of activity.
+</p>
+
+<table width="100%" border>
+<tr>
+   <th width="16%">
+   <th width="28%">Laboratory Exercises
+   <th width="28%">Projects
+   <th width="28%">Supplemental Problems
+</tr>
+
+<tr>
+   <td valign=top>Collaboration
+   <td valign=top>Work in pairs strongly encouraged
+   <td valign=top>Work in pairs strongly encouraged
+   <td valign=top>Each problem must be done individually, without
+   consulting classmates, mentors, tutors, or other individuals (except the instructor).
+</tr>   
+
+<tr>
+   <td valign=top rowspan=1>Header and Academic Honesty Certification
+   <td valign=top colspan=3> <b>The <u>very beginning</u> of every lab, project, and
+     supplemental problem must contain the following lines:</b>
+
+<pre><tt>
+    /***********************************************************************
+     * Name(s)  (identify both lab partners for labs, projects)            *
+     * Box(s):                                                             *
+     * Assignment name (Lab, Project, Sup. Problem Number _______)         *
+     *      (25% off if name/number does not match assignment)             *
+     * Assignment for &lt;due date&gt;                                           *
+     ***********************************************************************/
+
+    /* *********************************************************************
+     * Academic honesty certification:                                     *
+     *   Written/online sources used:                                      *
+     *     [include textbook(s), CSC 161 labs or readings;                 *
+     *       complete citations for Web or other written sources           *
+     *      write "none" if no sources used]                               *
+     *   Help obtained                                                     *
+     *     [indicate names of instructor, class mentors                    *
+     *      or evening tutors, consulted according to class policy;        *
+     *      write "none" if none of these sources used]                    *
+     *     ["none" required for Supplemental Problems                      *
+     *   My/our signature(s) below confirms that the above list of sources *
+     *   is complete AND that I/we have not talked to anyone else          *
+     *   (e.g., CSC 161 students) about the solution to this problem       *
+     *                                                                     *
+     *   Signature:                                                        *
+     ***********************************************************************/
+</tt></pre>
+
+<p>
+No coursework can be accepted, if this certification is incomplete or if
+the statement is not signed by <i>ALL</i> collaborators
+involved.
+<br>
+<br>
+</p>
+
+<!--
+   <td valign=top>
+   <td valign=top>
+-->
+
+</tr>   
+
+<!--
+<tr>
+   <td valign=top>
+   <td valign=top>
+   <td valign=top>
+</tr>   
+-->
+
+<tr>
+   <td valign=top rowspan=2>Font(s) and text formatting
+   <td valign=top colspan=3>
+       <ul>
+         <li>All code must use a fixed-width font (e.g., Courier). Use
+           of <tt>emacs</tt> (with the default font) is strongly encouraged.
+         <li>Use of variable-width fonts (e.g., from a word processing
+         package) is disqualifying for code &mdash; spacing with
+         variable-width fonts is unreliable, and code structure is likely
+         lost.  Code using variable-width fonts will be returned without
+         grading.
+         <li>Output, if given, must utilize a fixed-width font.
+         <li>Commentary (e.g., answers to lab questions, discussions of
+         testing and correctness) may be in either a fixed-width font or a 
+           variable-width font.
+       </ul>
+</tr>
+<tr>
+   <td valign=top>
+     <ul>
+       <li>Answers to questions should be numbered and in numeric order (e.g., the
+         answer to Step 1 should be numbered 1 and come before the answer to
+         Step 2).
+       <li>Explanations and answers to questions may be given in any word
+         processing (e.g., <tt>emacs</tt>, <tt>vi</tt>, <i>LibreOffice</i>,
+         etc.)
+       <li>Answers involving code may be copied and pasted (with a
+         fixed-width font) into the general commentary or printed as
+         separate files.  If code-based answers are separate, comments in
+         the code must specify the section for each answer.
+       <li>Commentary may involve either fixed-width fonts or
+         variable-width fonts.
+     </ul>
+
+   <td valign=top colspan=2>
+     <ul>
+       <li>A complete program should be given as a single entity, unless
+       otherwise specified in the instructions; the program should not be
+       printed in pieces &mdash; various pieces on separate pieces.  
+       <li>Commentary regarding testing should be given in a separate
+       file, not included within the complete program.
+     </ul>
+</tr>
+
+<!--
+<tr>
+   <th width="16%">
+   <th width="28%">Laboratory Exercises
+   <th width="28%">Projects
+   <th width="28%">Supplemental Problems
+</tr>
+-->
+
+<tr>
+   <td valign=top>Code
+   <td valign=top colspan=3>         
+     <ul>
+       <li>Code should be divided into appropriate functions and
+       procedures. A simple block of code need not be encapsulated within a
+       function, but long, complex code segments should be organized into
+       pieces.
+       <li>Global variables are almost never appropriate. Use parameters to
+       send data to functions and procedures.  
+       <li>Indenting of code must show the structure of the code.
+         <ul>
+           <li>Indenting must be consistent. 
+           <li>Code within a conditional statement must be indented within
+             the corresponding <tt>if</tt> or <tt>switch</tt>.
+            <li>Code within a loop must be indented.
+           <li>Code within a function must be indented within the function.
+           <li>Code within the same logical code segment must be
+             indented consistently.
+         </ul>
+       <li>Each function and the main program must contain comments including
+         <ul>
+           <li>A statement of what the function or program does
+           <li>A statement of any pre-conditions (or <tt>pre-conditions:  none</tt>)
+           <li>A statement of post-conditions
+             </ul>
+       <li>Code should contain comments to provide insight into the
+       structure and approach of a program.  
+         <ul>
+           <li>Comments should describe each logical section of the code (e.g.,
+             main steps, elements of the algorithm or data structure).
+           <li>Comments should <i>NOT</i> simply repeat the code.  For example,
+             the following comment duplicates the code and sidetracks the
+             reader.
+<pre>
+      int x = 7; /* x is declared as an integer variable with initial value 7 */
+</pre>
+         
+           <li>Within a program to compute mortgage payments, program
+             <a href="c/mortgage-good-comments.c">mortgage-good-comments.c</a>
+             illustrates comments that add insight and clarity.  In
+             contrast,
+             program <a href="c/acftwmortgage-poor-comments.c">mortgage-poor-comments.c</a> 
+             includes extensive commentary, but the comments add no insight
+             and mostly get in the way of reading the code.
+         </ul>
+       <li>
+         Although programs need not be the most efficient possible,
+         inefficient code may not earn many points.
+         <ul>
+           <li>
+             Sorting normally should use an insertion sort (as covered in
+             this course).
+           <li>
+             If another sorting algorithm is to be considered, approval in
+             advanced is needed from the instructor.
+           <li>
+             Bubble sort is never appropriate in any context, since it is
+             remarkably inefficient.  Any program containing a bubble sort
+             will immediately be give 0 points.
+         </ul>
+
+</tr>   
+
+<tr>
+   <td valign=top>Commentary
+   <td valign=top>When laboratory exercises ask questions, answers should
+     be written in careful English.  Normally, this requires full sentences.
+     Points may be lost for incorrect spelling, poor grammar, etc.
+   <td valign=top colspan=2>
+     <ul>
+       <li>Commentary within a program should describe any complex data
+         structures and identify main steps of a complicated algorithm.
+         There is no need to repeat simple steps in code, but clarification
+         is important when data structures or algorithms are complex.
+       <li>A separate commentary should describe how one knows a program is
+         correct.  As with any writing, this commentary should be logically
+       structured and carefully written.
+     </ul>
+</tr>
+
+<tr>
+   <td valign=top>Testing
+   <td valign=top>Informal testing is appropriate for laboratory
+     exercises.  A formal write up is not needed.  However, turning in code
+     for a Step in a lab implicitly certifies that the code has been
+     tested. Errors in code (without explicit commentary regarding a
+     difficulty or failure of a test case) may lose significant points.
+   <td valign=top>Unless special instructions are given, projects involve
+     the use of robots, and often the result of the program cannot be
+     copied into a testing commentary.  However, tests can be described.
+     <ul>
+       <li>
+         If the program always does the same activities (e.g., plays a
+         song), describe what the robot does and why you think this is the
+         proper result.  
+       <li>
+         If the robot reacts to input or its environment, describe the
+         situations that can occur, how you tested each circumstance, and
+         how the robot responded.  
+         <br><br>
+         For example, if the robot is to move and avoid obstacles, testing
+         should identify that no obstacles might be present, a obstacle may
+         exist on the left, an obstacle on the right, or an obstacle on
+         both left and right.  In each case, commentary should describe
+         what tests were run and how the robot reacted.
+</ul>         
+   <td valign=top>Supplemental problems apply problem solving in C to
+     non-robot-based problems.  These problems must be tested
+     systematically, and the results of the tests collected and submitted.
+     <ul>
+       <li>All code must be tested; commentary must address the basic
+         question of how you know the code is correct.
+       <li>Commentary that simply repeats the logic of the program does
+         not address correctness.  If the logic in a program is faulty,
+         simply stating the logic again does not make it correct.
+       <li>Evidence based on testing must be described. 
+         <ul>
+           <li>
+             What circumstances can arise in the problem?
+           <li>
+             What test cases have been devised to check those
+             circumstances?
+           <li>
+             What results does the program produce for those test cases?
+             For example, program output should be copied into your
+             commentary.  In order to analyze the output, be sure to
+             include a clear statement of what input was used for each test.
+           <li>
+             Are the results correct, and how do you know?
+         </ul>
+
+</tr>   
+
+<tr>
+   <td valign=top>Submission logistics
+   <td valign=top>
+     <ul>
+       <li>
+         Email your program to <b><tt>grader-161-01@cs.grinnell.edu</tt></b>
+         following these instructions:
+         <ul>
+           <li>
+             The subject line should include "CSC 161", the assignment
+             name, and your name, and the name of your collaborators.
+           <li>
+             Include answers to lab questions in one file, with steps
+             numbered and answers in numerical order.
+           <li>
+             Code segments may be pasted into a common file or submitted in
+             separate files.
+           <li>
+             It is acceptable to combine code for several steps into a
+             single program, as long as the results of each step can be 
+             observed (without commenting out some segments and
+             uncommenting other segments).
+         </ul>
+       <li>
+         Turn in a printed copy of your answers to questions, as well as
+         programs, code segments, and relevant output.
+         <ul>
+           <li>
+             A printed copy of your answers should be on top.
+             (Since your name, box, etc. are required to be at the start of
+             the your answers, this printout will identify that this is your
+             work.)
+
+           <li>
+             If your work involves several files, list the main program
+             first; then list any supplementary files.
+
+         </ul>
+   <td valign=top colspan=2>
+     <ul>
+       <li>
+         Email your program to <b><tt>grader-161-01@cs.grinnell.edu</tt></b>
+         following these instructions:
+         <ul>
+           <li>
+             The subject line should include "CSC 161", the assignment
+             name, and your name (when the program involves work with a
+             collaborator, put both names in the subject line).
+           <li>
+             Include the C program as an attachment.  If the program
+             involves several files, attach all relevant (.c and .h) files.
+             (Include only the source code (e.g., .c and .h files; do not
+             include compiled code.)
+           <li>
+             Include an attachment that shows test runs of the program.
+             <ul>
+               <li>
+                 Test runs should NOT be shown in the program itself, but
+                 rather in a separate file.
+               <li>
+                 A separate commentary, also NOT in the program, should
+                 explain why the test runs cover the relevant possibilities
+                 for the problem and why the tests demonstrate the program
+                 is correct.
+             </ul>
+           <li>
+             To count as being submitted on time, the time stamp on the
+             email must be before the start of the class in which the work
+             was due.
+         </ul>
+
+       <li>
+         Turn in a printed copy of your program, relevant output, and a
+         discussion of testing.
+         <ul>
+           <li>
+             A printed copy of the program should be on top.
+             (Since your name, box, etc. are required to be at the
+             start of the program, this printout will identify that this is
+             your work.) 
+
+           <li>
+             If your work involves several files, list the main program
+             first; then list any supplementary files.
+
+           <li>
+             Write a separate statement, not in the program, that documents
+             the testing process for this program. The statement should
+             include:
+             <ul>
+               <li>
+                 A numbered listing of the circumstances that can
+                 reasonably arise in this problem.
+                 <ul>
+                   <li>
+                     For example, if a program is to categorize data, the
+                     listing should include a statement of the categories;
+                     If some category could be obtained in several ways,
+                     the statement should identify each circumstance that
+                     could lead to the category.
+                   <li>
+                     As another example, if the order of initial data might
+                     impact processing, then the listing should include
+                     circumstances to test the order of input data.
+                 </ul>
+               <li>
+                 A listing of test cases to be considered, with the
+                 expected outcome.
+                 <ul>
+                   <li>
+                     For each numbered item in the listing of possible
+                     circumstances, there should be a corresponding test
+                     case identified.
+                   <li>
+                     Each test case should be specific, including what data
+                     will be considered and what output is expected.
+                 </ul>
+             </ul>
+           <li>
+             Compile your program with the <tt>gcc</tt> command, and run it.
+             <ul>
+               <li>
+                 If the program does not use the Scribbler 2, include the
+                 full range of test cases that demonstrate the correctness
+                 of your program. (You should print the full interaction
+                 from the terminal during the test runs.)
+               <li>
+                 If the program uses the Scribbler 2, include a description
+                 of what test runs you used and what results you obtained.
+               <li>
+                 The actual test runs should follow the above listing of test cases.
+               <li>
+                 Each test run should be annotated (writing on the printout
+                 is acceptable), identifying which test case is being run
+                 and whether or not the output produced is correct.
+             </ul>
+           <li>
+             Once testing is completed, prepare a separate statement that
+             argues why your program is correct, based upon the evidence
+             from your test runs.
+         </ul>
+
+
+</tr>
+
+<tr>
+   <th width="16%">
+   <th width="28%">Laboratory Exercises
+   <th width="28%">Projects
+   <th width="28%">Supplemental Problems
+</tr>
+
+</table>
+
+
+
+
+<!--#include file="body-footer.inc" -->
+
+</div> <!--labcontent-->
+
+<div class="footer">
+
+<hr><p>
+
+This document is available on the World Wide Web as
+
+<div class="address">
+<PRE>
+     http://www.cs.grinnell.edu/~walker/courses/161.fa14/coursework-notes.shtml
+</PRE>
+</div> <!-- address -->
+<hr>
+
+<table width="100%">
+<tr><td>
+   <em>created 5 July 2014 by Henry M. Walker</em><br>
+   <em>revised 6 July 2014 by Henry M. Walker</em>
+   </td>
+   <td rowspan="2" align="right">
+   <a href="http://validator.w3.org/check/referer"><img border="0" 
+      src="/~walker/valid-html401-blue.png" alt="Valid HTML 4.01!" height="31"
+      width="88"></a>
+   <a href="http://jigsaw.w3.org/css-validator/"><img border="0"
+       src="/~walker/vcss-blue.png" 
+       alt="Valid CSS!" height="31"
+       width="88"></a>
+   </td>
+</tr>
+
+<tr><td>
+   For more information, please contact 
+   <a class="footer-a" href="/~walker/">Henry M. Walker</a> at
+   <a  class="footer-a" href="mailto:walker@cs.grinnell.edu">walker@cs.grinnell.edu</a>.
+   </tr>
+</table>
+
+<hr>
+<!--#include file="copyright-notice.inc"-->
+
+</div> <!-- footer -->
+</div> <!-- body -->
+</body>
+</html>

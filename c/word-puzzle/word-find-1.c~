@@ -1,0 +1,9 @@
+/* program to solve a word-find puzzle
+   command-line parameter used for name of file with data
+   
+   approach 1:  reading with fgetc; white-space in input ignored
+                one 16 by 16 array for input
+                one 16 by 16 array for output
+*/
+
+#include <stdio.h>

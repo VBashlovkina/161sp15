@@ -1,0 +1,717 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>CSC 161 Lab. Exercise on Linux Basics</title>  
+    <link rev="made" href="mailto:walker@cs.grinnell.edu">
+</head>
+<body>
+<div class="body">
+<!--#include virtual="../header.inc" -->
+
+<div class="labcontent">
+
+<h1>Linux Basics</h1>
+
+<p>
+The original Unix operating system and its successor Linux were designed to
+support the common tasks and needs of computer users.  This laboratory
+exercise focuses on some commands to set up your account to utilize
+Scribbler 2 robots and to establish subdirectories for your CSC 161
+activities.
+</p>
+
+<h2>Work Started in Class</h2>
+
+<h3>The Terminal Window</h3>
+
+<p>
+Most C-based work involves use of a terminal window &mdash; not a graphical
+user interface (e.g., point-and-click) that may be used in other
+contexts.  Using a terminal window allows a user to take advantage of many
+powerful capabilities of the Linux operating system.  However, for many CSC
+161 students, use of a terminal window may be a new and different
+experience.  This lab starts with some basics.
+</p>
+
+<ul>
+<li>
+<a href="#open">opening a terminal window</a>
+<li>
+<a href="#password">changing your password</a>
+<li>
+<a href="#window-copying">copying between windows</a>
+</ul> 
+
+<a name="open"></a>
+<h4>Opening the Terminal Window</h4>
+
+<ol>
+<li>
+<p>
+Open a terminal window.
+</p>
+
+<ol TYPE="a">
+<li>
+You may already have a terminal window on screen.  If not, start one by
+moving the pointer onto the small monitor icon on the bottom row of the
+front panel, and click with the left mouse button.  If you do not have the
+terminal icon, speak with the instructor.
+<li>
+Move your mouse to the top border of the terminal window, click the left
+mouse.  With the left mouse button depressed, move the terminal window to
+the upper left of your screen.  (If you move the terminal window too far,
+it may go into another "workspace", and the system may display only
+material in this new "workspace".  If this happens and you want all
+material together, just move the terminal window back in the opposite
+direction from before, so the terminal window will be put back into the old
+workspace.)
+</ol>
+</ol>
+
+
+<!--...................................................................-->
+<a name="password"></a>
+<h4>Changing Your Password</h4>
+
+<ol start=2>
+<li>
+<p>
+Choose a new password.  Make it something that you can easily remember, but
+not an English word or a name, since it is easy for system crackers to
+break in by guessing your password if you choose it from one of those
+categories.  Using a multi-word phrase may be helpful.
+</p>
+
+<p>
+Use the <tt>/net/bin/passphrase</tt> program within a terminal window to
+change your password.
+
+</p>
+
+</ol>
+
+<a name="window-copying"></a>
+<h4>Cutting and Pasting Between Windows</h4>
+
+<p>
+Linux allows you to cut and paste between windows <u>without using the
+control <i>Ctrl</i> key</u>.  Linux does not require <i>Ctrl c</i> and <i>Ctrl
+    v</i> &mdash; just use the left and middle mouse buttons. 
+</p>
+
+<ol start=3> 
+<li>
+<p>
+Consider the following script on my account that gives information related
+to your being logged into this workstation.
+</p>
+
+<pre>
+/home/walker/public_html/courses/161.sp14/modules/getting-started/hello-script
+</pre>
+
+<p>
+To use this script, you could type the entire line into a workstation, but
+that would be tedious and error prone.  Instead, try the following:
+</p>
+
+<ul>
+<li>
+<p>
+Select this line from this lab exercise in your browser as follows:
+move the cursor to the beginning of the line and push down the left mouse
+button.  Then, holding the button down, move the mouse to the end of the
+line.  (The entire line now should be highlighted.)  When the desired
+line is highlighted, stop pressing on the left mouse button &mdash; the
+line should stay highlighted.
+<li>
+<p>
+Move the mouse to the terminal window, and click the
+middle mouse button to paste the line into the terminal.
+</p>
+
+</ul>
+
+<p>
+<b>Note:</b>  In this process do <u>not</u> use the control <i>Ctrl</i>
+key. 
+</p>
+
+</ol>
+
+<h3>Editing</h3>
+
+<p>
+For most of this course, you will need to use a text editor that does not
+add behind-the-scenes formatting details (e.g., fonts, paragraph styles,
+heading styles, etc.).  I suggest that you use <tt>emacs</tt>
+(e.g., <tt>vi</tt> is another option), since <tt>emacs</tt> is quite powerful,
+has capabilities useful for C programming, and provides buttons and other
+features that may seem similar to other environments.
+</p>
+
+<p>
+<tt>emacs</tt> can be opened from the <tt>Xfce</tt> menu (with the picture
+of a mouse) at the bottom of screen  (look under the "Development" section
+for "GNU Emacs".  However, much of the work we will be doing all semester
+will be based in a terminal window, so it may be helpful to gain experience
+with a terminal environment now.
+</p>
+
+<p>
+Although the following instructions may seem confusing to you right now, it
+will make more sense as the semester progresses. These next steps are
+necessary for you to be able to program with the Scribbler 2 throughout the
+course.  When you log into MathLAN, various preliminaries are set up for
+you in a file called <tt>.bashrc</tt> in your home directory.  (Note the
+period at the start of the file name.)
+</p>
+
+<ol start=4> 
+<li>
+<p>
+Edit your  <tt>.bashrc</tt> file:
+
+<ol class="withloweralpha">
+<li>
+<p>
+Open a terminal window.  Prepare to edit <tt>.bashrc</tt>; in your home
+directory, type:
+</p>
+
+<pre>
+emacs .bashrc &amp;
+</pre>
+
+<li>
+    Add the following lines to the bottom of your .bashrc file:
+    <br>
+    <br>
+    <pre>
+# add the current directory to the search path
+   PATH=$PATH:.
+
+# set environmental variables for Myro C and Myro C++
+   ### MYRO LIBRARIES ###
+
+   ## Myro C -- When using libMyroC.so or libMyroCDev.so ##
+   # include the location of the original and development MyroC headers #
+   C_INCLUDE_PATH="$C_INCLUDE_PATH:/home/walker/Myro/include/MyroC"
+   C_INCLUDE_PATH="$C_INCLUDE_PATH:/home/walker/Myro/include/MyroCDev"
+
+   # include the location of the MyroC shared library object file #
+   LIBRARY_PATH="$LIBRARY_PATH:/home/walker/Myro/lib"
+
+   # make the libraries know to the execution environment #
+   LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/home/walker/Myro/lib"
+
+   export C_INCLUDE_PATH LIBRARY_PATH LD_LIBRARY_PATH
+</pre>
+
+<p>
+To accomplish this, you can copy between Linux windows:
+</p>
+<ul>
+<li>
+Place your mouse at the top left of the above region.
+<li>
+Hold the left mouse button down and move the mouse to highlight the entire
+section.
+<li>
+When you stop pressing the left mouse button, the region should stay
+highlighted.
+<li>
+Move the mouse to the bottom of the <i>emacs</i> window, and press the
+middle mouse button.  The highlighted material should be inserted in
+the <tt>.bashrc</tt> editing window.
+<li>
+Save the revised <tt>.bashrc</tt> file.
+</ul>
+
+<li>
+<p>
+Back in your terminal window, type
+</p>
+
+<pre>
+source .bashrc
+</pre>
+
+<p>
+This command tells the window to read the newly-changed <tt>.bashrc</tt>
+file.
+</p>
+
+<p>
+Contact the instructor if an error message is printed when you
+type <tt>source .bashrc</tt>.
+</p>
+
+</ol>
+
+<p>
+The basic idea of this insertion is to define three environmental variables
+which will allow you to compile cleanly with the robots.  With this
+insertion, when we start using the robots, you'll be ready to compile and
+run your programs!  
+</p>
+
+<p>
+Now we'll explore  statements you just pasted into your .bashrc file in
+more detail. 
+</p>
+
+<h4>PATH</h4>
+
+<p>
+During the course, you will be creating and running many programs that you
+have written in C.  Of course, in order to run a program, Linux must be
+able to find it.  Since you will be issuing commands in a terminal window,
+it is natural to tell Linux to look at the directory for your terminal
+window.  In Linux jargon, this directory is called . (dot), and
+the <tt>PATH</tt> command (above) tells Linux to check the current
+directory when trying to run a program.
+</p>
+
+<a name="include"></a>
+<h4>C_INCLUDE_PATH</h4>
+
+<p>
+  This tells the compiler where to look for the MyroC header files (which
+  is a big list of robot functions).  Actually, there are two versions of
+  the MyroC header files, and these two lines allow you to reference both
+  versions. 
+</p>
+
+<ul>
+  <li>
+    <code>
+         C_INCLUDE_PATH="$C_INCLUDE_PATH:/home/walker/Myro/include/MyroC"
+    </code>
+  <li>
+    <code>
+      C_INCLUDE_PATH="$C_INCLUDE_PATH:/home/walker/Myro/include/MyroCDev"
+    </code>
+</ul>
+
+<a name="lib"></a>
+<h4>LIBRARY_PATH</h4>
+
+<p>
+  This tells the compiler where to look for the MyroC libraries (which tells the
+  computer how to do the robot functions listed in the MyroC header files).
+</p>
+
+<ul>
+  <li>
+    <code> LIBRARY_PATH="$LIBRARY_PATH:~walker/Myro/lib" <br> 
+    </code>
+</ul>
+
+<a name="ldlib"></a>
+<h4>LD_LIBRARY_PATH</h4>
+
+<p>
+  This tells the operating system where to look for the libraries when it's
+  running your programs.
+</p>
+
+<ul>
+  <li>
+    <code>
+      LD_LIBRARY_PATH="$LS_LIBRARY_PATH:~walker/Myro/lib" <br>
+    </code>
+</ul>
+
+<a name="export"></a>
+<h4>export</h4>
+
+<p>
+  This statement exports all of your new environment variables into any future instances of your Bash shell.
+</p>
+
+<ul>
+  <li>
+    <code>
+      export C_INCLUDE_PATH LIBRARY_PATH LD_LIBRARY_PATH
+    </code>
+</ul>
+
+<p>
+By setting these environmental variables here, the computer will know where
+to find these packages when you work with the Scribbler 2 robots.
+</p>
+
+</ol>
+
+<h3>Repeat for Each Partner</h3>
+<ol start=5> 
+<li>
+<p>
+Repeat Step 4 for each partner in your programming group.
+</p>
+</ol>
+
+<h3>Modifying emacs</h3>
+<ol start=6>
+<li>
+By default, the <em>emacs</em> editor is configured, so that you encounter
+a split screen each time you open the editor.  If you find this feature
+annoying, you can change this default in either of two ways:
+<ul>
+<li>
+When you open <em>emacs</em>, look at the bottom of the "Welcome to GNU
+Emacs" window.  Click the box that says "Never show it [this startup
+screen] again."
+<li>
+Within <em>emacs</em>, 
+<ul>
+<li>
+click the "Options" tab at the top of the window, select "Customize Emacs"
+                       and then "Specific Option".
+<li>
+The phrase "Customize variable:" will appear in the little window at the
+bottom.  Type <tt>inhibit-startup-screen</tt>
+<li>
+A new window will appear, which contains the line <br>
+<tt>Inhibit Startup Screen:  Toggle  off (nil)</tt><br>
+Click the <tt>Toggle</tt> button, and then the <tt>Save for future
+  sessions</tt> button above.
+</ul>
+</ul>
+With either choice, <em>emacs</em> should start with just one window (no
+split screen) in the future.
+
+
+<li>
+<p>Refine your <em>emacs</em> environment to help support C programming.
+</p>
+
+<ul>
+<li>
+<p>
+In the "Options" menu, set the following options.
+</p>
+
+<ul>
+<li>
+Click the box for "Paren Match Highlighting (Show
+Paren mode)"
+<li>
+Click the box for "Case-Insensitive Search"
+</ul>
+
+<li>
+<p>
+Enable "Syntax Highlighting (Global Font Lock mode)" as follows:
+</p>
+<ul>
+<li>
+Press the <i>escape</i> key ("Esc") [this is considered a "meta" key;
+nothing will appear to happen until you finish the next step]
+<li>
+Type <tt>x</tt> (for execute) [M-x will appear in the small window at the bottom]
+<li>
+Type <tt>global-font-lock-mode</tt> (and return) in the bottom window
+</ul>
+
+<li>
+<p>
+When done, click the "Save Options" choice in the "Options" menu.
+</p>
+</ul>
+<p>
+<b>Reminder:</b> Since <em>emacs</em> is a very powerful editor, sometimes
+you will hit an erroneous key, emacs will do something unexpected, and then
+you will wonder what is happening.  In such cases, <em>the keystroke
+combination &lt;ctrl&gt;-g will stop any editing process within emacs</em>!
+</p>
+</ol>
+
+
+<h2>Homework</h2>
+
+<p>
+In this section, we will explore part of the Linux directory structure,
+review some Linux directory commands, and suggest a way to set up your
+account to organize materials for CSC 161.
+
+<h3>The Linux Directory</h3>
+
+<p>
+In this section, we will explore part of the Linux directory.
+</p>
+
+<a name="pathnames"></a>
+<h4>Pathnames</h4>
+
+<p>
+<ol start=8>
+<li>
+Current Directory
+
+<ol TYPE="a">
+<li>
+<p>
+In a terminal window, type <tt>pwd</tt> (print working directory) to
+determine the absolute path name of the current directory.
+</p>
+
+<li>
+
+<p>
+Type <tt>ls .</tt> to get a listing of the current directory, and <tt>ls
+..</tt> to get a listing of all files in the parent directory.  Note that
+your current directory should be visible as one item within its parent
+directory.
+</p>
+
+</ol>
+
+<li>
+Home Directory
+
+<p>
+The tilde character used alone specifies your home directory, so
+<tt>ls ~</tt> will give a listing of your home directory.  When the
+tilde appears before a name, the combination denotes the home
+directory before the home directory corresponding to the name.
+Thus, <tt>ls ~walker</tt> lists the home directory for
+user <tt>walker</tt>.
+</p>
+
+<li>Linux File Hierarchy
+
+<p>
+The top of the Linux file hierarchy is designated by a slash (/) and is
+called <i>root</i>.  Use the command <tt>ls /</tt> to obtain a listing
+of all files and directories within the root directory.  How many are there?
+</p>
+
+<p>
+In reviewing the files within the root directory, look at the following
+specific directories:
+</p>
+
+<ol TYPE="a">
+<li>
+
+<p>
+<tt>/bin</tt>: These are the executable programs that comprise the
+GNU/Linux utilities. For example, there is an executable file here named
+<tt>ls</tt> that is run when you issue the command <tt>ls</tt>.
+</p>
+
+<li>
+
+<p> 
+<tt>/home</tt>: You won't be surprised to hear that user accounts are
+stored in this directory.
+
+</p>
+
+<li>
+
+<p>
+<tt>/lib</tt>: This directory is the home of several libraries that can be
+used by programmers. 
+</p>
+
+<li>
+
+<p>
+<tt>/usr</tt>: The name of this directory is pronounced "user", and it
+generally contains application programs, libraries, and other files that
+are not part of the GNU/Linux system (i.e., optional resources intended for
+and requested by users). For example, the Linux C library for
+the <tt>gcc</tt> compiler is found as file <tt>libgcc.a</tt> in the
+subdirectory <tt>/usr/lib/gcc/x86_64-linux-gnu/4.7/</tt>.
+</p>
+</ol>
+
+<center>
+<img src="root-directory.gif" alt="root directory hierarchy">
+</center>
+
+<li>
+<p>
+
+Use the commands <tt>which</tt> and <tt>whereis</tt> to locate
+where  the <tt>emacs</tt> program is located:
+
+</p>
+
+<pre>
+   which emacs
+   whereis emacs
+</pre>
+
+</ol>
+
+<h3>File Commands</h3>
+
+<h3>File Utilities</h3>
+
+<p>
+Consult the following commands in completing the next steps of this lab:
+</p>
+
+<table cellpadding="5" border="2">
+<tbody>
+
+<tr>
+ <td><b>Utility</b></td>
+ <td><b>Description</b></td>
+</tr>
+<tr>
+ <td valign="top">ls</td>
+ <td>"list" files and directories</td>
+</tr>
+
+<tr>
+ <td valign="top">pwd</td>
+ <td>"print working directory"</td>
+</tr>
+<tr>
+ <td valign="top">cd</td>
+ <td>"change (your working) directory"</td>
+</tr>
+<tr>
+
+ <td valign="top">mkdir</td>
+ <td>"make directory"</td>
+</tr>
+<tr>
+ <td valign="top">rmdir</td>
+ <td>"remove directory"</td>
+</tr>
+<tr>
+ <td valign="top">cp</td>
+
+ <td>"copy" a file or directory</td>
+</tr>
+<tr>
+ <td valign="top">mv</td>
+ <td>"move" a file or directory (i.e., rename it)</td>
+</tr>
+<tr>
+ <td valign="top">rm</td>
+ <td>"remove" a file (i.e., delete it)</td>
+
+</tr>
+
+</tbody>
+</table>
+
+<h3>Navigating Directories</h3>
+
+<ol start=12>
+
+<li>
+<p>
+Within your home directory, create a new directory <tt>csc161</tt>.  Then
+move to this <tt>csc161</tt> directory and create subdirectories
+<tt>projects, labs,</tt> and <tt>sup-prob</tt>.  As the semester progresses, 
+organization will help you keep your various files separate.  
+</p>
+
+<p>
+You might try the following sequence of commands to set up these
+subdirectories.  Refer to the table above for a description of each
+command, and be sure you can explain what each command does!
+</p>
+
+<pre>
+mkdir csc161
+cd csc161
+pwd
+mkdir projects
+mkdir labs
+mkdir sup-prob
+ls
+</pre>
+
+<li>
+<p>
+Use the <tt>cd</tt> command to move to the <tt>labs</tt>
+subdirectory. Then, in anticipation of an upcoming lab, copy the
+file  <tt>/home/walker/public_html/courses/161.sp14/modules/getting-started/quarts-espeak.c</tt>
+to your account using the <tt>cp</tt> command:
+</p>
+
+<pre>
+cp /home/walker/public_html/courses/161.sp14/modules/getting-started/quarts-espeak.c .
+</pre>
+
+<p>
+<b>Note:</b>  The dot at the end of the line indicates that the file is to
+be copied from <tt>/home/walker/...</tt> to the current directory
+(i.e., <tt>.</tt> stands for the current directory).
+</p>
+
+</ol>
+
+
+
+<!--#include virtual="body-footer.inc" -->
+
+</div> <!-- labcontent-->
+
+<div class="footer">
+
+<hr><p>
+
+This document is available on the World Wide Web as
+
+<div class="address">
+
+<PRE>
+http://www.cs.grinnell.edu/~walker/courses/161.fa12/modules/getting-started/lab-linux-basics.shtml
+</PRE>
+</div> <!-- address -->
+
+<hr>
+
+<p>
+<table width="100%">
+<tr><td>
+
+   <em>created 15 January 2014 by Henry M. Walker</em>, based on earlier
+   labs by
+   <ul>
+     <li><em>Henry M. Walker:  31 March 2008,  22 August 2011, 20 July
+     2012, 1 September 2013</em> 
+     <li><em>Erik Opavsky and David Cowden: 18 July 2011</em>
+     <li><em>Erik Opavsky and Dilan Ustek:  21 September 2011</em>
+   </ul>
+   <em>material reorganized 15-16 January 2014 by Henry M. Walker</em
+   </td>
+
+   <td rowspan="2" align="right">
+ <a href="http://validator.w3.org/check/referer"><img border="0"
+      src="/~walker/valid-html401-blue.png" alt="Valid HTML 4.01!" height="31"
+      width="88"></a>
+   <a href="http://jigsaw.w3.org/css-validator/"><img border="0"
+       src="/~walker/vcss-blue.png"
+       alt="Valid CSS!" height="31"
+       width="88"></a>
+   </td>
+</tr>
+
+<tr><td>
+   For more information, please contact
+   <a class="footer-a" href="/~walker/">Henry M. Walker</a> at
+   <a class="footer-a" href="mailto:walker@cs.grinnell.edu">walker@cs.grinnell.edu</a>.
+   </tr>
+</table>
+
+<hr>
+<!--#include file="copyright-notice.inc"-->
+
+</div> <!-- footer -->
+</div> <!-- body -->
+</body>
+</html>

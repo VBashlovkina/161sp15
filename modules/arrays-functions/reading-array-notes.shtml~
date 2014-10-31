@@ -1,0 +1,312 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>Reading on Simple Arrays</title>
+    <link rev="made" href="mailto:walker@cs.grinnell.edu">
+</head>
+
+<body>
+<div class="body">
+
+<!--#include file="header.inc"-->
+
+<div class="labcontent">
+
+<h1>Notes on Arrays</h1>
+
+<p>
+The following notes supplement the textbook reading on arrays.
+</p>
+
+<h2>Introduction</h2>
+
+<p>
+Consider the problem of repeated moving a robot and turning right.
+If the time for moving forward and the amount to turn right is the same
+throughout the activity, the relevant C code might be:
+</p>
+
+<div class="block">
+<pre>
+   int i;
+   for (i = 0; i < 5; i++)
+      {
+          rForward (1.0, 0.5);  /* move forward at full speed for 1/2 second */
+          rTurnRight (1.0, 0.5);/* turn right at full speed for 1/2 second */
+      }
+</pre>
+</div>
+
+<p>
+Although this works fine if the robot is to move the same amount forward
+and turn the same amount for each iteration.  However, if the speed or time
+will change from one interval to the next, then we would need to store the
+specific values for each movement.  Here is one approach:
+</p>
+
+<div class="block">
+<pre>
+  rForward (1.0, 0.5);
+  rTurnRight (1.0, 0.5);
+  
+  rForward (0.75, 0.35);
+  rTurnRight (0.6, 0.35);
+  
+  rForward (0.25, 0.4);
+  rTurnRight (0.8, 0.4);
+  
+  rForward (1.0, 0.5);
+  rTurnRight (0.4, 0.5);
+  
+  rForward (0.45, 0.65);
+  rTurnRight (1.0, 0.65);
+</pre>
+</div>
+
+<p>
+Although this approach works, the code can be somewhat hard to read, and
+the approach certainly does not generalize well.  For example, in reading
+this code, it may not be apparent that the time devoted to moving forward
+is the same as the devoted to turning.  
+</p>
+
+<p>
+One way to make the code a little clearer would be to introduce variables
+for the various values:
+</p>
+
+<div class="block">
+<pre>
+  double forspeed0 = 1.0;
+  double forspeed1 = 0.75;
+  double forspeed2 = 0.25;
+  double forspeed3 = 1.0;
+  double forspeed4 = 0.45;
+
+  double turnspeed0 = 1.0;
+  double turnspeed1 = 0.6;
+  double turnspeed2 = 0.8;
+  double turnspeed3 = 0.4;
+  double turnspeed4 = 1.0;
+
+  double time0 = 0.5;
+  double time1 = 0.35;
+  double time2 = 0.4;
+  double time3 = 0.5;
+  double time4 = 0.65;
+
+  rForward (forward0, time0);
+  rTurnRight (turnspeed0, time0);
+  
+  rForward (forward1, time1);
+  rTurnRight (turnspeed1, time1);
+  
+  rForward (forward2, time2);
+  rTurnRight (turnspeed2, time2);
+  
+  rForward (forward3, time3);
+  rTurnRight (turnspeed3, time3);
+  
+  rForward (forward4, time4);
+  rTurnRight (turnspeed4, time4);
+</pre>
+</div>
+
+<p>
+On the positive side, this code clarifies the meaning of the various
+numbers.  On the negative side, this approach continues to be awkward for lengthy
+sequences of movements.
+</p>
+
+<h2>Arrays</h2>
+
+<p>
+Arrays allow similar types of data to be collected together and accessed using
+subscripts.  For example, the following declarations place the same numbers
+from above into three arrays:
+</p>
+
+<div class="block">
+<pre>
+  double forspeed[5]  = { 1.0, 0.75, 0.25, 1.0, 0.45 };
+  double turnspeed[5] = { 1.0, 0.6, 0.8, 0.4, 1.0 }; 
+  double time[5]      = { 0.5, 0.35, 0.4, 0.5, 0.65 };
+</pre>
+</div>
+
+<p>
+In the declaration for <tt>forspeed</tt>, the clause <tt>[5]</tt> indicates
+that there will be 5 values stored, labeled <tt>forspeed[0]</tt>,
+<tt>forspeed[1]</tt>, <tt>forspeed[2]</tt>, <tt>forspeed[3]</tt>, and
+<tt>forspeed[4]</tt>.  Next, the
+clause <tt>=&nbsp;{&nbsp;1.0,&nbsp;0.75,&nbsp;0.25,&nbsp;1.0,&nbsp;0.45&nbsp;}</tt>
+  initializes the <tt>forspeed</tt> array.  Similar comments apply to
+  the <tt>turnspeed</tt> and <tt>time</tt> arrays.
+</p>
+
+<p>
+With these declarations, the above robot motion translates to the following
+code segment:
+</p>
+
+<div class="block">
+<pre>
+  int i;
+  for (i = 0; i < 5; i++)
+     {
+       rForward (forspeed[i], time[i]);
+       rTurnRight (turnspeed[i], time[i]);
+     }
+</pre>
+</div>
+
+<p>
+In this code segment, <tt>i</tt> takes on successive values 0, 1, ..., 4.
+Thus, the first time through the loop, <tt>i</tt> is 0, and the first
+command becomes
+</p>
+
+<div class="block">
+<pre>
+  rForward (forspeed[0], time[0]);
+</pre>
+</div>
+
+<p>
+In this context, <tt>forspeed[0]</tt> is a <tt>double</tt>, and can be used
+as any <tt>double</tt> variable.
+
+<h2>Array Declarations</h2>
+
+<p>
+In declaring <tt>double forspeed[5]</tt>, the compiler sets aside space for
+five <tt>double</tt> numbers.  As this suggests, when an array is first
+declared, the compiler must know how much space to allocate.  The size of
+any array is determined when it is first declared.
+</p>
+
+<p>
+As an alternative to declaring and initializing an array at the same time,
+arrays may be declared first and then assigned values sometime later:
+</p>
+
+<div class="block">
+<pre>
+ double forspeed[5];
+
+  ...
+
+ forspeed[0] = 1.0;
+ forspeed[1] = 0.75;
+ forspeed[2] = 0.25;
+ forspeed[3] = 1.0; 
+ forspeed[4] = 0.45;
+</pre>
+</div>
+
+<p>
+As still another alternative, we can declare and initialize an array and let
+the compiler count how large the resulting array should be:
+
+<div class="block">
+<pre>
+  double forspeed[] = { 1.0, 0.75, 0.25, 1.0, 0.45 };
+  double turnspeed[] = { 1.0, 0.6, 0.8, 0.4, 1.0 }; 
+  double time[] = { 0.5, 0.35, 0.4, 0.5, 0.65 };
+</pre>
+</div>
+
+<p>
+In this setting, we have specified 5 values for each array, so each array
+will be allocated space for 5 <tt>double</tt> values.  
+</p>
+
+<p>
+<i>Warning:</i>  The declaration <tt>double forspeed[]</tt> may seem to
+allow the array to be flexible in size, but this is an illusion.  The C
+compiler counts the number of items given and allocates that amount of
+space.  In this case, the size of <tt>forspeed</tt> will be 5, whether or
+not we specify the array size.
+</p>
+
+<p>
+As another variation, we are allowed to allocate a large array and
+initialize only the first part of it:
+</p>
+
+
+<div class="block">
+<pre>
+  double forspeed[8] = { 1.0, 0.75, 0.25, 1.0, 0.45 };
+</pre>
+</div>
+
+<p>
+Here the code allocates space for 8 <tt>double</tt>
+numbers, <tt>forspeed[0]</tt>, ... <tt>forspeed[7]</tt>.  The first five of
+these are initialized.  The values of the last three are not specified and
+could be anything.
+</p>
+
+<p>
+On the other hand, while C allows initialization of only part of an array,
+it does not allow declaration of an array that is too small for the
+initial values given:
+
+<div class="block">
+<pre>
+  double forspeed[3] = { 1.0, 0.75, 0.25, 1.0, 0.45 }; 
+      /* error:  5 values given, but only space for 3 doubles */
+</pre>
+</div>
+
+<!--#include file="body-footer.inc" -->
+
+</div> <!--labcontent-->
+
+<div class="footer">
+<hr>
+
+<p>
+This document is available on the World Wide Web as
+</p>
+
+<div class="address">
+<PRE>
+   http://www.cs.grinnell.edu/~walker/courses/161.fa13/modules/arrays-functions/reading-array-notes.shtml
+</PRE>
+</div> <!--address-->
+
+<hr>
+<table width="100%">
+<tr><td>
+   <em>created 30 October 2011 by Henry M. Walker</em><br>
+   <em>revised 30 October 2011 by Henry M. Walker</em><br>
+   <em>revised 22 September 2013 by Henry M. Walker</em>
+   </td>
+
+   <td rowspan="2" align="right">
+   <a href="http://validator.w3.org/check/referer"><img border="0"
+      src="/~walker/valid-html401-blue.png" alt="Valid HTML 4.01!" height="31"
+      width="88"></a>
+   <a href="http://jigsaw.w3.org/css-validator/"><img border="0"
+       src="/~walker/vcss-blue.png"
+       alt="Valid CSS!" height="31"
+       width="88"></a>
+   </td>
+</tr>
+
+<tr><td>
+   For more information, please contact
+   <a class="footer-a" href="/~walker/">Henry M. Walker</a> at
+   <a class="footer-a" href="mailto:walker@cs.grinnell.edu">walker@cs.grinnell.edu</a>.
+   </tr>
+</table>
+
+</div> <!--footer-->
+</div> <!--body-->
+</body>
+</html>

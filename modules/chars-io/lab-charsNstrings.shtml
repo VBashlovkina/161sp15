@@ -1,0 +1,885 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">    
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <title>Laboratory Exercise on Characters and Strings</title>
+  <link rev="made" href="mailto:walker@cs.grinnell.edu">
+</head>
+
+<body>
+<div class="body">
+<!--#include file="header.inc"-->
+
+<div class="labcontent">
+
+<H1>Laboratory Exercise on Characters and Strings</H1>
+
+<h3>Goals</h3>  
+
+<p>
+This laboratory exercise examines characters, details of string storage,
+and the operations of string library functions within the C programming
+language.
+</p>
+
+<h2>Preparation before Class</h2>
+
+<ul>
+<li>King: Section 7.3, Chapter 13, pages 134-141, 277-299, OR
+<li>Kernighan &amp; Ritchie: 1.9, 7.8.1, 7.8.2, B.3 
+</ul>
+
+<h2>Work Started in Class</h2>
+<h3>Character Arrays, Strings, <tt>char *</tt> and Storage</h3>
+
+<p>
+Program <a href="string-intro.c">string-intro.c</a> shows several variations
+related to the declaration of character arrays, strings, and <tt>char
+    *</tt> variables.  
+</p>
+
+<p>
+One run of this program produced the following output:
+</p>
+
+<div class="block">
+<pre>
+first 3 characters in each array
+   first: Col
+  second: Wor
+   third: Com
+  fourth: Wor
+   fifth: Hel
+Variable addresses and array base addresses
+   first address: 359157264,   array base address: 359157264
+  second address: 359157248,   array base address: 359157248
+   third address: 359157232,   array base address: 359157232
+  fourth address: 359157224,   array base address: 359157248
+   fifth address: 359157216,   array base address: 4196464
+variables printed as strings
+   first: Cold\ufffd
+  second: World
+   third: Computer ScienceWorld
+  fourth: World
+   fifth: Hello
+</pre>
+</div>
+
+<p>
+Understanding this program and output can provide substantial insights to
+how C works with arrays, characters, strings, and pointers.
+</p>
+
+<div style="width:100%;position: relative">
+<div style="width:50%; float:left;align:top;">
+<h4>Storage</h4>
+<p>
+The right column shows (in extreme detail) the allocation of memory for
+program <tt>string-intro.c</tt>, based upon the above run.  Starting at the
+top of the program:
+</p>
+<ul>
+<li>
+<tt>first</tt> is allocated space for four characters, beginning in storage
+location 359157264 (see bottom part of the table).  Following the normal
+approach of initializing arrays, the
+letters, <tt>C</tt>, <tt>o</tt>, <tt>l</tt>, and <tt>d</tt> are stored in
+these locations.  The program does not specify what data might be located
+after this part of memory.
+<li>
+<tt>second</tt> is allocated space for six characters, beginning in storage
+location 359157248.  In C, a string contains a sequence of characters,
+followed by a null character (code zero).  Since <tt>World</tt> contains
+five characters, the string requires six characters to include the code 0
+at the end.  
+<li>
+In organizing memory, the <tt>gcc</tt> compiler decided not to
+use the space between <tt>second</tt> and <tt>first</tt> for data storage.
+Although these memory locations are present, the data in those unallocated
+memory addresses may be left over from the work of previous programs.
+<li>
+<tt>third</tt> is allocated space for sixteen characters, beginning in
+storage location 359157232.  As with <tt>first</tt>, this space is
+initialized with specified characters.  As an array of characters (not a
+string), no code zero is placed in memory at the end of this array.
+<li>
+<tt>fourth</tt> specifies the address of a character (e.g., a pointer to
+the character).  In this case, fourth is given the address that begins the
+string <tt>second</tt> defined earlier.  Note that <tt>fourth</tt>
+refers to a location in memory (359157224), and the address
+of <tt>second</tt> (359157248) is stored in the variable <tt>fourth</tt>.
+<li>
+<tt>fifth</tt> specifies the address of a character.  The address of a
+character can be the base address of a character array.
+A <tt>char&nbsp;*</tt> may be considered either the location of a single
+character or the starting point for a string.  In this case, information
+for variable <tt>fifth</tt> is located at 359157216, and that location
+contains the starting location 4196464 for the literal string "Hello"
+&mdash; compilers often reserve a separate part of main memory for literal
+data, such as literal strings.
+</ul>
+
+<h4>Output</h4>
+
+<p>
+The first set of <tt>printf</tt> statements access the first three
+characters in each character array.  Within a <tt>printf</tt> statement,
+the <tt>%c</tt> format prints exactly one data element as a character, so
+that three characters are printed for each <tt>printf</tt> statement here.
+Note that arrays and subscripts work the same whether the variable is
+declared as an array or as the base address of an array found elsewhere.
+</p>
+
+<p>
+The second set of <tt>printf</tt> statements display where each variable is
+mapped in main memory.  The output shown above maps to the memory schematic
+on the right.
+</p>
+
+<p>
+The third set of <tt>printf</tt> statements print data as C strings.  In C,
+a string variable identifies a starting or base address, and the string is
+considered to continue until a code 0 or null character is encountered.
+</p>
+
+<ul>
+<li>
+For variables, <tt>second</tt>, <tt>fourth</tt>, and <tt>fifth</tt>, the
+character data were stored with a null character at the end, and these
+character strings are printed without difficulty.  
+<li>
+For the variable <tt>third</tt>, the initialization placed characters in
+the array, but no null character was at the end.  Rather, from the mapping
+of memory identified in the table, the string "World" was located
+immediately after the characters in the <tt>third</tt> array.  When
+printing <tt>third</tt>, the <tt>printf</tt> started with the first
+character of <tt>third</tt> (i.e., the <tt>C</tt>  character) and continued
+character by character until reaching a null.  Since no null character was
+encountered in the processing of the <tt>third</tt> array, printing continued
+with the data from the <tt>second</tt> array.
+<li>
+For the variable <tt>first</tt>, the array declaration specified four
+characters, without a null character at the end.  Although this works fine
+for arrays, work with strings requires processing to continue until a null
+is found.  In this case, <tt>first</tt> is stored in memory at the end of
+the program area, and we have no idea what might follow.  Thus, processing
+proceeds with the printing of random material until a null is found.
+</ul> 
+
+</div>
+<div style="width:40%; float:right;align:center; valign:top;">
+<h4>Schematic Memory Diagram</h4>
+<table border>
+<tr>
+  <th>variable
+  <th>value stored
+  <th>memory address
+</tr>
+<tr>
+  <td rowspan=6 align=center valign=top>
+section<br>
+of<br>
+memory<br>
+for<br>
+literal<br>
+strings
+  <td align=center> H
+  <td> 4196464
+</tr>
+<tr>
+  <td align=center>e
+  <td> 4196465
+</tr>
+<tr>
+  <td align=center>l
+  <td> 4196466
+</tr>
+<tr>
+  <td align=center>l
+  <td> 4196467
+</tr>
+<tr>
+  <td align=center>o
+  <td> 4196468
+</tr>
+<tr>
+  <td align=center>\0 (number)
+  <td> 4196469
+</tr>
+
+<tr>
+  <td colspan=3>&hellip;
+</tr>
+
+<tr>
+  <td rowspan=8 align=left valign=top>
+    fifth
+    <td rowspan=8 align=center valign=middle>
+      integer<br>
+      value<br>
+      4196464
+    <td>359157216
+</tr>
+<tr>
+    <td>359157217
+</tr>
+<tr>
+    <td>359157218
+</tr>
+<tr>
+    <td>359157219
+</tr>
+<tr>
+    <td>359157220
+</tr>
+<tr>
+    <td>359157221
+</tr>
+<tr>
+    <td>359157222
+</tr>
+<tr>
+    <td>359157223
+</tr>
+<tr>
+  <td rowspan=8 align=left valign=top>
+    fourth
+    <td rowspan=8 align=center valign=middle>
+      integer<br>
+      value<br>
+      359157248
+    <td>359157224
+</tr>
+<tr>
+    <td>359157225
+</tr>
+<tr>
+    <td>359157226
+</tr>
+<tr>
+    <td>359157227
+</tr>
+<tr>
+    <td>359157228
+</tr>
+<tr>
+    <td>359157229
+</tr>
+<tr>
+    <td>359157230
+</tr>
+<tr>
+    <td>359157231
+</tr>
+<tr>
+  <td rowspan=16 align=left valign=top>
+    third
+  <td align=center>C
+  <td>359157232
+</tr>
+<tr>
+  <td align=center>o
+  <td>359157233
+</tr>
+<tr>
+  <td align=center>m
+  <td>359157234
+</tr>
+<tr>
+  <td align=center>p
+  <td>359157235
+</tr>
+<tr>
+  <td align=center>u
+  <td>359157236
+</tr>
+<tr>
+  <td align=center>t
+  <td>359157237
+</tr>
+<tr>
+  <td align=center>e
+  <td>359157238
+</tr>
+<tr>
+  <td align=center>r
+  <td>359157239
+</tr>
+<tr>
+  <td align=center> &lt;space&gt;
+  <td>359157240
+</tr>
+<tr>
+  <td align=center>S
+  <td>359157241
+</tr>
+<tr>
+  <td align=center>c
+  <td>359157242
+</tr>
+<tr>
+  <td align=center>i
+  <td>359157243
+</tr>
+<tr>
+  <td align=center>e
+  <td>359157244
+</tr>
+<tr>
+  <td align=center>n
+  <td>359157245
+</tr>
+<tr>
+  <td align=center>c
+  <td>359157246
+</tr>
+<tr>
+  <td align=center>e
+  <td>359157247
+</tr>
+<tr>
+  <td rowspan=6 align=left valign=top>
+    second
+  <td align=center>W
+  <td>359157248
+</tr>
+<tr>
+  <td align=center>o
+  <td>359157249
+</tr>
+<tr>
+  <td align=center>r
+  <td>359157250
+</tr>
+<tr>
+  <td align=center>l
+  <td>359157251
+</tr>
+<tr>
+  <td align=center>d
+  <td>359157252
+</tr>
+<tr>
+  <td align=center>\0 (number)
+  <td>359157253
+</tr>
+<tr>
+  <td>&nbsp;
+  <td>not specified
+  <td>359157254
+</tr>
+<tr>
+  <td>&nbsp;
+  <td>not specified
+  <td>359157255
+</tr>
+<tr>
+  <td>&nbsp;
+  <td>not specified
+  <td>359157256
+</tr>
+<tr>
+  <td>&nbsp;
+  <td>not specified
+  <td>359157257
+</tr>
+<tr>
+  <td>&nbsp;
+  <td>not specified
+  <td>359157258
+</tr>
+<tr>
+  <td>&nbsp;
+  <td>not specified
+  <td>359157259
+</tr>
+<tr>
+  <td>&nbsp;
+  <td>not specified
+  <td>359157260
+</tr>
+<tr>
+  <td>&nbsp;
+  <td>not specified
+  <td>359157261
+</tr>
+<tr>
+  <td>&nbsp;
+  <td>not specified
+  <td>359157262
+</tr>
+<tr>
+  <td>&nbsp;
+  <td>not specified
+  <td>359157263
+</tr>
+
+<tr>
+  <td rowspan=4 align=left valign=top>
+    first
+  <td align=center>C
+  <td>359157264
+</tr>
+<tr>
+  <td align=center>o
+  <td>359157265
+</tr>
+<tr>
+  <td align=center>l
+  <td>359157266
+</tr>
+<tr>
+  <td align=center>d
+  <td>359157267
+</tr>
+<tr>
+  <td>&nbsp;
+  <td>not specified
+  <td>359157268
+</tr>
+<tr>
+  <td>&nbsp;
+  <td>not specified
+  <td>359157269
+</tr>
+
+<tr>
+  <td colspan=3>&hellip;
+</tr>
+
+</table>
+</div>
+<br clear=all>
+</div>
+
+
+<ol>
+<li>
+<p>
+Copy  <a href="string-intro.c">string-intro.c</a> to your account, compile
+and run it, and examine the output.
+</p>
+<ol class="withloweralpha">
+<li>
+Each run of this program likely places variables in different memory
+locations.  Absolute addresses may change, but do the relative addresses
+change?  That is, to what extent does the memory schematic in the above table
+need to change for different runs of the program.
+<li>
+
+<p>
+Immediately after the declaration of all arrays, but before any printing,
+insert the line:
+</p>
+
+<div class="block">
+<pre>
+first[3] = second[3] = third[3] = 0;
+</pre>
+</div>
+
+<p>
+This line inserts a null character at index 3 for each of the three
+strings.  
+</p>
+
+<p>
+Recompile and rerun the program, describe what (if any)  differences result
+in the output printed, and explain why this output is obtained.
+</p>
+
+<li>
+<p>
+Immediately after the declaration of all arrays, but before any printing,
+insert the line:
+</p>
+
+<div class="block">
+<pre>
+fifth[3] = 0;
+</pre>
+</div>
+
+<p>
+What happens when you try to compile and run this program?  Why do you
+think this result occurs?
+</p>
+
+</ol>
+</ol>
+
+<h3>Declaring Strings</h3>
+<ol start=2>
+<li>Here are a number of different string declarations.
+
+<div class="block">
+<pre>
+char *baboon;
+char *chimpanzee = "animal";
+char dolphin[];
+char emu[] = "animal";  
+char fox[4] = "animal";
+char giraffe[8] = "animal";
+char elephant[10];
+elephant = "animal";
+</pre>
+</div>
+
+<ol class="withloweralpha">
+<li>
+Which are valid and which are invalid?
+<li>
+How do the valid declarations differ?
+<li>
+What happens if you switch fox and giraffe? How do you think this can be
+explained? Think about the bounds of arrays, and the layout of characters
+in main memory.
+</ol>
+</ol>
+
+
+<h3>Initialized and Uninitialized Strings</h3> 
+<ul>
+<li>
+The <tt>sizeof</tt> function tells you how much memory has been
+allocated to a something. 
+<li>
+The <tt>strlen</tt> function tells you the length of a string, which is
+the number of characters before you hit the null character('\0'). 
+</ul>
+
+<ol start=3>
+<li>
+<p>
+Start a new program for several experiments with strings.
+</p>
+
+<ol class="withloweralpha">
+<li>
+<P>
+Copy the following declaration and code into a main procedure, making sure
+that you include the library <tt>string.h</tt>:
+</p>
+
+<div class="block">
+<pre>
+char computerscience[16] = "isawesome";
+char isawesome[16] = "computerscience";
+
+printf ("strlen (computerscience): %d\n", strlen (computerscience) );
+printf ("strlen (isawesome): %d\n", strlen (isawesome) );
+
+printf ("computerscience: %s\n", computerscience );
+printf ("isawesome: %s\n", isawesome );
+</pre>
+</div>
+
+<p>
+What output is obtained?  Briefly explain why these results are printed.
+</p>
+
+<li>
+<p>
+What would you expect to get if you had written: 
+</p>
+<div class="block">
+<pre>
+char computerscience[16];
+</pre>
+</div>
+<p>
+instead of:
+</p>
+<div class="block">
+<pre>
+char computerscience[16] = "isawesome";
+</pre>
+</div>
+
+<p>
+Run the program to check whether your expectations match what is printed.
+</p>
+
+<li>
+<p>
+Add this line of code:
+</p>
+
+<div class="block">
+<pre>
+printf ("Concatenate the strings: %s", strcat (isawesome, computerscience));
+</pre>
+</div>
+
+<ul>
+<li>
+What is the result? Is this what you expected? Change the bounds of
+array <tt>isawesome</tt> to 32 and see what happens? What happened now?
+<li>
+What did the string operator <tt>strcat()</tt> do? Explain conceptually
+what happens in the array and where the null character(s) is/are?
+</ul>
+</ol>
+</ol>
+
+<h3>Characters as Integers</h3>
+
+<p>
+From the reading you have done on <i>Characters and Strings</i>, you have
+read that <tt>char</tt> is actually considered to be a type of integer. We
+can use this property of <tt>char</tt>s to do integer arithmetic on their
+values. Every <tt>char</tt> has a corresponding integer. As you know, we
+can find out what these values are from an ASCII table.
+</p>
+
+<ol start=4>
+<li>
+<p>
+Write a program that will take the given hard-coded character, and print
+out the character and its corresponding integer value in this example
+format:
+</p>
+
+<div class="block">
+<pre> 
+'A' = 65 
+</pre>
+</div>
+
+<p>
+<i>Hint: Since characters are integers, you need to only use <tt>%d</tt> to
+print the integer.</i>
+</p>
+
+<li>
+<p>
+Write a program that takes the name of the robot by
+using <tt>rGetName()</tt>, converts all the characters of the name to
+uppercase (use the string function <tt>toupper</tt>, if you wish), and then
+sets the robot's name to the uppercase version, using <tt>rSetName()</tt>.
+</p>
+
+<p>
+Keep in mind that the <i>value</i> of a character is represented by putting
+single quotes, and <i>string</i> is represented by double quotes.
+</p>
+</ol>
+
+
+<h3>Control Characters</h3>
+
+<p>
+Characters can represent actions rather than just printing a symbol. Here
+is a short list of what can be done with some characters:
+</p>
+
+<ul>
+<li><tt>'\t'</tt> = tab (horizontal tab)
+<li><tt>'\b'</tt> = backspace
+<li><tt>'\v'</tt> = vertical tab
+</ul>
+
+<ol start=6>
+<li>Write a program that:
+<ul>
+<li>prints out a sentence with tabs in between each word
+<li>prints out a sentence with vertical tabs between each word
+<li>illustrates how backspace works (print a word with a few backspace and
+see how much of the word you can read)
+</ul>
+</ol>
+
+<h3>String Functions</h3>
+
+<ol start=7>
+<li>
+<p>
+Write a function with the following prototype;
+</p>
+<div class="block">
+<pre>
+void string_reverse (char str[]):
+</pre>
+</div>
+<p>
+It should reverse the order of the characters in <tt>str</tt> (except the
+null character). Note that it will not return a new string, but it will
+modify the given string. 
+</p>
+
+</ol>
+
+<h2>Homework</h2>
+
+<h3>Robots with Strings</h3>
+
+<ol start=8>
+<li>
+<p>
+Write a program that beeps once for each uppercase letter in the string and
+twice for each lowercase letter. If a string contains spaces, punctuation,
+or digits, those characters should not cause beeps.
+</p>
+
+<p>
+For this program, do not use the string operator <tt>strlen()</tt>.
+</p>
+</ol>
+
+<h3>String Operators</h3>
+<p>
+Remember from the reading on characters and strings that:
+</p>
+
+<ul>
+<li><tt>strlen(s)</tt> = return length of <tt>s</tt>
+<li><tt>strcmp(s,t)</tt> = returns 0 is two strings are the same, a value
+smaller than 1 if s&lt;t , and a value greater than 1 if t&lt;s .
+<li><tt>strcpy(s,t)</tt> = copy the string <tt>t</tt> to <tt>s</tt>.
+</ul>
+
+<ol start=9>
+<li>
+<p>
+The terminal command <tt>man</tt> can provide helpful information about 
+the standard C functions.
+</p>
+
+<ol class="withloweralpha">
+<li>
+<p>
+Go to your terminal and type <tt>man strcmp</tt>. What are the two
+different ways that you can compare two strings?
+</p>
+
+<li>
+<p>
+In the same manual page, find what the parameters are for strncmp.
+</p>
+
+<p>
+<i>Remember that to quit the <tt>man</tt> pages, you can simple
+type <tt>q</tt>.</i> 
+</p>
+
+</ol>
+
+<li>
+<p>
+Here is a link to the C header file for strings,
+<a href="http://ieng9.ucsd.edu/~cs30x/Std.C/string.html">string.h</a>
+</p>
+
+<ol class="withloweralpha">
+<li>
+<p>
+What does <tt>strcat</tt> do? Using what you have learned about how
+strings are stored, and their null characters, explain how strcat
+works.
+</p>
+
+<li>
+<p>
+Copy the following program; <a href="catstr.c">catstr.c</a>. Run the
+program and observe the PART 1 of the output.
+</p>
+<li>
+<p>
+Follow the directions in the comments and fill in the blanks in the program.
+</p>
+
+<li>
+<p>
+What happened in part 2 that caused the output to be what we didn't
+expect? <i>Hint: Think about how strcat works and the null character.</i>
+</p>
+
+</ol>
+
+</ol>
+
+<h3>Strings of Music</h3>
+<ol start=11>  
+<li>
+<p>
+Write a program that makes the robot beep in the frequencies that
+corresponds to the musical letters (A,B,C,D,E,F,G - ignore sharps and
+flats- and H!) that are given in a string. Make the program so that it is
+not case-sensitive. Here is the header file to define pitches and their
+corresponding letters: <a href="pitches.h">pitches.h</a> <i>Remember that a
+string is actually an array.</i>
+</p>
+
+<p>
+For example, give it the word "BED" and play the frequencies for B, E, and D.
+</p>
+
+<li>
+<p>
+Now make this program work for all the letters in the alphabet. <i>Hint:
+Use mod to wrap the letters back to the musical letters.</i> For example
+'H' would wrap to be 'A' ,'I' would wrap to be 'B', 'J' would wrap to be
+'C', and so on.
+</p>
+
+</ol>
+
+<!--#include file="body-footer.inc" -->
+</div>
+
+<div class="footer">
+<p>
+<hr>
+
+<p>
+This document is available on the World Wide Web as
+</p>
+
+<blockquote>
+<pre>
+http://www.cs.grinnell.edu/~walker/courses/161.fa14/modules/chars-io/charsNstrings.shtml
+</pre>
+
+</blockquote>
+
+<hr>
+
+<table width="100%">
+<tr><td>
+   <em>created 26 July 2011 by Dilan Ustek</em><br>
+   <em>revised 11 August 2011 by Dilan Ustek:  
+        citation: Samuel Rebelsky and Henry Walker</em><br>
+   <em>revised 28 October 2011 by Dilan Ustek</em><br>
+   <em>revised (correct html and reference) 21 July 2012 by Henry M. Walker</em><br>
+   <em>introduction added, moderate editing 1 February 2014 by Henry M. Walker</em><br>
+   <em>readings added 19 September 2014 by Henry M. Walker</em> 
+
+   </td>
+   <td rowspan="2" align="right">
+   <a href="http://validator.w3.org/check/referer"><img border="0"
+      src="/~walker/valid-html401-blue.png" alt="Valid HTML 4.01!" height="31"
+      width="88"></a>
+
+   <a href="http://jigsaw.w3.org/css-validator/"><img border="0"
+       src="/~walker/vcss-blue.png"
+       alt="Valid CSS!" height="31"
+       width="88"></a>
+   </td>
+</tr>
+
+<tr><td>
+   For more information, please contact
+   <a class="footer-a" href="/~walker/">Henry M. Walker</a> at
+   <a class="footer-a" href="mailto:walker@cs.grinnell.edu">walker@cs.grinnell.edu</a>.
+   </td></tr>
+</table>
+
+<hr>
+<!--#include file="copyright-notice.inc"-->
+
+</div>
+</div>
+</BODY>
+</HTML>

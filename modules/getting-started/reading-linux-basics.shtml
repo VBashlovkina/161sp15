@@ -1,0 +1,1164 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>CSC 161 Lab. Exercise on Basic Linux Commands and Capabilities</title>  
+    <link rev="made" href="mailto:walker@cs.grinnell.edu">
+</head>
+<body>
+<div class="body">
+<!--#include file="header.inc"-->
+
+<div class="labcontent">
+
+<P>
+
+
+<h1>Basic Linux Commands and Capabilities</h1>
+
+<h2>Abstract</h2>
+
+<p>
+The original Unix operating system and its successor Linux were designed to
+support the common tasks and needs of software developers and computer
+users.  This laboratory exercise reviews some basic commands and
+capabilities that match likely needs of CSC 161 students.
+</p>
+
+<h2>Introduction</h2>
+
+<p> The Linux operating system has evolved from <a
+href="http://en.wikipedia.org/wiki/Unix">Unix</a>, an operating system
+developed at AT&amp;T Bell Labs in 1969.  At the time, Bell Labs was a
+major research and development enterprise, averaging approximately a patent
+a day over its first 40 years of existence.  With this impressive track
+record, the company was delighted to encourage development of a computing
+environment that would support research and development; common computing
+tasks needed to be easy and quick.  As a result, the original Unix was
+extremely efficient, although sometimes cryptic.  Professionals found Unix
+wonderfully powerful, although beginners sometimes found that it took some
+time to master.  </p>
+
+<p>
+The current Linux operating system maintains the efficiency and power of
+the original Unix, with many extensions and revisions for modern needs.  At
+the same time, Linux also has interfaces that make it much easier to use
+than the original Unix &mdash; although it sometimes still reflects the
+original cryptic style.
+</p>
+
+<p>
+This lab covers the following basic capabilities and commands.
+</p>
+
+
+<table border=1>
+<tr>
+   <th align=left>Topic Category
+   <th align=left>Subtopics
+   <th align=left>Linux Commands
+</tr>
+
+<tr>
+   <th align=left valign=top rowspan=7><a href="#terminal">Terminal Window</a>
+   <td align=left><a href="#open">open</a>
+   <td align=left>click on Desktop menu item
+</tr>
+
+<tr>
+   <td align=left><a href="#password">change password</a>
+   <td align=left><tt>password</tt>
+</tr>
+
+<tr>
+   <td align=left><a href="#window-copying">copying between windows</a>
+   <td align=left>left mouse button to highlight/copy; middle mouse button
+   to paste 
+</tr>
+
+<tr>
+   <td align=left><a href="#utility">terminal utilities</a>
+   <td align=left><tt>sleep</tt>, arrow keys, <tt>history, cat</tt>
+</tr>
+
+<tr>
+   <td align=left><a href="#autocompletion">autocompletion</a>
+   <td align=left>TAB
+</tr>
+ 
+<tr>
+   <td align=left><a href="#background">background process</a>
+   <td align=left>&amp; operator at end of command
+</tr>
+
+<tr>
+   <td align=left><a href="#close">close</a>
+   <td align=left>control d
+</tr>
+
+<!--.............................................................-->
+<tr>
+   <th align=left><a href="#manual">Help</a>
+   <td align=left><a href="#manual">manual</a>
+   <td align=left><tt>man</tt>
+</tr>
+
+<!--.............................................................-->
+<tr>
+   <th align=left valign=top rowspan=4><a href="#directories">Directories and Files</a>
+   <td align=left><a href="#pathnames">paths</a>
+   <td align=left><tt>., .., ~, /, pwd</tt>
+</tr>
+
+<tr>
+   <td align=left><a href="#pathnames">pathnames</a>
+   <td align=left>absolute, relative, <tt> cd, ls, which, whereis</tt>
+</tr>
+
+<tr>
+   <td align=left><a href="#searchpath">search paths</a>
+   <td align=left>search path variable <tt>$PATH</tt>
+</tr>
+
+<tr>
+   <td align=left><a href="#file-utilities">file utilities</a>
+   <td align=left><tt>mkdir, rmdir, rm, cp, mv, more, head, tail
+   <!--, pushd, popd--></tt>
+</tr>
+
+<!--
+<tr>
+   <th align=left><a href="#"></a>
+   <td align=left><a href="#"></a>
+   <td align=left><a href="#"></a>
+</tr>
+-->
+
+<!--.............................................................-->
+<tr>
+   <th align=left valign=top><a href="#printing">Printing</a>
+   <td align=left><a href="#printing">printing</a>
+   <td align=left><tt>lpr, a2ps, lpq, lprm</tt>
+</tr>
+
+<!--.............................................................-->
+<tr>
+   <th align=left valign=top rowspan=3><a href="#permissions">Permissions</a>
+   <td align=left><a href="#permissions">user, group, world</a>
+   <td align=left><tt>ls -l</tt>
+</tr>
+
+<tr>
+   <td align=left><a href="#setting">setting permissions</a>
+   <td align=left><tt>chmod</tt>
+</tr>
+
+<tr>
+   <td align=left><a href="#setup">start up</a>
+   <td align=left><tt>.bashrc, alias</tt>
+</tr>
+
+<!--.............................................................-->
+<!--
+<tr>
+   <th align=left><a href="#"></a>
+   <td align=left><a href="#"></a>
+   <td align=left><a href="#"></a>
+</tr>
+
+<tr>
+   <th align=left><a href="#"></a>
+   <td align=left><a href="#"></a>
+   <td align=left><a href="#"></a>
+</tr>
+
+<tr>
+   <th align=left><a href="#"></a>
+   <td align=left><a href="#"></a>
+   <td align=left><a href="#"></a>
+</tr>
+-->
+</table>
+
+<a name="terminal"></a>
+<h2>The Terminal Window</h2>
+
+<p>
+When Unix was initially developed, users entered information by
+typing on a keyboard, and results were printed on paper or a screen.
+Almost all work was character based, with very little use of graphics.
+(Images require extensive memory resources that were beyond the
+capabilities of most early computers.)  With this history, many of 
+the early Unix capabilities depended upon typing commands into
+a terminal.  On current machines, the terminal window continues to provide
+a wide range of powerful capabilities for many processing needs.
+</p>
+
+<!--...................................................................-->
+<a name="open"></a>
+<h3>Opening the Terminal Window</h3>
+
+<p>
+Although you may be accustomed to a graphical user interface (GUI) from
+your past computer usage, you also need to become comfortable with a
+command-line interface.  Historically, commands were typed into windows
+(actually, the entire terminal had just one screen &mdash; the only window).
+Unix/Linux provides several powerful tools for this type of interaction.
+To run various commands, you must invoke them by name.  The computer
+program that reads and responds to such invocations is called the
+<em>shell</em>, and your interactions with the shell take place in a window
+generated by a program called a <em>terminal emulator</em>.
+</p>
+
+<p>
+You may already have a terminal window open on your screen.  If not, you
+can start one at any time by moving the pointer onto the small monitor icon
+on the bottom row of the front panel, and click with the left mouse button.
+Shortly a window will appear, displaying the <em>shell prompt</em> &mdash;
+the name of the workstation on which the shell is running, followed by a
+percentage sign (%) or dollar sign ($).  This prompt indicates that the
+shell is ready to receive instructions.
+</p>
+
+<p>
+You enter such instructions using the keyboard.  Move the mouse pointer
+into the terminal window to make it active. (You many need to click on the
+window, once your mouse is in the desired area.)  The window frame changes
+color, indicating that the window has become active.
+</p>
+
+<p>
+If you want to set the window aside for the moment, with the possibility of
+returning to it later, look closely at the upper right-hand corner of the
+window, where the <em>frame</em> contains a small bar or underscore character;
+if you move the pointer into that square and click on the left mouse
+button, you <em>minimize</em> the window, closing it up into a small
+rectangular icon along the bottom control panel on the screen.  A minimized
+window can be restored by moving the pointer onto its icon and clicking the
+left mouse button twice in rapid succession.
+</p>
+
+<!--...................................................................-->
+<a name="password"></a>
+<h3>Changing Your Password</h3>
+
+<p>
+You should change the password associated with your account shortly after
+you receive it and every few months thereafter.
+The <tt>/net/bin/passphrase</tt> program lets you make this change.
+</p>
+
+<ol>
+<li>
+<p>
+Choose a new password.  Make it something that you can easily remember, but
+not an English word or a name, since it is easy for system crackers to
+break in by guessing your password if you choose it from one of those
+categories.  Using a multi-word phrase can be helpful.
+</p>
+<p>
+
+<li>
+<p>
+Open a terminal window, move the pointer into it, and type 
+<kbd>/net/bin/passphrase</kbd>.  The <tt>/net/bin/passphrase</tt> program
+will prompt you once for your old pass1ord &mdash; the one you logged in
+with &mdash; and twice for your new password.  If you give your old
+password correctly and the two copies of your new password match, the
+program will substitute the new password for the old one in the table that
+the login program consults.  The old password will be discarded and will
+not be recognized in subsequent logins.  (If the attempt to change the
+password fails for any reason, however, the old password will be retained.)
+</p>
+</ol>
+
+<p>
+After running <tt>/net/bin/passphrase</tt>, the shell takes over again and
+issues another prompt.  You can invoke as many programs as you like from
+the shell, one after another.
+</p>
+
+<a name="window-copying"></a>
+<h3>Cutting and Pasting Between Windows</h3>
+
+<p>
+In working on a workstation on the Campus Linux Network, you can
+select and paste material from one window to another.  Through this
+semester, this can be particularly helpful, when you want to work with
+material that appears on the lab directions in the Firefox
+viewer.  <p> To select material from Firefox, move the cursor to the
+beginning of a section and push down the left mouse button.  Then,
+holding the button down, move the mouse to the end of the section.
+(The entire section now should be highlighted.)  When the desired
+section is highlighted, stop pressing on the left mouse button &mdash;
+the section should stay highlighted.  Now move the mouse to where you
+want to paste the material, and click the middle mouse button.
+</p>
+
+
+<a name="utility"></a>
+<h3>Terminal Utilities</h3>
+
+<p>
+Although the basic running of programs within a terminal window may
+seem quite straightforward, a few nifty shortcuts can simplify your
+work considerably.
+</p>
+
+<h4>Stopping a Long or Infinite Loop</h4>
+
+<p>
+Suppose you wrote a program that contained an infinite loop, and you ran it
+from the terminal window. How could you stop the program?
+<p>
+
+<p>
+One way is to close the window, but a better way is to type <tt>ctrl-c</tt>
+(i.e., hold down the <tt>ctrl</tt> key while you type <tt>c</tt>). This
+should kill the program without making you re-open the window and
+re-navigate to the directory you were working in.
+</p>
+
+<h4>The Arrow Keys</h4>
+
+<p>
+Suppose you want to run a command that you ran a short while ago? If the
+command is complicated, it would be nice not to have to re-type it, and you
+don't have to!  Within the terminal window, this is accomplished using the
+<tt>up-arrow</tt> key to retrieve previous commands.  Once you have viewed
+some earlier commands, note that the <tt>down-arrow</tt> also works, which
+can be helpful if you go too far.
+</p>
+
+<h4>The <tt>history</tt> Command</h4>
+
+<p>
+But what if the command you want was several commands ago, say 10? Who
+wants to type that many arrows? To see another option, first type the
+following to get a list of the commands you have used most recently.
+</p>
+
+<pre>
+    history
+</pre>
+
+<p>
+Typically, a terminal window remembers the last 50 commands (although a user can change this number).  At the start, the history list might look something like this.
+
+<pre>
+    505  sleep 10
+    506  history
+</pre>
+
+<p>
+In this listing, each command is numbered for future reference.  For
+example, with this listing, if you want to re-issue the <tt>sleep</tt>
+command, you could do so by typing <tt>"!505"</tt> to repeat command
+number 505. Better yet (since you don't need to know the command
+number), you can repeat the command with <tt>"!s"</tt>. This will
+re-issue the most recent command that begins with the prefix "s". Note
+that the prefix can be of any length; it is not limited to one
+character.
+</p>
+
+<h4><tt>cat</tt></h4>
+<p>
+It is often convenient to look at the contents of a text file without
+having to open it in an editor. The simplest command for this purpose is
+<tt>cat</tt>.  For example, 
+
+<pre>
+   cat .bashrc
+</pre>
+
+<p>
+would display the contents of the .bashrc file in your terminal
+window.  Although <tt>cat</tt> works well for short files that can be
+viewed all on one screen, we will see shortly that other commands may
+work better for longer files.
+</p>
+
+<p>
+As an aside, note that the command name <tt>cat</tt> stands for "concatenate"
+for reasons we will explore later. 
+
+
+<a name="autocompletion"></a>
+<h3>Autocompletion</h3>
+
+<p>
+Another very useful keyboard shortcut is called <i>autocompletion.</i> Suppose
+you want to do something with a file called <tt>my-test-file</tt> in your
+home directory. That file name seems a bit long to type very
+often, so it's nice that you don't have to.
+</p>
+
+<p>
+To use autocompletion, type the command and the first part of the file
+name (e.g., <tt>"cat ~/my-t"</tt>), followed by a <tt>TAB</tt>
+key. You will find that when you press <tt>TAB</tt>, the system
+completes the (unique) file name for you.  
+</p>
+
+<p>
+If there isn't a unique completion, the system may add a few letters
+and beep. This tells you that there are multiple files that have
+these beginning letters.  On the other hand, if no files begin with
+the given file name, the system likely will just beep at you.
+</p>
+
+<a name="background"></a>
+<h3>Background Processes</h3>
+
+<p>
+Sometimes you want to start a task in a terminal window and the
+continue with other work.  For example, suppose you want to read a C
+program <tt>quarts-espeak.c</tt> with the <i>emacs</i> editor. Type
+</p>
+
+<pre>
+emacs /home/walker/public_html/courses/161.sp13/modules/getting-started/quarts-espeak.c
+</pre> 
+
+<p>
+This will open <i>emacs</i> just fine, but now switch back to your
+terminal window. You will notice that it is unavailable for further
+use (i.e., you won't get another command prompt) until <i>emacs</i>
+is closed.
+</p>
+
+<p>
+Now close the editor, and then re-open it from the terminal window, but
+this time add an ampersand character (<tt>&amp;</tt>) to the end of the command: 
+</p>
+
+<pre>
+emacs /home/walker/public_html/courses/161.sp13/modules/getting-started/quarts-espeak.c &
+</pre> 
+
+<p>
+Now when you return to your terminal window, a prompt is waiting for you,
+making it easy to do multiple tasks at once.  Adding the ampersand
+character to a command causes the command to be launched as a "background
+process" &mdash; separate from the window process, allowing you to continue
+working with your terminal window.
+</p>
+
+<a name="close"></a>
+<h3>Closing the Terminal Window</h3>
+
+<p>
+One way to shut down the terminal window is to type <tt>exit</tt>.
+</p>
+
+<p>
+However, a quicker (and more common) approach is just to type
+&lt;Ctrl/d&gt; &mdash; that is, hold down either of the keys marked
+&lt;Ctrl&gt;, just below the &lt;Shift&gt; keys, and simultaneously
+press the &lt;d&gt; key.  (On our workstations' keyboards, the keys
+marked &lt;Ctrl&gt; ("control") and &lt;Alt&gt; ("alt" or "meta") are
+somewhat like &lt;Shift&gt; keys, in the sense that they modify the
+effect of other keys that are pressed simultaneously.)  The shell
+program interprets &lt;Ctrl/d&gt; as a signal that you have no more
+instructions for it and halts, and the terminal terminal emulator
+closes the window automatically once the shell stops running.
+</p>
+
+<p>
+Although the shortcut <tt>ctrl-d</tt> is convenient, note that this key
+combination is used in multiple contexts in the Linux system to
+indicate the "end-of-input" character. Thus, when using a simple
+terminal window, pressing <tt>ctrl-d</tt> at a command prompt
+indicates that there will be no more commands forthcoming, and the
+terminal window should close.  However, if you are using another
+application, the <tt>ctrl-d</tt> once may exit the application and a
+second <tt>ctrl-d</tt> will close the window.
+</p>
+
+<!--....................................................................-->
+<a name="manual"></a>
+<h2>The Manual</h2>
+
+<p>
+Linux includes an on-line help system, called the <i>manual</i>. There is a 
+"man page" describing each Linux command and each C library function.
+Don't worry if you don't understand everything you see in a man
+page. They are often long and cryptic, but you
+can learn a lot without having to understand everything.
+</p>
+
+<p>
+For example, try typing <tt>"man cat"</tt> to read about <tt>cat</tt>.
+You should see the command name and a quick synopsis of how to use the command.
+For example, the synopsis <tt>"cat [OPTION] [FILE] ..."</tt> tells you that
+<tt>cat</tt> (optionally) takes a file as it's input, and it also can
+take (optional) options as parameters. A list of the options follows the
+synopsis. 
+To exit a man page, type 'q'.
+</p>
+
+<h3>Flags</h3>
+<p>
+The manual for a program will also describe all the options
+available. Options are usually prefixed by a - (dash) and referred to as
+a flag. If a flag is a single letter it only needs one dash.  However,
+longer flags are prefixed by two dashes.  This convention allows multiple
+single letter flags to be smashed together behind one single dash.  For
+example, you can type:
+
+<code>ls -l -a -h</code> 
+
+to list all the files in a directory in
+the long-listing human-readable format. Or, you can simply type:
+
+<code>ls -lah</code> 
+</p>
+
+<p>
+Another handy use for the man pages is finding commands or C functions when 
+you don't remember, or never knew, their names. Suppose you wanted to find
+a function for computing the square root: you could guess that such a function
+might exist, but you might not know its name. To print a list of man pages 
+that include the word "square" in the name or description fields, you could 
+use <tt>"man -k square"</tt>.
+</p>
+
+<p>
+Of course, keyword searches are more useful for some commands than others:
+<tt>"man -k print"</tt> may reap you more results than you want to deal with!
+</p>
+
+<!--....................................................................-->
+<a name="directories"></a>
+<h2>Directory and File Commands</h2>
+
+<a name="hierarchy"></a>
+<h3>The Linux Directory/File Hierarchy</h3>
+
+<p>
+Linux maintains directories and files in a hierarchical structure,
+called a <em>tree structure</em>.  This section explores this 
+organization.
+
+
+<a name="pathnames"></a>
+<h3>Pathnames</h3>
+
+<p>
+When you first open a terminal window, the shell expects that you are
+in your home directory.  At the start, this is called your current
+"working directory" (i.e., your position within the directory tree).
+</p>
+
+<p>
+A <em>relative pathname</em> for a file is a name that is given "relative" to your
+current working directory. For example, if your current working directory
+is <tt>csc161</tt>, then <tt>scheme/hw2.s</tt> could be a relative pathname for
+a file named <tt>hw2.s</tt> located in a directory named <tt>scheme</tt> that was 
+itself inside <tt>csc161</tt>.
+</p>
+
+<p>
+An <em>absolute pathname</em>, such
+as <tt>/home/<em>username</em>/csc161/scheme/hw2.s</tt>, includes the
+file's complete path starting with the system's "root" directory,
+which is always named <tt>"/"</tt> on a Linux system. Just like it
+sounds, the root directory is the topmost directory in the file system
+tree.
+</p>
+
+<p>
+Each directory in a Linux system contains two special files <tt>"."</tt> and
+<tt>".."</tt> that can be useful when constructing relative pathnames. 
+The file named <tt>"."</tt> means "the current directory," and
+the file named <tt>".."</tt> means "the parent directory".  For example,
+<tt>../c</tt> could be a directory that is a sibling of your current
+working directory (i.e., <tt>c</tt> could be a directory that has the
+same parent directory your current working directory
+does). Then <tt>../c/labs/hw2.c</tt> could refer to a file farther
+down that branch of the tree. Similarly, <tt>../../pix/grinnell</tt>
+could be a directory that is a cousin of your current directory in the
+file system tree.
+</p>
+
+<p>
+The tilde character is also useful for specifying pathnames, but it works a
+little differently. Used alone, it specifies your home directory, so
+<tt>~/csc161/hw</tt> is a short name for
+<tt>/home/<em>username</em>/csc161/hw</tt>. 
+</p>
+
+<p>
+Finally, <tt><em>~username</em></tt> refers to the home directory belonging
+to <em>username</em>. Thus, you can print a listing of the files in my
+<tt>public_html</tt> directory with
+</p>
+
+<pre>
+   ls -l ~walker/public_html
+</pre>
+
+<h4>Root Directory and its Subdirectories</h4>
+
+<p>
+While we are poking around the Linux file system, take a look at the files
+in the root directory <tt>/</tt>. You should see directories with names like
+<tt>/bin</tt>, <tt>/home</tt>, <tt>/lib</tt>, and <tt>/usr</tt>. 
+</p>
+
+<center>
+<img src="root-directory.gif" alt="root directory hierarchy">
+</center>
+
+<p>
+Again, list the files in each of these directories. They contain many, many
+files, organized as follows.
+</p>
+
+<ul>
+<li>
+<p>
+<tt>/bin</tt>: These are the executable programs that comprise the
+GNU/Linux utilities. For example, there is an executable file here named
+<tt>ls</tt> that is run when you issue the command <tt>ls</tt>.
+</p>
+
+<li>
+<p> 
+<tt>/home</tt>: You won't be surprised to hear that user accounts are
+stored in this directory.
+</p>
+
+<li>
+<p>
+<tt>/lib</tt>: This directory is the home of severalo libraries that can be
+used by programmers.
+</p>
+
+<li>
+<p>
+<tt>/usr</tt>: The name of this directory is pronounced "user", and it
+generally contains application programs, libraries, and other files that
+are not part of the GNU/Linux system (i.e., optional resources intended for
+and requested by users). For example, the Linux C library for
+the <tt>gcc</tt> compiler is found as file <tt>libgcc.a</tt> in the subdirectory
+<tt>/usr/lib/gcc/x86_64-linux-gnu/4.7/</tt>.
+</p>
+</ul>
+
+<p>
+Sometimes locating a program can be something of a challenge, but
+the commands <tt>which</tt> and <tt>whereis</tt> can help you solve this
+problem.   For example, both
+
+<pre>
+   whereis emacs
+</pre>
+
+<p>
+and 
+</p>
+
+<pre>
+   which emacs
+</pre>
+
+<p>
+will give you the absolute path name of the <tt>emacs</tt> program.
+</p>
+
+<a name="searchpath"></a>
+<h3>Search Paths</h3>
+
+<p>
+When you type the name of a command in a terminal window, the operating
+system must determine the appropriate program to run.  If you type a full path
+name, the operating simply uses that program.  For example, if you type
+<tt>/bin/ls</tt>, the operating system will run the <tt>ls</tt> program
+located in the <tt>/bin</tt> directory.
+</p>
+
+<p>
+Similarly, you can clarify that the operating system should use a relative
+path by starting a command with a period (<tt>.</tt> represents the current
+directory).  For example, <tt>./test</tt> tells the operating system to run
+the program <tt>test</tt> in the current directory.
+</p>
+
+<p>
+However, if you type a command without specifying its location, the
+operating system must determine where to find the relevant program.  To
+facilitate this process, the operating system maintains a variable
+<tt>$PATH</tt> for each terminal window.  For example, the variable might
+be set to
+</p>
+
+<pre><tt>
+      /usr/bin:/bin:/usr/X11R6/bin:/usr/local/bin:/net/bin:.
+</tt></pre>
+
+<p>
+This string is interpreted as a sequence of directories, separated by a
+colon <tt>:</tt>.  For example, suppose you type <tt>pwd</tt> in a terminal
+window.  The operating system first tries to find a program <tt>pwd</tt> in
+directory <tt>/usr/bin</tt>.  However, no such program exists there, so the
+operating system looks at the next directory, <tt>/bin</tt>.  In this
+case, a program <tt>pwd</tt> is found, so the operating system uses this
+program to respond to the command in the terminal window.  (If file
+<tt>pwd</tt> was not present in <tt>/bin</tt>, the operating system would
+continue its search with <tt>/usr/X11R6/bin</tt>, etc.)
+</p>
+
+<p>
+In this example, note that the last option is <tt>.</tt> (the
+abbreviation for a program in the current directory).  Thus, the operating
+would run a program in your current directory &mdash; but only if there was
+not a program of the same name in one of the earlier directories listed in
+the <tt>$PATH</tt> variable.
+</p>
+
+
+  
+<a name="file-utilities"></a>
+<h3>File Utilities</h3>
+
+
+<p>
+Some common file management commands are listed in the table below.
+When you have the chance you should try each of these to determine
+just how they work.
+</p>
+
+
+<table cellpadding="5" border="2">
+
+<tr>
+ <td><b>Utility</b></td>
+ <td><b>Description</b></td>
+</tr>
+<tr>
+ <td valign="top"><tt>ls</tt></td>
+ <td>"list" files and directories</td>
+</tr>
+<tr>
+ <td valign="top"><tt>pwd</tt></td>
+ <td>"print working directory"</td>
+</tr>
+<tr>
+ <td valign="top"><tt>cd</tt></td>
+ <td>"change (your working) directory"</td>
+</tr>
+<tr>
+ <td valign="top"><tt>mkdir</tt></td>
+ <td>"make directory"</td>
+</tr>
+<tr>
+ <td valign="top"><tt>rmdir</tt></td>
+ <td>"remove directory"</td>
+</tr>
+<tr>
+ <td valign="top"><tt>cp</tt></td>
+ <td>"copy" a file or directory</td>
+</tr>
+<tr>
+ <td valign="top"><tt>mv</tt></td>
+ <td>"move" a file or directory (i.e., rename it)</td>
+</tr>
+<tr>
+ <td valign="top"><tt>rm</tt></td>
+ <td>"remove" a file (i.e., delete it)</td>
+</tr>
+
+</table>
+
+
+<p>
+The following variants can be particularly handy.  (Although some
+details may not be obvious now, we will see shortly how to find out
+more information about such commands.)
+</p>
+
+
+<pre>
+   cd ..
+   cp -p
+   ls -l
+   mkdir -p
+</pre>
+
+
+<!--....................................................................-->
+<!--
+<h4><tt>pushd</tt> and <tt>popd</tt></h4>
+
+<p>
+Two more commands that can be quite useful for moving around the
+file system are <tt>pushd</tt> and <tt>popd</tt>. They let you jump back and
+forth between distant directories quickly and easily. For example, suppose
+your current working directory is <tt>courses/csc161/hw/</tt>
+and you want to jump to a directory in another branch of your file system 
+tree, say
+<tt>public_html/courses</tt>, and afterward you want to return to your original
+directory.
+
+<p>
+The following command will push the name of your current directory onto a 
+stack of directory names that Linux maintains behind the scenes, and then
+change your current directory to the one named in the command:
+
+<pre>   pushd public_html/courses</pre>
+
+<p>
+When you are ready to return to your previous directory, you simply type
+<tt>popd</tt>. This pops the most recent directory name off the stack and 
+then makes it your current working directory.
+
+<p>
+Go ahead and give these command a try. Of course, if you like, you can use
+<tt>pushd</tt> several times in a row (pushing multiple directory names 
+onto the stack), and then backtrack through the sequence in reverse order.
+
+<p>
+As one application, you might use <tt>pushd</tt> and <tt>popd</tt> when 
+jumping back and forth between labs or homework assignments. 
+-->
+
+<h3>Displaying Text Files</h3>
+
+<p>
+It is often convenient to look at the contents of a text file without
+having to open it in an editor.  Previously in this lab, we saw that <tt>cat</tt>
+can be used for this purpose, but it is most useful for short files that can
+be viewed all on one screen.
+</p>
+
+<p>
+GNU/Linux provides several other utilities that are useful for "paging"
+through text files (i.e., for viewing files one page at a time). Several of these commands are outlined in the following table.
+</p>
+
+<table cellpadding="5" border="2">
+<tr>
+   <th>Command
+   <th>Description
+</tr>
+
+<tr>
+   <td><tt>more</tt>
+   <td>move through a file screen by screen 
+          (hit space for the next page, return for one more line)
+</tr>
+
+<tr>
+   <td><tt>less</tt>
+   <td>a new and improved version that allows backward paging as well with
+           the <tt>up-arrow</tt>, <tt>down-arrow</tt>, <tt>Page Up</tt>, and 
+           <tt>Page Dn</tt>.
+
+</tr>
+
+<tr>
+   <td><tt>head</tt>
+   <td>show the first few lines of a file
+</tr>
+
+<tr>
+   <td><tt>tail</tt>
+   <td>show the last few lines of a file
+</tr>
+
+</table>
+
+<!--....................................................................-->
+<a name="printing"></a>
+<h2> Printing</h2>
+
+<p>
+You likely have have printed files in the Campus Linux Network already. This is
+frequently done from within another program, say a web browser, pdf reader,
+or text editor.
+With the following commands, you can also print files, and manage print
+queues, from the command line.
+</p>
+
+
+<table cellpadding="5" border="2">
+<tbody>
+
+<tr>
+ <td><b>Utility</b></td>
+ <td><b>Description</b></td>
+</tr>
+<tr>
+ <td valign="top">a2ps <em>file</em><br>
+                  a2ps -Pduerer <em>file</em><br>
+                  a2ps --sides=duplex <em>file</em></td>
+ <td>prints file to default printer (handles many standard file
+ formats)<br>
+     same, for printer named duerer<br>
+     same, but double-sided</td>
+</tr>
+<tr>
+ <td valign="top">lpr <em>file</em><br>
+                  lpr -Pduerer <em>file</em></td>
+ <td>prints file to default printer (handles several standard file
+ formats)<br>
+     same, for printer named duerer/td>
+</tr>
+<tr>
+ <td valign="top">lpq<br>
+                  lpq -Pduerer</td>
+ <td>displays jobs in print queue on default printer<br>
+     same, for printer named duerer</td>
+</tr>
+<tr>
+ <td valign="top">lprm 585<br>
+                  lprm -Pduerer 585</td>
+ <td>cancels (removes) print job number 585 from default printer queue<br>
+     same, for printer named duerer</td>
+</tr>
+
+</tbody>
+</table>
+
+<p>
+Please don't test these out now, unless you have something you really want
+printed, but keep them in mind for next time you do.
+
+
+<!--....................................................................-->
+<a name="permissions"></a>
+<h2>Directory and File Permissions</h2>
+
+<p>
+From a user's perspective within Unix or Linux, the world of files and
+directories is divided into three categories:
+</p>
+
+<ul>
+<li>
+the user
+<li>
+the user's group (e.g., CS faculty or student)
+<li>
+everyone else
+</ul>
+
+<p>
+For each of these categories, users in these categories can have three
+types of capabilities:
+</p>
+
+<ul>
+<li>
+an individual might have permission to read a file
+<li>
+an individual might have permission to write or modify a file
+<li>
+an individual might have permission to execute the file (e.g., run a program)
+</ul>
+
+<p>
+To clarify how these permissions work, we consider a long listing
+of files in a subdirectory for Marge Coahran:
+</p>
+
+<pre>
+   ls -l ~coahranm/public_html
+</pre> 
+
+<pre>
+total 40
+drwxr-xr-x 4 coahranm mathfac 4096 2007-04-25 16:32 csc105
+drwxr-xr-x 6 coahranm mathfac 4096 2007-01-19 16:04 csc152
+drwxr-xr-x 4 coahranm mathfac 4096 2007-01-19 19:10 csc201
+drwxr-xr-x 4 coahranm mathfac 4096 2007-09-01 15:43 csc211
+drwxr-xr-x 4 coahranm mathfac 4096 2007-08-31 17:56 csc301
+-rw-r--r-- 1 coahranm mathfac 5808 2007-09-01 20:38 index.html
+-rw-r--r-- 1 coahranm mathfac 5808 2007-08-31 19:02 index.html~
+drwxr-xr-x 2 coahranm mathfac 4096 2008-01-02 15:55 mmc_files
+</pre>
+
+<p>
+In the listing, the first character indicates whether the item is a 
+directory (d) or a regular file (-).  Thus, in this directory, csc211
+is a directory (line starts with d), and index.html is a regular file.
+</p>
+
+<p>
+The next characters list specific file permissions (r=read, w=write,
+x=execute) for the user, group, and world, in that order.  Thus,
+immediately after the "d" character for the csc105 directory, the sequence
+"rwx" indicates that user coahranm has all three permissions for these
+capabilities.  However, both the group and the world have permissions
+"r-x", indicates that others can read and execute the directory, but others
+cannot modify (write) the directory.
+</p>
+
+<p>
+Following this permission information, a number appears for the "number of links" involved with the file.  Interpreting this is beyond the scope of the course,
+but ask again in CSC 213 on operating systems!
+</p>
+
+<p>
+The rest of the line gives the username and groupname of the
+file's owner (<tt>coahranm</tt> and <tt>mathfac</tt>), the file's size,
+the date and time the file was last modified date, and file name. 
+</p>
+
+<p>
+
+<p>
+You may belong to more than one group on the MathLAN. To see a list of all
+of your groups, use the command <tt>groups</tt>.
+</p>
+
+<p>
+If you get really confused, you can ask for your own username with the
+command <tt>whoami</tt>. 
+</p>
+
+<a name="setting"></a>
+<h3>Setting Permissions</h3>
+
+<p>
+You can set the permissions of the files you own using the 
+<tt>chmod</tt> command.  The simplest approach is to assign numbers to
+each capability (4 for read, 2 for write, 1 for execute) and then to
+use addition when combining numbers.  Thus, 6 = 4+2 (read plus write
+permission), and 7 = 4+2+1 (all three permissions added together).
+</p>
+
+<p>
+Within this framework, you set permissions for a file by specifying the
+desired capabilities for the user, group, and world (in that order).  Thus,
+when she set up her directory for CSC 105 above, Ms. Coahran might have
+issued the command
+</p>
+
+<pre>
+   chmod 755 csc105
+</pre>
+
+<p>
+Here, the user (Ms. Coahran) has full permissions (7=read+write+execute);
+while the others can read and execute, but not write (5).
+</p>
+
+
+<a name="setup"></a>
+<h3>Setting Terminal Defaults</h3>
+
+<h4>Bash Runtime Configuration:</h4>
+
+<p>
+As you may have noticed, the system sets up many elements for you
+whenever you open a window.  This setup is accomplished by the
+<tt>.bashrc</tt> file located in your home directory.  As you will see, 
+<tt>.bashrc</tt> is just a regular file that can be edited, and from
+time to time you may want to tailor this file to meet your special
+needs or interests.
+</p>
+
+<p>
+For now, we mention only two special commands that you may find within
+<tt>.bashrc</tt>.
+</p>
+
+<p>
+<tt>umask</tt> allows you to set the default permissions on a file.  That is,
+when you create a new file, the permissions are given according to 
+the specification by <tt>umask</tt>.  In using <tt>umask</tt>, however,
+note that the permissions given specify what is to be turned off
+rather than what is turned on.  That is, if you want files not 
+to be writable by others, but you want full privileges, then the
+appropriate command would be
+
+<pre>
+   umask 077
+</pre>
+
+<p>
+As noted, this statement yields the same result as using <tt>chmod</tt>
+to give new files the permissions 700.
+</p>
+
+<p>
+<tt>alias</tt> allows you to make your own commands, putting commands,
+options, and programs together in a convenient way.  For example, on my
+home computer, I want to be able to log into the Campus Linux Network
+easily.  To do this task, the full command is:
+
+<pre>
+   ssh -Y -l walker ssh.cs.grinell.edu
+</pre>
+
+<p>
+(I want the <tt>ssh</tt> command, providing a special interface
+&mdash; the Y option &mdash, logging in as <i>walker</i>, and
+connecting to the server <tt>ssh.cs.grinnell.ed</tt>) Although this
+command does the right task, it is awkward to type.  Thus, in
+the <tt>.bashrc</tt> file of my home computer, I include a line of the form
+</p>
+
+<pre>
+   alias my-ssh="ssh -Y -l walker ssh.cs.grinnell.edu"
+</pre>
+
+<p>
+With this command defined, I can just type <tt>my-ssh</tt> into a terminal
+window to connect over the Internet to the Campus Linux Network.
+</p>
+ 
+</div> <!--labcontent-->
+
+<div class="footer">
+
+<hr>
+<p>
+This document is available on the World Wide Web as
+</p>
+
+<PRE>
+     http://www.cs.grinnell.edu/~walker/courses/161.sp14/modules/getting-started/reading-linux-basics.shtml
+</PRE>
+
+<hr>
+
+<p>
+<table width="100%">
+<tr><td>
+   <em>created 31 March 2008 by Henry M. Walker</em><br>
+   <em>revised 18 July 2011 by David Cowden</em><br>
+   <em>last full revision 21 September 2011 by Erik Opavsky</em><br>
+   <em>minor editing 25 September 2011 by Henry M. Walker</em><br>
+   <em>editing (added lpr) 25 January 2012 by Henry M. Walker</em><br>
+   <em>editing (acroread references to evince) 2 September 2013 by Henry M. Walker</em><br>
+   <em>editing (evince references to emacs) 15 January 2014 by Henry M. Walker</em>
+   </td>
+   <td rowspan="2" align="right">
+   <a href="http://validator.w3.org/check/referer"><img border="0" 
+      src="/~walker/valid-html401-blue.png" alt="Valid HTML 4.01!" height="31"
+      width="88"></a>
+   <a href="http://jigsaw.w3.org/css-validator/"><img border="0"
+       src="/~walker/vcss-blue.png" 
+       alt="Valid CSS!" height="31"
+       width="88"></a>
+   </td>
+</tr>
+
+<tr><td>
+   For more information, please contact
+   <a class="footer-a" href="http://www.cs.grinnell.edu/%7Ewalker/">Henry M. Walker</a> at
+   <a class="footer-a" href="mailto:walker@cs.grinnell.edu">walker@cs.grinnell.edu</a>.
+   </td></tr>
+</table>
+
+<hr>
+<!--#include file="copyright-notice-reading.inc"-->
+
+</div><!--footer-->
+</div><!--body-->
+</body>
+</html>

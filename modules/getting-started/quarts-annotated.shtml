@@ -1,0 +1,265 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <link rel="stylesheet" type="text/css" href="/~walker/courses/161.sp10/style
+.css">
+    <title>quarts.c:  A first program in C</title>
+    <link rev="made" href="mailto:walker@cs.grinnell.edu">
+</head>
+
+<body bgcolor=EAEAEA>
+<!--#include file="header.inc"-->
+
+<h1>quarts.c:  A first program in C</h1>
+
+<p>
+As a first program in C, consider the following code that converts a number
+of quarts to liters.  Commentary after the program explains each element of
+this program.  A subsequent section explains how this program may be run.
+</p>
+<hr>
+<pre>
+/* A simple program to convert a number of quarts to liters
+   Version 1:  global variables only
+*/
+
+#include &lt;stdio.h&gt;                    /* reference to standard I/O library */
+
+int quarts;                           /* declarations */
+double liters;                        /* double means real */
+
+int main ()                           /* beginning of main program */
+  { printf ("This program converts a number of quarts to liters\n");  
+                                      /* write opening statement */
+
+    quarts = 2;                       /* specify the number of quarts as 2 */
+
+    liters = quarts / 1.056710 ;      /* arithmetic, assignment */
+
+    printf ("%d quarts = %lf liters\n", quarts, liters);
+                                      /* write text and new line */
+
+    return 0;                        /* the program ran without errors */
+  }
+</pre>
+
+<hr>
+
+<h3>Commentary on the <code>quarts.c</code> program</h3>
+
+<ul>
+<li>
+<p>
+Comments in C begin anywhere with the symbols <code>/*</code>,
+continuing until the symbols <code>*/</code>, on the same or later lines.
+</p>
+
+<li>
+<p>
+C makes use of libraries for many common operations, including
+the <code>stdio</code> library for input (reading from the keyboard) and output
+(printing).  The statement
+</p>
+
+<pre>
+     <code>#include &lt;stdio.h&gt;</code> 
+</pre>
+
+<p>
+instructs the machine how to use the <code>stdio</code> operations.
+</p>
+
+<li>
+<p>
+Each C program contains a driver function/procedure, called 
+<code> main</code>.  Here, main uses no input parameters (hence the
+parentheses with nothing between them following <code>main</code>).  In
+standard C, the <code>main</code> function/procedure returns an integer as
+an error code (hence the <code>int</code> before <code>main</code>).  When
+the program runs normally, without error, the integer 0 is usually
+returned.
+</p>
+
+<li>
+<p>
+Variables may be declared globally or at the start of a C
+function.  Here, <code> quarts</code> and <code> liters</code>
+are declared globally as integer and real variables, respectively.  The
+term <code>double</code> specifies a real number, stored using double
+precision. (The term <code>float</code> may be used for single precision, real
+numbers.)
+</p>
+
+<li>
+<p>
+Braces <code>{</code> and <code>}</code> are used in C to mark the
+beginning and ending of blocks.  In this case, the braces indicate the
+statements for the <code>main</code> procedure.
+</p>
+
+<li>
+<p>
+Semicolons (;) are used to terminate every statement in C.
+</p>
+
+<li>
+<p>
+The equal sign (=) is used for assignment.  (We will see later that == is
+used for the comparison operator.)
+</p>
+
+<li>
+<p>
+Arithmetic operations include +, &ndash;, *, and / for addition, subtraction,
+multiplication, and division.  For integers, the division operation /
+yields the integer quotient, while the modulus operation % gives the
+remainder. 
+
+<li>
+<code>printf</code> is used for output.  The first parameter is a string, which
+indicates how the output will be formatted.
+
+<ul>
+<li>
+When printing text only, as in the first output line in this program,
+the text of the string is enclosed in double quotes <code>"  "</code>, and the
+characters are printed exactly as given.
+
+<li>
+Within a format string, some symbols are used for special symbols.  For 
+example, 
+<ul>
+<li>
+
+<li>
+<code>\n</code> stands for a new-line character, 
+<li>
+<code>\t</code> stands for a tab character, 
+<li>
+<code>\"</code> stands for a double quote character, and
+<li>
+<code>\\</code> stands for the backslash character itself.
+</ul>
+
+<li>
+When printing the value of a variable, the format string
+for <code>printf</code> gives the type of data to be displayed:
+<ul>
+<li>
+<code>"%d"</code> stands for a (decimal) integer, 
+<li>
+<code>"%f"</code> stands for a (floating point) real number,
+<li>
+<code>"%lf"</code> stands for a double precision (long) real number,
+<li>
+<code>"%c"</code> stands for a (single) character, 
+<li>
+<code>"%s"</code> stands for a character string.
+</ul>
+
+</ul>
+</ul>
+
+<a name="development-execution"></a>
+<h3>Developing and Running a C Program</h3>
+
+<p>
+To prepare a program in C, one uses a text editor, such
+as <a href="/~walker/courses/coahranm/emacs.html">emacs</a> or <a href="/~walker/lubinski/vim.html">vi</a>.  Do not use a word processing
+package, such as Word, OpenOffice, or LibreOffice, because these packages
+insert extensive formatting and font information that will confuse the
+computer as it tries to follow the instructions in your program.
+</p>
+
+<p>
+Once the program has been written with the editor and saved, the program
+must be translated from C to machine language.  (In Scheme, such work is
+done behind the scenes, but in C the translation must be made explicit.)
+The translation is called <i>compiling</i>, and the utility used to compile
+a program is called a <i>compiler</i>.  A common compiler for C is
+called <code>gcc</code>.
+</p>
+
+<p>
+The following interaction in a terminal window shows a sample session,
+including writing, translating, and running <code>quarts.c</code>. 
+</p>
+
+<pre>
+     perlis$ emacs quarts.c &amp;
+     perlis$ gcc -o quarts quarts.c
+     perlis$ ./quarts
+     This program converts a number of quarts to liters
+     2 quarts = 1.892667 liters
+</pre>
+
+<p>
+In this example, <code>emacs quarts.c &amp;</code> starts
+the <code>emacs</code> editor to prepare a new program
+called <code>quarts.c</code>.  The ampersand (&amp;) allows editing to take
+place while the terminal window can still be used for other activities.
+</p>
+
+<p>
+To compile the program, the line <code>gcc -o quarts quarts.c</code> uses
+the <code>gcc</code> with the program we have edited
+(<code>quarts.c</code>).  The directive <code>-o quarts</code> indicates we
+want the compiler to place our translated program in an output file
+called <code>quarts</code>.
+<br><b>Warning:  Be sure the name of the output file (<code>quarts</code>)
+  is different from the name of your original program
+  (<code>quarts.c</code>).  If you use the same name for both, your
+  original program will be overwritten and lost!</b>
+</p>
+
+<p>
+You run the translated program by typing <code>./quarts</code>&nbsp;.  As
+with any command in a terminal window, the prefix <code>./</code> indicates
+that this program may be found in your current directory.
+</p>
+
+<hr>
+
+<p>
+This document is available on the World Wide Web as
+</p>
+
+<BLOCKQUOTE>
+<PRE>
+http://www.cs.grinnell.edu/~walker/courses/161.fa11/modules/module-getting-started/quarts-annotated.shtml
+</PRE>
+</BLOCKQUOTE>
+
+<hr>
+<table width="100%">
+<tr><td valign=top>
+   <em>created created 18 July 2011</em><br>
+   <em>last revised 18 July 2011</em>
+   </td>
+   <td valign=top rowspan="2" align="right">
+   <a href="http://validator.w3.org/check/referer"><img border="0"
+      src="/~walker/valid-html401-blue.png" alt="Valid HTML 4.01!" height="31"
+      width="88"></a>
+   <a href="http://jigsaw.w3.org/css-validator/"><img border="0"
+       src="/~walker/vcss-blue.png"
+       alt="Valid CSS!" height="31"
+       width="88"></a>
+   </td>
+</tr>
+
+<tr><td valign=top>
+   For more information, please contact
+   <a href="/~walker/">Henry M. Walker</a> at
+   <a href="mailto:walker@cs.grinnell.edu">walker@cs.grinnell.edu</a>.
+   </tr>
+</table>
+
+<hr>
+<!--#include file="copyright-notice-reading-black.inc"-->
+
+</body>
+</html>
+
+

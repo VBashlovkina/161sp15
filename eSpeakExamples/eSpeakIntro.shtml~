@@ -1,0 +1,186 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>scribblerlab.c:  A first C program using the Scribbler 2 robot</title>
+    <link rev="made" href="mailto:walker@cs.grinnell.edu">
+</head>
+
+<body>
+<div class="body">
+<div class="title-header">
+<table width="100%">
+<tr>
+<td class="font-tiny" width="33%" align="left"><a class="font-tiny"
+href="/~walker/courses/161.fa13/index.shtml"> CSC 161</a></td>
+<td class="font-tiny" width="33%" align="center">Grinnell College</td>
+<td class="font-tiny" width="33%" align="right">Spring, 2014</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td colspan="3" class="font-large" align="left">
+Imperative Problem Solving and Data Structures</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+</tr>
+</table>
+</div>
+<div id="header-bottom">&nbsp;</div>
+
+
+<div class="labcontent">
+
+
+<h1>Merging eSpeak With the Scribbler Robot Examples </h1>
+
+<p>
+The eSpeakPackage implement a useful capability in which a program may
+speak text to the user. The eSpeakPackage.h provides a library for output as
+spoken text just as C provides the stdio.h library for input and
+output. Users are able to execute Scribbler testing with eSpeak by
+reference the MyroC library and eSpeak library.
+</p>
+
+<h2>Getting Started</h2>
+<p>
+The following is a list of eSpeak commands users can put in their scribbler
+program. 
+</p>
+
+<ol>
+<li>
+<p>
+<code>eSpeakConnect</code> establishes connection with the eSpeak library.
+</p>
+
+<li>
+<p>
+<code> eSpeakTalk</code> takes a string as parameter and create audio through the computer speakers.
+</p>
+
+<li>
+<p>
+ <code>eSpeakSetGender</code> takes the string male or female to set the appropriate gender.
+</p>
+
+<li>
+<p>
+ <code>eSpeakDisonnect</code> disconnect from the the eSpeak library.
+</p>
+</ol>
+
+<p>
+Details of these functions are given in the header file,
+<a href="eSpeakPackage.h" target="headerfile">eSpeakPackage.h</a> 
+
+<h2>A Simple Example</h2>
+<p>
+A simple example, <a href="eSpeakExample1.c">eSpeakExample1.c</a>,
+illustrates in the following program; steps for compiling and running the
+code follow the program listing. 
+</p>
+
+
+<hr>
+<pre>
+/** This test demonstrate the basic text-to-speech capability of eSpeak
+ *
+ * Author: Jordan Yuan
+ * Date created: 10-2-2013
+ * Date revised: 10-9-2013
+ */
+
+/* Compile this program with the line
+ *  gcc -lMyroC -leSpeakPackage -o eSpeakExample1 eSpeakExample1.c 
+ */
+
+#include "eSpeakPackage.h"
+
+int main ()
+{
+  eSpeakConnect ();//connect to eSpeakSpeak
+                   //voice set randomly to female or male
+  eSpeakTalk( "setting up testing environment");
+
+  eSpeakTalk( "setting voice to male");
+  eSpeakSetGender ("male"); //set gender male
+  eSpeakTalk("Once upon a time in a kingdom far far away");
+
+  eSpeakSetGender("female"); // set gender female
+  eSpeakTalk("there was a little princess");
+  eSpeakTalk("who loves to stare into the stars");
+
+  eSpeakSetGender("male");
+  eSpeakTalk("one day a big dragon swooped down and they became the best of friends");
+
+  eSpeakSetGender("female");
+  eSpeakTalk("The end");
+
+  eSpeakDisconnect ();//disconnect from eSpeak
+} //end of main
+</pre>
+
+
+
+<hr>
+
+<h2>eSpeak together with MyroC and a Scribbler 2 Robot</h2>
+
+<p>
+Programming a Scribbler 2 robot presents challenges in testing, because
+regular testing requires the programmer to look at both the robot and
+code at the same time. 
+</p>
+
+<p>
+The eSpeak library provides a capability to resolve this problem of
+testing, because   the eSpeakPackage allows you to look at the robot while
+the program speaks the intended robot action.  
+</p>
+
+<p>
+The following program, <a href="eSpeakExample2.c" target =
+"eSpeakExample2.c"> eSpeakExample2.c</a>,  demonstrates the full capability
+of eSpeak with MyroC. 
+</p>
+
+</div> <!-- labcontent-->
+
+<div class="footer">
+<table width="100%">
+<tr><td>
+   <em>created 2 October 2013 by Jordan Yuan</em><br>
+   <em>revised 9-15 October by Jordan Yuan (with minor editing by Henry M. Walker)</em>
+   </td>
+   <td rowspan="2" align="right">
+   <a href="http://validator.w3.org/check/referer"><img border="0" 
+      src="/~walker/valid-html401-blue.png" alt="Valid HTML 4.01!" height="31"
+      width="88"></a>
+   <a href="http://jigsaw.w3.org/css-validator/"><img border="0"
+       src="/~walker/vcss-blue.png" 
+       alt="Valid CSS!" height="31"
+       width="88"></a>
+   </td>
+</tr>
+
+<tr><td>
+   For more information, please contact 
+   <a class="footer-a" href="/~walker/">Henry M. Walker</a> at
+   <a  class="footer-a" href="mailto:walker@cs.grinnell.edu">walker@cs.grinnell.edu</a>.
+   </tr>
+</table>
+
+<hr>
+<!--#include file="copyright-notice.inc"-->
+
+</div> <!-- footer -->
+</div> <!-- body -->
+
+
+</body>
+</html>

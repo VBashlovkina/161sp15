@@ -1,0 +1,14 @@
+Parking Lot Program Statistics (Approximate)
+
+                      Lines
+                      block     in-line  blank    if     lines     total
+                    comments   comments  lines  stmnts    code     lines
+
+parking-lot-1.c         44        5        23     23      120       187
+
+parking-lot-min-max-1.c 45        4        19     12       82       148
+ 
+parking-lot-2.c         43        5        13     15       96       152
+
+parking-lot-3.c         41        0        13      0       46       100
+

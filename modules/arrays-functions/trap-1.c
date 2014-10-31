@@ -1,0 +1,39 @@
+/* A program for approximating the area under a function y = f(x)         *
+ * between a and b using the Trapezoidal Rule.                            *
+ *    The Trapezoidal Rule divides [a, b] into n evenly spaced intervals  *
+ *    of width W = (b-a)/n.  The approximate area is                      *
+ *    W*(f(a)/2+f(a+W)+f(a+2W)+ ... +f(a+(n-2)W)+f(a+(n-1)W)+f(b)/2)      *
+ * Version 1:  Approximating area under sqrt(4-x^2) on [0, 2].            *
+ *    As this is 1/4 of circle of radius 2, result should be Pi.          */
+
+#include <stdio.h>
+#include <math.h>
+
+#define a 0.0         /* limits for the area under y = f(x) */ 
+#define b 2.0         /* area will be computed under f(x) on [a,b] */
+#define n 100          /* number of subintervals to be used */
+
+double f(double x) 
+/* function to be used in the area approximation */
+{  return (sqrt(4.0 - x*x));
+}
+
+int main (void)
+{  double width, sum, xvalue, area;
+
+   printf ("Program approximates the area under a function using the ");
+   printf ("Trapezoidal Rule, based on %d intervals.\n", n);
+
+   width = (b - a) / n; 
+
+   /* compute the sum in the area approximation */
+   sum = (f(a) + f(b)) / 2.0;            /* first and last terms in sum */
+   for (xvalue = a + width; xvalue < b; xvalue += width)
+      sum += f(xvalue);
+
+   area = sum * width;
+
+   printf ("The approximate area is %7.4f\n", area);
+
+   return 0;
+}

@@ -1,0 +1,564 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>CSC 161 Lab. Exercise on Practice with Elementary C plus eSpeak</title>  
+    <link rev="made" href="mailto:walker@cs.grinnell.edu">
+</head>
+<body>
+<div class="body">
+<!--#include virtual="../header.inc" -->
+
+<div class="labcontent">
+
+<h1>Practice with Elementary C plus eSpeak</h1>
+
+<h2>Work Started in Class</h2>
+
+<h3>Timesaving Linux Capabilities</h3>
+
+<p>
+In the <a href="lab-intro-c.shtml">introduction to C lab</a>, you edited,
+compiled, and ran a C program <tt>quarts.c</tt>.  This part of the lab
+provides experience with several Linux capabilities that can simplify some
+parts of program development.
+</p>
+
+<h4>Background Processes</h4>
+
+
+<ol>
+<li>
+<p>
+Move to your <tt>labs</tt> subdirectory, compile <tt>quarts.c</tt>, and run
+the program.  Your work in a terminal window might involve the following:
+</p>
+
+<pre>
+cd csc161/labs
+gcc -o quarts quarts.c
+quarts
+</pre>
+
+<p>
+Now edit <tt>quarts.c</tt> and try to compile and run the program.
+</p>
+
+<ol class="withloweralpha">
+<li>
+<p>
+First, type
+</p>
+
+<pre>
+emacs quarts.c
+</pre>
+
+<p>
+This will open <i>emacs</i> just fine, but now switch back to your terminal
+window. You will notice that it is unavailable for further use (i.e., you
+won't get another command prompt until <i>emacs</i> is closed).  For
+example, you will not be able to compile and run <tt>quarts.c</tt> until
+the <i>emacs</i> editor is closed.
+</p>
+
+<li>
+<p>
+Now close <i>emacs</i>, and then re-open it from the terminal window, but
+this time add an ampersand character to the end of the command: 
+</p>
+
+<pre>
+emacs quarts.c &amp;
+</pre>
+
+<p>
+Now when you return to your terminal window, a prompt is waiting for you,
+making it easy to do multiple tasks at once &mdash; you can compile and run
+<tt>quarts.c</tt> without interruption. Adding the ampersand character to a
+command causes the command to be launched as a "background process,"
+allowing you to continue working with your terminal window.  
+</p>
+</ol>
+</ol>
+
+<h4>Autocompletion</h4>
+
+<ol start=2>
+<li>
+<p>
+Try using "autocompletion" with <tt>quarts</tt> and <tt>quarts.c</tt> by
+typing
+</p>
+
+<pre>
+gcc -o q <i>followed by the TAB key</i>
+</pre>
+
+<p>
+You should find that when you press TAB the system completes the file name
+for you.  In this case, both <tt>quarts</tt> and <tt>quarts.c</tt> are
+files in your directory, so the TAB completes <tt>q</tt> with the common
+prefix <tt>quarts</tt>, giving 
+</p>
+
+<pre>
+gcc -o quarts 
+</pre>
+
+<p>
+Type <tt>q</tt> and the TAB key again:
+
+<pre>
+gcc -o quarts q <i>followed by the TAB key</i>
+</pre>
+
+<p>
+Again, autocompletion gives
+
+<pre>
+gcc -o quarts quarts
+</pre>
+
+<p>
+Type a period and the TAB, and autocompletion gives 
+</p>
+
+<pre>
+gcc -o quarts quarts.c
+</pre>
+
+<li>
+<p>
+This time, start the same as in the previous step, but hit the TAB key twice
+typing
+</p>
+
+<pre>
+gcc -o q <i>TAB TAB</i>
+</pre>
+
+<p>
+Describe what you see.
+</p>
+</ol>
+
+<h3>Printing</h3>
+
+<p>
+Several commands are available for printing files.
+</p>
+
+<table cellpadding="5" border="2">
+<tbody>
+
+<tr>
+ <td><b>Utility</b></td>
+ <td><b>Description</b></td>
+</tr>
+<tr>
+ <td valign="top">a2ps <em>file</em><br>
+                 <!-- a2ps -Pescher <em>file</em><br>-->
+
+                  a2ps --sides=duplex <em>file</em></td>
+ <td>prints file to default printer (handles many standard file
+ formats)<br>
+     <!--same, for printer named escher<br>-->
+     same, but double-sided</td>
+</tr>
+<tr>
+ <td valign="top">lpr<br>
+
+                  <!--lpr -Pescher</td>-->
+ <td>send file to the default printer<br>
+     <!--same, for printer named escher</td>-->
+</tr><tr>
+ <td valign="top">lpq<br>
+
+                  <!--lpq -Pescher</td>-->
+ <td>displays jobs in print queue on default printer<br>
+     <!--same, for printer named escher</td>-->
+</tr>
+<tr>
+ <td valign="top">lprm 585<br>
+                  <!--lprm -Pescher 585</td>-->
+ <td>cancels (removes) print job number 585 from default printer queue<br>
+
+     <!--same, for printer named escher</td>-->
+</tr>
+
+</tbody>
+</table>
+
+<p>
+You can accomplish printing a C file in at least two ways:
+</p>
+
+<ul>
+<li>
+Unix command <tt>lpr</tt>
+<li>
+Print option within <i>emacs</i>
+</ul>
+
+<p>
+<u>For this course, printing from <i>emacs</i> is not satisfactory.</u>  
+<i>emacs</i> adds a header that confuses the splitting of a file into
+pages.  For multi-page files, printing from <i>emacs</i> therefore often
+produces awkward page breaks and partial pages.
+</p>
+
+<p>
+<u>For this course, always use <tt>lpr</tt> in a terminal window to print a
+  C program.</u> For example, print <tt>quarts.c</tt> with the command
+</p>
+
+<pre>
+lpr quarts.c
+</pre>
+
+<h3>The Manual</h3>
+
+<ol start=4>
+<li>
+
+<p>
+Use the <tt>man</tt> command to consult the online Linux manual (Note the q key
+is used to exit <tt>man</tt> pages):
+</p>
+
+<ol TYPE="a">
+<li>
+
+<p>
+What do the following command options mean? Note the ability to smash flags together.
+
+<pre>
+  cp -p
+  ls -ltrF
+  mkdir -p
+</pre>
+
+<li>
+<p>
+Why does the <tt>cat</tt> command have the name "cat", which stands for
+"concatenate"?
+</p>
+
+<li>
+<p>
+Use the <tt>man</tt> page for the C function <tt>sqrt</tt> to identify the
+parameters and return type for a collection of functions related
+to <tt>sqrt</tt>.  Also, what "include" statement is needed
+for <tt>sqrt</tt>
+</p>
+
+</ol>
+
+<li>
+
+<p>
+The command <tt>man -k <i>keyword</i></tt> lists commands that seem related
+to the given <i>keyword</i>.  For example, to print a list of man pages 
+that include the word "square" in the name or description fields, you could 
+use <tt>"man -k square"</tt>.  Try this command to locate <tt>sqrt</tt> and
+to determine various commands related to the keyword "print".
+</p>
+
+</ol>
+
+<h3>eSpeak</h3>
+
+<p>
+In many applications, it is helpful to include speech synthesis within a C
+program.  Although not perfect (actually far from perfect),
+the <i>eSpeak</i> package provides a simple way to instruct the workstation
+to talk, given specific text.
+</p>
+
+<P>
+In order to limit interference with the work of others in the lab,
+<b>you may need earphones to listen to audio from your workstation.</b>
+</p>
+
+<p>
+<a href="../../eSpeakExamples/">Documentation for the <i>eSpeak</i>
+  package</a> contains
+  an <a href="../../eSpeakExamples/eSpeakIntro.shtml">commentary</a>, 
+  a <a href="../../eSpeakExamples/eSpeakPackage.h">header file</a>, 
+and two C programs as examples.
+</p>
+
+<ol start=6>
+<li>
+<p>
+As an example, compile and run <tt>quarts-espeak.c</tt>.
+</p>
+
+<ol class="withloweralpha">
+<li>
+<p>
+In the <a href="lab-linux-basics.shtml">Linux basics lab</a>, you
+copied <tt>quarts-espeak.c</tt> to your <tt>labs</tt> subdirectory.  If
+this did not work properly, copy the file now:
+</p>
+
+<pre>
+cp /home/walker/public_html/courses/161.sp14/modules/getting-started/quarts-espeak.c .
+</pre>
+
+<li>
+<p>
+To compile <tt>quarts-espeak.c</tt>, you must tell the <tt>gcc</tt>
+compiler where to find the <tt>eSpeakPackage</tt>.  This is done by adding
+a piece to the usual compile line:
+</p>
+
+<pre>
+gcc -leSpeakPackage -o quarts-espeak quarts-espeak.c
+</pre>
+
+<li>
+<p>
+Run the program with the expected name of the compiled program:
+</p>
+
+<pre>
+./quarts-espeak
+</pre>
+</ol>
+
+<li>
+<p>
+Open <tt>quarts-espeak.c</tt> in an editor, and find the
+various <i>eSpeak</i> commands.  Review the program with the following
+notes:
+</p>
+
+<ul>
+<li>
+<tt>eSpeakConnect ()</tt> sets up the eSpeak environment.  As part of this
+activity, the synthesized voice is set randomly to a male or female voice.
+<li>
+<tt>eSpeakSetGender (parm)</tt> allows the parameter to be "female" or
+"male", and sets the corresponding voice characteristics.
+<li>
+<tt>eSpeakTalk ("text goes here")</tt> instructs eSpeak to create audio
+related to the text specified.
+<li>
+<tt>eSpeakDisconnect ()</tt> cleans up the eSpeak environment.  If this
+command is omitted, the workstation's speaker may hum for awhile after the
+program finishes.
+</ul>
+
+<li>
+<p>
+Modify <tt>quarts-espeak.c</tt> in several ways to explore the capabilities
+of this package.
+</p>
+</ol>
+
+<h2>Homework</h2>
+
+
+<h3>Displaying Text Files</h3>
+
+<ol start=9>
+<li>
+
+<p>
+Try the following commands that display all or part of this
+laboratory exercise:
+</p>
+
+<pre>
+   cat  /home/walker/public_html/courses/161.sp14/modules/getting-started/lab-more-intro-c.shtml
+   more /home/walker/public_html/courses/161.sp14/modules/getting-started/lab-more-intro-c.shtml
+   less /home/walker/public_html/courses/161.sp14/modules/getting-started/lab-more-intro-c.shtml
+   head /home/walker/public_html/courses/161.sp14/modules/getting-started/lab-more-intro-c.shtml
+   head -n 20 /home/walker/public_html/courses/161.sp14/modules/getting-started/lab-more-intro-c.shtml
+   tail /home/walker/public_html/courses/161.sp14/modules/getting-started/lab-more-intro-c.shtml
+   tail -n 20 /home/walker/public_html/courses/161.sp14/modules/getting-started/lab-more-intro-c.shtml
+</pre>
+
+<p>
+  (Note that this is a wonderful time to use the arrow keys to edit previous
+  commands rather than to retype the full lines each time. You can also use the
+  tab autocomplete utility.)</p>
+<p>  For the
+  <tt>less</tt> command, try the arrow keys to move up and down in the
+  file.
+</p>
+
+</ol>
+
+
+<h2>Directory and File Permissions</h2>
+
+<p>
+The following steps ask you to review the permissions for 
+your account directories and adjust them for this course.
+</p>
+
+<ol start=10>
+<li>
+<p>
+Move to your home directory and obtain a "long" listing of 
+the files present using the commands:
+</p>
+
+<pre>
+   cd
+   ls -l
+</pre>
+
+<p>
+(The <tt>cd</tt> command without parameters takes you to your home
+directory.)
+</p>
+
+<p>
+Interpret the meaning of each part of the directory and file listings.
+</p>
+
+
+</ol>
+
+<a name="setting"></a>
+<h3>Setting Permissions</h3>
+
+<p>
+For CSC 161, it seems likely that you will want others in the class
+to be able to read your labs, since you are collaborating with others
+on that material.  However, you do not want others to be able to
+read your supplemental problems.  These steps set up this framework.
+</p>
+
+<ol start=11>
+<li>
+<p>
+Move to your home directory.  
+</p>
+
+<ol TYPE="a">
+<li><p>
+Allow others to read (but not change)
+your login directory with the command:
+</p>
+
+<pre>   chmod 755 .
+</pre>
+
+
+<li>
+<p>
+Next allow others to read (but not change) files in your <tt>labs</tt>
+directory:
+
+<pre>
+   chmod 755 csc161
+   chmod 755 csc161/labs
+</pre>
+
+<li>
+<p>
+Now use the <tt>ls -l -a</tt> command to check that others can read
+your home directory and the <tt>labs</tt> subdirectory, but no other
+directories. 
+</p>
+
+<li>
+<p>
+Team up with another class member to check which directories of theirs you
+can read.
+</p>
+</ol>
+
+<li>
+<p>
+Now suppose you set your home directory with the command:
+</p>
+
+<pre>   chmod 711 ~
+</pre>
+
+<ol TYPE="a">
+<li>
+<p>
+Can others obtain a listing of your home directory?
+</p>
+<li>
+<p>
+Can others obtain a listing of your <tt>labs</tt> subdirectory?
+</p>
+</ol>
+
+<p>
+Consider what access you want others to have to your home directory and set
+it accordingly.  Unless you want to protect a file against your own
+inadventent editing, you likely will want to retain 7 at the beginning of
+the <tt>chmod</tt> permission list.
+</p>
+
+</ol>
+
+<!--#include virtual="body-footer.inc" -->
+
+</div> <!-- labcontent-->
+
+<div class="footer">
+
+<hr><p>
+
+This document is available on the World Wide Web as
+
+<div class="address">
+
+<PRE>
+http://www.cs.grinnell.edu/~walker/courses/161.fa12/modules/getting-started/lab-more-intro-c.shtml
+</PRE>
+</div> <!-- address -->
+
+<hr>
+
+<p>
+<table width="100%">
+<tr><td>
+
+   <em>created 15 January 2014 by Henry M. Walker</em>, based on earlier
+   labs by
+   <ul>
+     <li><em>Henry M. Walker:  31 March 2008,  22 August 2011, 20 July
+     2012, 1 September 2013</em> 
+     <li><em>Erik Opavsky and David Cowden: 18 July 2011</em>
+     <li><em>Erik Opavsky and Dilan Ustek:  21 September 2011</em>
+   </ul>
+   <em>material reorganized, eSpeak added 15 January 2014 by Henry M. Walker</em
+   </td>
+
+   <td rowspan="2" align="right">
+ <a href="http://validator.w3.org/check/referer"><img border="0"
+      src="/~walker/valid-html401-blue.png" alt="Valid HTML 4.01!" height="31"
+      width="88"></a>
+   <a href="http://jigsaw.w3.org/css-validator/"><img border="0"
+       src="/~walker/vcss-blue.png"
+       alt="Valid CSS!" height="31"
+       width="88"></a>
+   </td>
+</tr>
+
+<tr><td>
+   For more information, please contact
+   <a class="footer-a" href="/~walker/">Henry M. Walker</a> at
+   <a class="footer-a" href="mailto:walker@cs.grinnell.edu">walker@cs.grinnell.edu</a>.
+   </tr>
+</table>
+
+<hr>
+<!--#include file="copyright-notice.inc"-->
+
+</div> <!-- footer -->
+</div> <!-- body -->
+</body>
+</html>

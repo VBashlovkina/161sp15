@@ -1,0 +1,804 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>CSC 161:  Imperative Problem Solving and Data Structures</title>
+    <link rev="made" href="mailto:walker@cs.grinnell.edu">
+</head>
+
+<body>
+<div class="body">
+<!--#include file="header.inc"-->
+
+<div class="labcontent">
+
+<p>
+<b>Although materials for this course are reasonably stable, some
+  refinements are likely through the semester.</b>
+</p>
+
+<hr>
+
+<table width="100%">
+
+<tr>
+  <td>&nbsp;&nbsp;Modules:  
+  <td align=center><a href="schedule.php">High-level Schedule</a>
+  <td align=center><a href="modules/getting-started/getting-started.shtml">Module 000</a>
+  <td align=center><a href="modules/cond-loops-motion/cond-loops-motion.shtml">Module 001</a>
+  <td align=center ><a href="modules/arrays-functions/arrays-functions.shtml">Module 010</a>
+  <td align=center><a href="data-representation/data-representation.shtml">Data&nbsp;Representation</a>
+</tr>
+
+<tr>
+  <td>&nbsp;&nbsp;<a href="http://bartik.cs.grinnell.edu/~walker/csc161/">Topic&nbsp;Index</a>
+  <td align=center><a href="modules/chars-io/chars-io.shtml">Module 011</a>
+  <td align=center><a href="modules/struct-2d-arrays/struct-2d-arrays.shtml">Module 100</a>
+  <td align=center><a href="modules/lists/lists.shtml">Module 101</a>
+  <td align=center><a href="modules/pointers-stacks-queues/pointers-stacks-queues.shtml">Module 110</a>
+  <td align=center><a href="modules/comm-line-files/comm-line-files.shtml">Module 111</a>
+</tr>
+
+<tr>
+ <td colspan=8><hr>
+</tr>
+
+<tr>
+        <td align=center> <a href="#instructor">Instructor </a>
+        <td align=center> <a href="#credits">Acknowledgments </a> 
+        <td align=center><a href="#textbooks">Textbooks </a>
+        <td align=center> <a href="../pair-programming.shtml">Pair Programming </a>
+        <td align=center><a href="suppl-prob.shtml">Supplemental Problems</a>
+        <td align=center><a href="coursework-notes.shtml">Detailed Coursework Instrutions</a>
+</tr>
+
+<tr>
+        <td align=center> <a href="#typos">A Note on Typos </a>
+        <td align=center> <a href="tutors-in-161.shtml">Tutors </a>
+        <td align=center> <a href="#coursework">Course Work </a>
+        <td align=center> <a href="#deadlines">Dates, Deadlines</a>
+        <td align=center> <a href="#illness">Emergencies, Illness </a>
+        <td align=center> <a href="prog-debugging-hints.shtml">Prog./Debugging Hints </a>
+</tr>
+<tr>
+        <td align=center> <a href="#collaboration">Collaboration </a>
+        <td align=center><a href="#pair-responsibilities">Pair Responsibilities</a>
+        <td align=center> <a href="#honesty">Academic Honesty </a>
+        <td align=center> <a href="#cell-phones">Cell Phones</a>
+        <td align=center> <a href="#accommodations">Accommodations</a>
+        <td align=center> <a href="#grading">Grading </a>
+</tr>
+<tr>
+  <td>&nbsp;
+</tr>
+</table>
+
+<hr>
+
+<p>
+This course explores elements of computing that have reasonably close ties
+to the architecture of computers, compilers, and operating systems.
+The course takes an imperative view of problem-solving, supported by
+programming in the C programming language.  Some topics include: 
+
+<ul>
+<li>
+<p>
+<i>imperative problem solving:</i>  top-down design, common algorithms, 
+assertions, invariants
+</p>
+
+<li>
+<p>
+<i>C programming:</i> syntax and semantics, control structures, functions,
+parameters, macro processing, compiling, linking, program organization
+</p>
+
+<li>
+<p>
+<i>concepts with data:</i> data abstraction, integer and floating-point
+representation, string representation, arrays, unions, structures, linked
+list data structures, stacks, and queues
+</p>
+
+<li>
+<p>
+<i>machine-level issues:</i>  data representation, pointers, memory management
+</p>
+
+<li>
+<p>
+<i>GNU/Linux operating system:</i>  commands, bash scripts, software
+development tools
+</p>
+
+</ul>
+
+<!--...................................................................-->
+<h2>
+<a name="instructor">Instructor</a>
+</h2>
+
+<p>
+<A HREF="http://cs.grinnell.edu/~walker">Henry M. Walker</A> 
+</p>
+
+<p>
+Office: Science 3811<br>
+Telephone: extension 4208<br>
+E-mail:  <a href="mailto:walker@cs.grinnell.edu">walker@cs.grinnell.edu</a>
+</p>
+
+<p>
+<b>Office hours</b> are posted weekly on the bulletin board outside Science
+3811, with additional hours possible by appointment. You may reserve a half
+hour meeting by signing up on the weekly schedule, but please sign up at
+least a day in advance. 
+</p>
+
+<!--...................................................................-->
+<h2>
+<a name="credits">Acknowledgments</a>
+</h2>
+
+<p>
+The hardware, software, readings, labs, and other materials from this
+course have evolved from many sources:
+</p>
+
+<ul>
+<li>
+<p>
+The underlying hardware and some software for this course are based on
+research performed by the Institute for Personal Robots in Education
+(IPRE), hosted at Georgia Tech and Bryn Mawr College. Their materials,
+including software interfaces, reference materials, and hardware, were
+funded by grants from Microsoft Research and the National Science
+Foundation.  (wording modified from suggestions by Douglas Blank of the
+IPRE project and Bryn Mawr College)
+The main pages for this work are:
+</p>
+
+<ul>
+<li>
+<a href="http://roboteducation.org">http://roboteducation.org</a>
+<li>
+<a href="http://wiki.roboteducation.org/">http://wiki.roboteducation.org/</a>
+</ul>
+<li>
+<p>
+The MyroC++ project grew out of efforts by Professor Bruce MacLennan's
+group, University of Tennessee; special thanks to John Hoare in that group
+for his assistance.
+</p>
+<li>
+<p>
+The MyroC project was developed by Henry Walker and his group at Grinnell
+college and funded from Grinnell's Dean's Office.
+</p>
+</ul>
+
+<!--...................................................................-->
+<h2>
+<a name="textbooks">Textbook</a>
+</h2>
+
+<p>
+Students in this course should have a ready reference for the C programming
+language.  Some labs include only a brief discussion of a topic, and
+students will need to do additional reading to understand the general
+context and the details of the material.  Use of a textbook can be an
+effective means to study this material in appropriate depth.
+</p>
+
+<p>
+The following two books provide the needed background, but these book
+target different audiences.  CSC 161 students are strongly encouraged to
+obtain <b>one</b> of these references for use in this course.  <i>CSC 161
+    students need NOT obtain both of these references.</i>
+</p>
+
+<ol>
+<li>
+<p>
+K. N. King, <a href="http://knking.com/books/c2/"><i>C Programming: A Modern
+Approach, Second Edition,</i></a> W. W. Norton, 2008, ISBN 978-0393979503.
+</p> 
+<ul>
+<li>
+<i>Targeted audience:</i>  Introductory CS students who are beginning their
+exploration of imperative problem solving and C
+<li>
+<i>Approach:</i>  Teaching manual including many examples and much narrative
+<li>
+<i>Style:</i>  Narrative with definition of terms and extended discussion 
+</ul>
+
+<li>
+<p>
+Brian W. Kernighan and Dennis M. Ritchie, 
+<a href="http://cm.bell-labs.com/cm/cs/cbook/"><i>The C Programming
+    Language, Second Edition,</i></a>  Prentice Hall, 1988, ISBN
+    0-13-110362-8 (paperback), 0-13-110370-9 (hardback). 
+</p> 
+<ul>
+<li>
+<i>Targeted audience:</i>  computing professionals who already know many
+computing concepts (but not C)
+<li>
+<i>Approach:</i>  Reference book &mdash; the standard reference for the C
+programming language
+<li>
+<i>Style:</i>  Terse with use of common technical terms
+</ul>
+</ol>
+
+<p>
+Additional references follow:
+</p>
+
+<ul>
+<li>
+<p>
+Henry Walker, <i>An Introduction to C Through Annotated Examples</i>,
+<a href="/~walker/c/index.html">
+http://www.cs.grinnell.edu/~walker/c/index.html</a>
+</p>
+
+<li>
+<p>
+<a href="http://www.gnu.org/software/make/manual/make.html">The GNU make
+Manual</a>, Free Software Foundation, 2006.
+</p>
+
+<li>
+<p>
+Eric Huss, <a href="http://www.acm.uiuc.edu/webmonkeys/book/c_guide/">The C
+Library Reference Guide</a>, University of Illinois Student Chapter, 1997.
+</p>
+
+<li>
+<p>
+The <a href="MyroC.h">MyroC header file</a> that identifies all MyroC 
+operations defined for the Scribbler 2 robots in C.
+</p>
+
+<li>
+<p>
+The <a href="MyroCDev-documentation">MyroCDev documentation</a> that identifies MyroC
+operations that have been implemented for a C-based package that is under
+development. 
+</p>
+
+<ul>
+<li> <a href="MyroCDev-documentation/annotated.html">MyroCDev data
+    structures (Picture, Pixel)</a>
+<li> <a href="MyroCDev-documentation/_myro_c_dev_8h.html">MyroCDev header file</a>
+</ul>
+
+<li>
+<p>
+Musical scale data:  Frequencies of notes in a well-tempered Western scale
+may be specified either as separate notes or using a <tt>struct</tt> data
+structure.  
+</p>
+
+<ul>
+<li>
+Code for the piano may be found in the header
+file <a href="scale-notes.h">scale-notes.h</a> 
+<li>
+Use of a <tt>struct</tt> data structure is described in
+the <a href="modules/lists/lists.shtml#specifying-notes">Lists module</a>.
+<br>
+Code involves a <a href="modules/lists/pitch.h">pitch.h</a> file to define
+the <tt>struct</tt> framework and
+a <a href="modules/lists/scale.c">scale.c</a> file that specifies the
+pitches.
+</ul>
+
+<li>
+<p>
+<a href="scribbler2-sensors.shtml">A diagram of Scribbler 2 sensors and
+    function calls</a>.
+</p>
+
+<li>
+<p>
+The eSpeak package that identifies speech-synthesis capabilities for use in
+C programs.
+</p>
+
+<ul>
+<li>
+<a href="eSpeakExamples/eSpeakPackage.h">eSpeakPackage.h</a> header file
+<li>
+<a href="eSpeakExamples/eSpeakIntro.html">Introduction to using the eSpeak
+  package within C, through the use of the eSpeakPackage.</a>
+<li>
+<a href="eSpeakExamples/eSpeakExample1.c">Sample program eSpeakExample1.c</a>
+<li>
+<a href="eSpeakExamples/eSpeakExample2.c">Sample program eSpeakExample2.c</a>
+</ul>
+</ul>
+
+<!--
+<p>
+Examples of comments in programs:
+</p>
+
+<ul>
+<li>
+<a href="c/mortgage-good-comments.c">Mortgage program with helpful
+  comments</a>
+<li>
+<a href="c/mortgage-poor-comments.c">Mortgage program with comments that
+  provide no insights</a>
+</ul>
+
+-->
+
+<!--...................................................................-->
+<h2>
+<a name="typos">A Note on Typos</a>
+</h2>
+
+<p>
+Planning and development of materials for this course represent an
+extensive effort:
+</p>
+
+<ul>
+<li>
+Preparation and refinement of the course's structure and materials exceed
+2900 hours.
+<li>
+Course materials include over 100 Web pages involving over 39,000 lines of
+text (in HTML).
+<li>
+Sample C code includes over 190 programs.
+<li>
+In case you are interested, <a href="course-materials-stats.cgi">this course
+    materials script</a> provides current statistics on materials for this
+    course. 
+</ul>
+
+<p>
+Although the developers have read, re-read, and refined the materials
+extensively, one can be confident that typographical errors remain.
+</p>
+
+<p>
+If you find an error, if something does not read well, if deadlines on one
+page do not seem to match those stated on another page, etc. &mdash; don't panic
+(or use colorful language).  Rather, please talk to the instructor (nicely
+please).  Thanks!
+</p>
+
+<!--...................................................................-->
+<h2>
+<a name="schedule">Schedule</a>
+</h2>
+
+<p>
+While the schedule for this course is expected to evolve, a 
+Tentative Class Schedule is available at
+<a href="schedule.php">schedule.php</a>.
+</p>
+
+<p>
+In addition, a reasonably detailed, day-by-day outline of course work is
+available through the base page for each module.
+</p>
+
+
+<!--...................................................................-->
+<h2>
+<a name="coursework">Course Work</a>
+</h2>
+
+<p>
+Course Work will involve a combination of several
+activities.  <a href="coursework-notes.shtml">Submission details</a> vary
+somewhat according to the type of the assignment.
+</p>
+
+<ul>
+<li>
+<p>
+<a href="suppl-prob.shtml"> <b> Supplemental Problems</b></a> extend the
+range of problems considered in the course and help sharpen problem-solving
+skills. Through the semester, five supplemental problems will be
+required.  Supplemental problems numbered 6 or above may be done for extra
+credit, although extra credit may not raise a student's average on
+assignments above 120%.  
+</p>
+
+<p>
+<b>Note:</b>  Supplemental Problems are to be done individually; students
+should not talk to others in the class, Mentors, Lab Assistants, Technology
+Consultants about these problems.  See for
+example <a href="tutors-in-161.shtml">The Role of Tutors For Computer
+  Science 161</a>.
+
+<li>
+<p>
+<a href="schedule.php"> Module Laboratories and Projects:</a> 
+Topics in this course are organized into eight modules and a few
+supplementary labs.  Modules include laboratory sessions and conclude with
+a integrative project.  
+</p>
+
+<p>
+<i>Laboratory sessions</i> introduce specific features of Grinnell's computing
+environment, highlight concepts and constructs introduced in class, allow
+instructor assistance in a "hands-on" setting, and supplement normal office
+hours.  Approximately four labs require a formal write-up, explaining what
+work you have done, showing any programming you have done, indicating tests
+or experiments run, and giving your conclusions.  Labs designated <i>
+[Req] </i> on the <a href="schedule.php"> Tentative Class Schedule</a> are
+required -- labs designated <i> [EC] </i> may be done for extra credit.  <u>In
+order for extra-credit labs to provide reasonable benefit, any such lab
+being submitted for credit must be turned in within 2 weeks of when it is
+scheduled for coverage in class.</u>  As with written homework, extra credit
+may not raise a student's average on laboratories above 120%.
+</p>
+
+<p>
+<b>Note:</b>  As a special incentive for mastering the laboratory
+  exercises, <i>between a third and a half of the problems on each test and
+  on the exam will be taken from the laboratory exercises (with only slight
+  editing).</i>
+</p>
+
+<p>
+<i>Projects:</i> Each of the eight modules concludes with a project,
+involving both a computer program and associated commentary; and each
+project is a required part of the course.
+</p>
+
+<p>
+<i>Collaboration on labs and projects encouraged:</i>  Many lab activities
+and projects should be done in groups of two or three, although you
+may work individually on labs after Lab 8.  Only one write-up is expected
+per group.
+</p>
+
+<li>
+<p>
+<b> Hour Tests: </b> Three hour tests are scheduled
+for Friday, 19 September, Friday, 17 October, and Wednesday, 26 November.
+</p>
+
+<li>
+<p>
+<b> Exam: </b> Following the schedule distributed by the Registrar's
+Office, the in-class final exam for this course is scheduled for 
+Wednesday, December 17, at 9:00 am.
+</p>
+
+<li>
+<p>
+<b> Extra Credit Opportunities: </b> Computer science is a wide-ranging
+discipline, and courses can cover only selected pieces.  To encourage
+students to expand their horizons, students may earn 2 points extra credit
+for each <i>Thursday Extra</i> or other departmental talk, by attending the
+talk and writing a short (4-8 sentence) summary or response.  Logistically,
+<u>a reasonable statement must be submitted via e-mail to the instructor
+<b>within 1 week</b> of the talk</u>; after the e-mail has been reviewed
+and the statement deemed appropriate, the student will receive 1 point
+extra credit counted toward supplemental problems and 1 point extra credit
+counted toward labs.  Additional extra credit opportunities may be
+announced through the semester.
+</p>
+
+</ul>
+
+<!--...................................................................-->
+<h2>
+<a name="deadlines">Dates, Deadlines</a>
+</h2> 
+
+<p>
+Grinnell College offers alternative options to complete academic work for
+students who reserve religious holy days.  Please contact me within the
+first three weeks of the semester if you would like to discuss a specific
+instance that applies to you.
+</p>
+
+<p>
+Normally, laboratory write-up, project, or program is due every third class
+meeting.  Laboratory exercises, projects, and supplemental problems all
+require work to be submitted via email
+to <tt>grader-161-01@cs.grinnell.edu</tt> and in paper form.  Both of these
+must be received before the stated deadline.
+</p>
+
+<ul>
+<li>
+The time stamp on email to <tt>grader-161-01@cs.grinnell.edu</tt>
+will be checked for timeliness.
+<li>
+Paper must be turned in under my door ahead of time or turned in as
+designated in class.
+</ul>
+
+<p>
+It is expected that the materials submitted electronically will match the
+materials submitted in paper form.  Discrepancies may raise questions of
+academic dishonesty and be subject to review by the Committee on Academic
+Standing. 
+
+<p>
+Deadlines are shown on the <a href="schedule.php"> Tentative Class
+Schedule</a> , and <u><i>work is due at the start of each class
+specified</i></u>.  A penalty of 25% per class meeting will be assessed for
+any assignment turned in late, even work submitted in the middle or the end
+of a class.  For example, paper printed at the start of class will
+inevitable be turned in after the start of a class, and thus will
+be considered late. Print your materials well before the start of class!
+</p>
+
+<p>
+<i>Exceptions to the deadline policy and its penalties:</i>
+</p>
+
+<ul>
+<li>
+An extension of at least one class period is automatically
+granted if the department's Linux network is down for an unscheduled period
+of three or more hours during the week preceding the assignment.
+<li>
+Difficulties sometimes arise with printing through PaperCut.  When such
+difficulties arise, you should contact the instructor (either at the start
+of class or via email).  Note, however, that difficulties with PaperCut do
+not impact deadlines for emailing materials.
+<li>
+Students arriving late to a class should turn in the paper form of the work
+as soon as they arrive in the classroom.  In such cases, the assignment
+will be considered on time if the email submission was received before the
+class began.
+</uL>
+ 
+
+<h3><a name="illness">Emergencies, Illness</a></h3>
+<p>
+Although dates for labs, programming assignments, tests, and the final exam
+are firm, I understand that circumstances arise when you are not able to
+attend class.
+</p>
+
+<ul>
+<li>
+When circumstances are known ahead of time (e.g., academic activities,
+athletic events), I expect you to make arrangements with me before the
+activity occurs.  Normally, we will identify an alternative date for the
+due date or test.
+<li>
+When circumstances cannot be reasonably anticipated (e.g., illness, family
+emergencies, serious injury), I expect you to notify me as soon as is
+reasonably possible. (Email is fine.)
+In the case of medical problems that require you to miss several classes, I
+expect a written note from a medical professional or counselor that
+indicates that your health interfered with the course activity.  (I do not
+need to know any details of the medical problem, but I do need to know that
+you sought help and that the medical professional believed meeting the
+deadline would likely interfere with your health.)
+</ul>
+
+<p>
+<b>Absolute Deadline: </b> <i> All homework must be turned in by Friday, 12
+December at 5:00 pm; </i><br> laboratory reports, projects, or programs
+received after that time will not be counted in the grading of the course.
+<p>
+
+
+<!--...................................................................-->
+<h2>
+<a name="collaboration">Collaboration</a>
+</h2> 
+
+<p>
+Collaboration often will be allowed on laboratory exercises and problems
+from the textbook, but collaboration normally will NOT be allowed on
+supplemental problems and tests.  To avoid confusion, the rules for
+collaboration on homework are included in the specification of each
+assignment.
+</p>
+
+<!--...................................................................-->
+<h2>
+<a name="pair-responsibilities">Pair Responsibilities</a>
+</h2> 
+
+<p>
+Work on labs and projects in this course is often done collaboratively (in
+pairs, occasionally in a group of three).  Many studies suggest substantial
+benefits to learning with this type of group work.  However, to be
+successful, collaboration requires partners to actively participate.
+
+<ul>
+<li>
+Each partner should come to class and actively participate throughout the
+class session.
+<li>
+Partners should make arrangements to meet as needed in the lab outside of
+class to finish labs or projects.
+<li>
+Each partner has an obligation to show up and actively participate during
+out-of-class, planned sessions.
+</ul>
+
+<p>
+Failure to meet one's responsibilities to a group not only impacts the
+individual, but also impedes the education of the partner.  Thus, except in
+exceptional circumstances  (e.g., illness, family emergencies, serious
+injury), failure to follow through with one's responsibilities as a partner
+may have a significant on one's course grade and/or one's standing in the
+course.
+See <a href="../pair-programming.shtml#responsibilities">Responsibilities</a>
+for pair programming for details.
+</p>
+
+
+<!--...................................................................-->
+<h2>
+<a name="honesty">Academic Honesty</a>
+</h2>
+<p>
+All work in this course is governed by the rules of the college regarding
+academic honesty.  In summary, standard practice requires that you must
+acknowledge all ideas from others.
+</p>
+
+<ul>
+<li>
+<p>
+When working on homework, either individually or in a group, you may use
+any written source.  However, the normal rules of citation must be
+followed, as described in the <i>Student Handbook</i>.
+</p>
+<ul>
+<li>
+You must cite statements in the textbook, if you use them to guide your
+work.
+<li>
+Although the Web can be useful for reference, you are
+advised that much material on the Web is of poor quality.
+<li>
+You are responsible for the quality of what you turn
+in, regardless of the source of the material. 
+</ul>
+<li>
+<p>
+When you work in a group on an activity, the names of all students in the
+group should appear at the top of the first page.  Turning in work with
+multiple people listed as authors implies that all members of the group
+agree with what is presented.  If a group member does not agree with some
+part of the work, the group should continue to discuss and revise the
+material until agreement is achieved.  In summary, a group activity is a
+joint effort, and all group members have equal responsibility for the
+finished product.
+</p>
+<li>
+<p>
+When you work on an activity yourself, but consult others, then you should
+include a statement identifies whom you consulted on what material.  This
+includes conversations with class members, tutors, lab assistants, other
+students, faculty, and any other people involved.  If you consulted one
+person on several parts on an assignment, you may summarize the collective
+help in an "Acknowledgment Section" rather on the individual problems
+&mdash; as long as the work makes clear who helped on what.  Overall, all
+consultations on problems must be cited for each problem or exercise.
+</p>
+</ul>
+
+<!--...................................................................-->
+<h2>
+<a name="cell-phones">Cell Phones, Text Messaging, and E-Community Devices</a>
+</h2>
+
+<p>
+Cell phones, text-messaging devices, and other social-networking
+connections may not be used in this class.   If you bring such equipment to
+the classroom, it must be turned off before the class starts and stay off
+throughout the class period.  Use of such equipment is distracting to those
+nearby and will not be tolerated.
+</p>
+
+<!--...................................................................-->
+<h2>
+<a name="accommodations">Accommodations</a>
+</h2>
+
+<P>
+
+If you have specific physical, psychiatric, or learning disabilities 
+and require accommodations, please let me know early in the semester so 
+that your learning needs may be appropriately met.  You will need to 
+provide documentation of your disability to the Director of Academic
+Advising.  Feel free to talk to me if you have questions or want more
+information.
+</p>
+
+<!--...................................................................-->
+<h2>
+<a name="grading">Grading</a>
+</h2> 
+
+<p>
+This instructor's grading philosophy dictates that the final grade should
+ultimately be based upon each student's demonstration of her or his
+understanding of the material, not on the performance of the class as a
+whole nor on a strict percentile basis.  The following scheme is proposed
+as a base for how the various assignments and tests will be counted in the
+final grade. 
+</p>
+
+<center>
+<table >
+<tr>
+  <td> Lab Write-ups:           15% &nbsp;&nbsp;&nbsp;
+  <td> Supplemental Problems:   15% &nbsp;&nbsp;&nbsp;
+  <td> Projects:                25% &nbsp;&nbsp;&nbsp;
+<!--
+</tr>
+<tr>
+-->
+  <td> Hour Tests:              25% &nbsp;&nbsp;&nbsp;
+  <td> Exam:                    20% &nbsp;&nbsp;&nbsp;
+</tr>
+</table>
+</center>
+
+</div> <!-- labcontent-->
+
+<div class="footer">
+<hr>
+
+<p>
+This document is available on the World Wide Web as
+</p>
+
+<div class="address">
+<PRE>
+     http://www.cs.grinnell.edu/~walker/courses/161.fa14/index.shtml
+</PRE>
+</div> <!-- address -->
+<hr>
+
+<table width="100%">
+<tr><td>
+   <em>created 25 April 2008 by Henry M. Walker</em><br>
+   <em>revised 13-28 August 2013, 9 October 2013, 1 November 2013 by Henry
+   M. Walker</em><br>
+   <em>revised 4-22 January, 8-9 February 2014 by Henry M. Walker</em><br>
+   <em>revised 9 June 2014 by Henry M. Walker</em>
+   </td>
+   <td rowspan="2" align="right">
+   <a href="http://validator.w3.org/check/referer"><img border="0" 
+      src="/~walker/valid-html401-blue.png" alt="Valid HTML 4.01!" height="31"
+      width="88"></a>
+   <a href="http://jigsaw.w3.org/css-validator/"><img border="0"
+       src="/~walker/vcss-blue.png" 
+       alt="Valid CSS!" height="31"
+       width="88"></a>
+   </td>
+</tr>
+
+<tr><td>
+   For more information, please contact 
+   <a class="footer-a" href="/~walker/">Henry M. Walker</a> at
+   <a  class="footer-a" href="mailto:walker@cs.grinnell.edu">walker@cs.grinnell.edu</a>.
+   </tr>
+</table>
+
+<hr>
+<!--#include file="copyright-notice.inc"-->
+
+</div> <!-- footer -->
+</div> <!-- body -->
+</body>
+</html>

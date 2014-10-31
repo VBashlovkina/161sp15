@@ -1,0 +1,704 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>Laboratory Exercise on Pointers in C</title>
+    <link rev="made" href="mailto:walker@cs.grinnell.edu">
+</head>
+
+<body>
+<div class="body">
+<!--#include virtual="header.inc"-->
+
+<div class="labcontent">
+<H1>Laboratory Exercise on Pointers in C</H1>
+
+<h2>Goals</h2>
+
+<p>
+This laboratory exercise provides practice with basic elements of pointers,
+addresses, values, and memory allocation in C.
+</p>
+
+<h2>Preparation before Class:</h2>
+
+<ul>
+<li>
+Review previous 
+    <ul>
+    <li>readings on basic control structures, arrays, and strings in C:
+    <li>labs on functions and parameters,
+    <a href="../arrays-functions/lab-functions-1.shtml">Part 1</a> and
+    <a href="../arrays-functions/lab-functions-2.shtml">Part 2</a>.
+    </ul>
+<li>
+Reading from text:
+    <ul>
+    <li>King:
+        <ul>
+        <li>Review: Chapter 11
+        <li> Read: Chapter 12 
+        </ul>
+    <li>K&amp;R:
+        <ul>
+        <li>Review: 5.1-5.2
+        <li>Read: 5.3-5.6 
+        </ul>
+    </ul>
+<li>Example:
+    <ul>
+    <li><a href="scribbler-movie.c ">scribbler-movie.c </a>
+    </ul>
+</ul>
+
+<h2>Contents:</h2>
+
+<ol class="withupperalpha">
+   <li>
+      <a href="#pointers-A">Printing Memory Addresses</a>
+   </li>
+   <li>
+      <a href="#pointers-B">Writing a Swap Function</a>
+   </li>
+    <li>
+      <a href="#pointers-C">Arrays are Pointers too</a>
+   </li>
+   <li>
+      <a href="#pointers-D">Allocating and Freeing Memory</a>
+   </li>
+   <li>
+      <a href="#pointers-E">Memory Leaks and Other Problems</a>
+   </li>
+</ol>
+
+<h2>Work Started in Class</h2>
+
+<h3><a name="pointers-A">Part A:  Printing Memory Addresses</a></h3>
+
+<ol>
+<li>
+<p>
+Write a short C program that declares and initializes (to any value you
+like) a <tt>double</tt>, an <tt>int</tt>, and a string. Your program should
+then print the address of, and value stored in, each of the variables. 
+</p>
+
+<ol class="withloweralpha">
+<li>
+  <p>
+    Use the format string <tt>"%u"</tt> to print the addresses as unsigned
+    (32-bit non-negative) integers.
+  </p>
+
+  <p>
+    <i>Reminders:</i>
+  </p>
+  <ul>
+    <li>
+      You can use the &amp; character to find addresses
+    <li>
+      1 byte = 8 bits, and a 32-bit integer requires the space of 4 bytes.
+  </ul>
+
+<li>
+  <p>
+    Draw a small memory diagram showing the location of each of the
+    variables in your program.  Are they allocated in the same order that
+    you declared them? Is there any empty space between them?
+  </p>
+
+<li>
+  <p>
+    Modify your program by rearranging the variable declarations and/or
+    changing the length of the string. (In particular, try a string that
+    uses 5 or 7 bytes, including the null terminator.) Does this change the
+    results you got previously?
+  </p>
+
+</ol>
+</ol>
+
+<h4>The take-home message:</h4> 
+
+<p>
+  Small changes within a program can change how memory is laid out for a
+  given program. The compiler will try to arrange memory for optimal
+  performance, and this may include aligning variables with 4-byte
+  boundaries. For C programmers, this can sometimes mean that a program
+  which appears to work correctly (but in fact overwrites the end of an
+  array), can suddenly stop working due to seemingly innocuous
+  changes&mdash;for example, changing the order in which variables are
+  declared.
+</p>
+
+
+<h3><a name="pointers-B">Part B:  Writing a Swap Function</a></h3>
+
+<p>
+  Consider the following code segment that swaps the values of two
+  variables <tt>x</tt> and <tt>y</tt>.
+</p>
+
+<div class="block">
+<pre>
+/* declare and initialize variables x and y */
+double x = 5.5;
+double y = 7.7;
+
+/* swap values for x and y using a temporary intermediate */
+double temp = x;
+x = y;
+y = temp;
+</pre>
+</div>
+
+<ol start=2>
+<li>
+<p>
+Include the above code segment into a program.
+</p>
+<ol class="withloweralpha">
+<li>
+Check that the given code does indeed swap the values of <tt>x</tt>
+and <tt>y</tt>, and describe how it works;  what is the purpose of the
+variable <tt>temp</tt>?
+<li>
+Explain what is wrong with the following alternative code segment
+<div class="block">
+<pre>
+/* declare and initialize variables x and y */
+double x = 5.5;
+double y = 7.7;
+
+/* WRONG --- but why to swap values for x and y */
+x = y;
+y = x;
+</pre>
+</div>
+</ol>
+
+<li>
+<p>
+Separate the code for swapping <tt>x</tt> and <tt>y</tt> into a
+separate <tt>swap</tt> function.  The function should have two parameters
+of type <tt>double</tt>.
+</p>
+
+<ol class="withloweralpha">
+<li>
+  <p>
+    Will the parameters have to pass values by value  or by reference?
+    Why will one approach work, while the other approach will not?
+  </p>
+
+<li>
+  <p>
+    Complete the code for the function <tt>swap</tt>.
+  </p>
+
+<li>
+  <p>
+    Write a driver function (i.e., <tt>main</tt>) to test
+your <tt>swap</tt> routine to be sure it works.
+</p>
+
+</ol>
+</ol>
+
+
+<h3><a name="pointers-C">Part C:  Arrays Names are Pointers Too</a></h3>
+
+<ol start=4>
+
+  <li>
+    <p>
+      Review program
+      <a href="../arrays-functions/max-min.c">max-min.c</a> from Step 6 of
+      the <a href="../arrays-functions/lab-arrays.shtml">lab on
+      arrays</a>.  In that lab, you wrote a
+      function <tt>find_max_min_avg</tt> that computed the maximum,
+      minimum, and average of the values in an array.  
+    </p>
+    
+<ol class="withloweralpha">
+  <li>
+    <p>
+      In a few sentences, explain how the function works and how it is
+      called.
+    </p>
+    <p>
+      <em>Remember: The name of an array is simply a pointer to the
+      first element of the array.</em>
+    </p>
+
+  <li>
+    <p>
+      Expand the <tt>main</tt> program, so that it calls the same function
+      with several arrays, printing the results each time.  (That is, the
+      function has one array parameter, but it is called in
+      the <tt>main</tt> program several times with arrays of different
+      names.)
+    </p>
+</ol>
+</ol>
+
+<h3><a name="pointers-D">Part D:  Allocating and Freeing Memory</a></h3>
+<p>
+When arrays were first discussed, an early application was to use the
+Scribbler 2 to take 3 pictures and then display those pictures in the order
+they were taken.  Program <a href="scribbler-movie.c">scribbler-movie.c</a>
+expands the former program slightly to take <tt>n</tt> pictures, display them in
+order, and then display them in reverse order.
+</p>
+
+<ol start=5>
+<li>
+<p>
+Copy and run <a href="scribbler-movie.c">scribbler-movie.c</a>, and review
+how the program works.
+</p>
+
+</ol>
+
+<p>
+Program <a href="scribbler-movie.c">scribbler-movie.c</a> takes advantage
+of a "Variable-Length Array (VLA)" option within 1999 Standard C.  The size
+of an array is a variable (<tt>numPics</tt>), and a value is assigned to
+this variable before space for the array is allocated.  This technique
+allows the user to specify the size of an array at run time; but once
+the array is declared, its size cannot be changed.
+</p>
+
+<ol start=6>
+<li>
+<p>
+Within <tt>scribbler-movie.c</tt>, replace
+</p>
+
+<div class="block">
+  <code>
+  Picture * pics[numPics];
+  </code>
+</div>
+
+<p>
+with the lines
+</p>
+
+<div class="block">
+  <code>
+    Picture **pics;<br>
+    pics = malloc (numPics * sizeof (Picture *));
+  </code>
+</div>
+
+<p>
+<i>Notes:</i>
+</p>
+
+<ul>
+<li>
+In this revised declaration, <tt>pics</tt> is a pointer to an array of
+picture references; that is, <tt>pics</tt> identifies the location of an array.
+<ul>
+<li>
+Each element in the <tt>pics</tt> array is a picture, so each element
+of <tt>pics</tt> has type <tt>Picture *</tt>. 
+<li>
+The pointer to an array of <tt>Picture *</tt> elements therefore has the
+type <tt>Picture * *</tt>.
+</ul><li>
+Since <tt>pics</tt> only indicates a location for an array, a program must
+allocate space for the array separately.  The <tt>malloc</tt> statement
+asks the operating system to perform this memory allocation.
+<li>
+Once declared and initialized, references to the <tt>pics</tt> array are
+exactly the same as in the original version.
+</ul>
+
+<ol class="withloweralpha">
+<li>
+<p>
+  Recompile and run the revised program <tt>scribbler-movie.c</tt>.
+</p>
+<li>
+  <p>
+    Draw a diagram of main memory for both the original and revised
+    versions of <tt>scribbler-movie.c</tt>.  In the diagram, show what
+    variables are stored on the run-time stack and what information (if
+    any) is stored elsewhere.
+</p>
+</ol>
+</ol>
+
+<ol start=7>
+<li>
+<p>
+Modify <tt>scribbler-movie.c</tt> further to
+obtain <tt>scribbler-movie-10.c</tt>, so that every time the Scribbler 2
+robot takes 10 pictures, it displays all of the pictures (from the first to
+the most recent).  This version of the program should not display the
+pictures in reverse order.
+</p>
+</ol>
+
+<h2>Homework</h2>
+
+<p>
+Consider the following problem:
+</p>
+
+<p>
+The Scribbler 2 is to take a long sequence of pictures:
+</p>
+<ul>
+<li>
+After each picture, the robot is to turn left slightly.
+<li>
+When a multiple of 10 pictures has been taken, all pictures are to be
+displayed (from the first to the last).
+</ul>
+
+<p>
+<i>Observations:</i>   
+</p>
+<ul>
+<li>
+This problem is similar to the revised <tt>scribbler-movie-10.c</tt>
+program, except that the user does not specify an initial bound on the
+number of pictures to be taken.
+<li>
+Since computers have a finite-sized memory, eventually the space required
+for the pictures will be exhausted.  However, this process could go on for
+some time before memory-allocation issues would be expected to arise.
+(In what follows, we largely will ignore this issue.)
+<li>
+This type of problem is not uncommon on various Web sites which display
+pictures of recent activities.  For example, weather forecasting sites may
+display the radar images for a region from the past half hour, hour, or
+longer.
+</ul>
+
+<p>
+One approach to this problem utilizes an array to store picture
+references &mdash; just as in  <tt>scribbler-movie-10.c</tt>.
+</p>
+
+<ul>
+<li>
+The program starts with a <tt>Picture *</tt> array of a specified size
+(e.g., room for 5 pictures).
+<li>
+Picture references are added to the array until it is full.
+<li>
+When all elements of current the array designate pictures:
+<ul>
+<li>
+new memory is allocated for twice the space of the previous array
+<li>
+picture references are copied from the old array to the new memory space
+<li>
+the old space is deallocated
+<li>
+the <tt>pics</tt> variable is changed to refer to the new array
+</ul>
+</ul>
+
+<ol start=8>
+<li>
+<p>
+Modify <tt>scribbler-movie-10.c</tt> to implement this new approach for
+handling many pictures without an initial designation of how many pictures
+might be taken.
+</p>
+</ol>
+
+<h3><a name="pointers-E">Part E:  Memory Leaks and Other Problems</a></h3>
+
+<ol start=9>
+<li>
+<p>
+Consider the following program. 
+</p>
+
+<div class="block">
+<code>
+#include &lt;stdio.h&gt;<br>
+#include &lt;stdlib.h&gt;<br>
+<br>
+#define FALSE 0<br>
+#define TRUE  1<br>
+<br>
+int main() {<br>
+&nbsp;&nbsp;int done = FALSE;<br>
+&nbsp;&nbsp;int j=0;<br>
+<br>
+&nbsp;&nbsp;while (!done) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;int n = 100000000;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;int* a = (int*)malloc(n * sizeof(int));<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;int i;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;for (i=0; i &lt; n; i++)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a[i] = i;<br>
+<br>   
+&nbsp;&nbsp;&nbsp;&nbsp;j++;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;printf("%d\n", j);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;return 0;<br>
+}<br>
+</code>
+</div>
+
+<ol class="withloweralpha">
+<li>
+<p>
+What is wrong with it? What do you expect it to do when run?
+</p>
+
+<li>
+<p>
+Now copy the program and run it. On my machine, it prints numbers up to
+around 30 before it crashes. How about yours? Do you understand why it
+crashes? 
+</p>
+
+<li>
+<p>
+Add the following code immediately after the <tt>malloc</tt> call to
+confirm your understanding. The library function <tt>perror()</tt>, declared
+in <tt>stdio.h</tt>, prints a message regarding the most recent error that
+occurred in any system or C library call. Thus, with this placement,
+<tt>perror</tt> will print any error that may occur related to
+<tt>malloc</tt>. (We will discuss system calls later in the course.) 
+</p>
+
+<div class="block">
+<code>
+if (!a) {<br>
+&nbsp;&nbsp;perror(NULL);<br>
+&nbsp;&nbsp;exit(1);<br>
+}<br>
+</code>
+</div>
+
+<p>
+If you still are not sure why the error occurred, please ask.
+</p>
+
+</ol>
+</ol>
+
+<h3>For interested readers who have time</h3>
+
+<p>
+In the next few exercises, you will experiment with a (non-GNU) Linux tool
+named <tt>Valgrind</tt> that can detect and report on several types of errors
+related to dynamic memory management. Actually, <tt>Valgrind</tt> is a
+suite of debugging tools; the specific <tt>Valgrind</tt> tool we will use
+is called <tt>Memcheck</tt>. According to the documentation at
+<a href="http://valgrind.org/">http://valgrind.org</a>, <tt>Valgrind</tt>
+is pronounced with a short <tt>i</tt> (like grinned), and the origins of
+the name are related to Norse mythology.
+</p>
+
+<ol start=10>
+<li>
+<p>
+Modify your program from the previous exercise so that it allocates (and
+fails to free) only ten arrays or so. Then build your program with a
+command like the following. Note that the <tt>-g</tt> option is necessary;
+<tt>Valgrind</tt> needs the debugging information it adds to the executable
+code. 
+</p>
+
+<div class="block">
+<code>
+gcc -Wall -o myprog -g myprog.c
+</code>
+</div>
+
+</ol>
+
+<p>
+<tt>Valgrind</tt> is a "virtual machine", which means that you will run
+<tt>Valgrind</tt>, and it will invoke your executable code line by
+line. This allows it to monitor your  use of memory and report related
+errors. It also adds a lot of overhead, so you may notice that it runs
+slowly. 
+</p>
+
+<ol start=11>
+<li>
+<p>
+Run your program with <tt>Valgrind</tt>, using a command like the
+following. (For future reference, if your program takes command-line
+arguments, you can simply add these to the end of the command line.) 
+</p>
+
+<div class="block">
+<code>
+valgrind --leak-check=yes ./myprog
+</code>
+</div>
+
+<p>
+Your output should include some header information about <tt>Valgrind</tt>,
+then the output of your program, and then some diagnostic information about
+the memory leak.
+</p>
+
+<p>
+Do not be misled by the line that says <tt>"ERROR SUMMARY: 0 errors from 0
+contexts"</tt>. This apparently relates to specific error types. Continue
+reading, and you should see <tt>"malloc/free: 10 allocs, 0 frees"</tt> and
+also the following.
+</p>
+
+<div class="block">
+==22813== LEAK SUMMARY:<br>
+==22813==&nbsp;&nbsp;&nbsp;&nbsp;definitely lost: 0 bytes in 0 blocks.<br>
+==22813==&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;possibly lost: 400,000,000
+bytes in 10 blocks.<br> 
+</div>
+
+<li>
+<p>
+Modify your code from the previous exercise to free the memory you
+have allocated. Note that you will need a call to free in each loop
+iteration, so that you can free the memory before you lose the pointer to it!
+</p>
+
+<p>
+Now rebuild your code, and run it with <tt>Valgrind</tt> to see the
+improved output message.
+</p>
+
+<li>
+<p>
+In this exercise, you will experiment with a few more memory-related
+errors <tt>Valgrind</tt> can catch.
+</p>
+
+<ol class="withloweralpha">
+<li>
+<p>
+Add an extra call to <tt>free()</tt> somewhere in your program. Then
+rebuild your program and take a look <tt>Valgrind's</tt> output. (After you
+have done so, remove the offending call again.)
+</p>
+
+<li>
+<p>
+Another common error that <tt>Valgrind</tt> can catch is accessing memory
+after it has been freed. To test this, you can add statements such as the
+following immediately after your call to <tt>free()</tt>. Go ahead and try
+it, noting that <tt>Valgrind</tt> tells you the line numbers where the errors
+occur, and then remove the offending code.
+</p>
+
+<div class="block">
+<code>
+a[0] = 5;<br>
+printf("a[0]=%d\n", a[0]);<br>
+</code>
+</div>
+
+<li>
+<p>
+<tt>Valgrind</tt> can also tell you when you access elements that
+are out-of-bounds of an allocated memory block. Modify your program to test
+this, noting what information <tt>Valgrind</tt> gives you about the
+error. (Then remove the error afterwards.)
+</p>
+
+
+<p>
+<em>Unfortunately, <tt>Valgrind</tt> can <em>not</em> detect out-of-bounds
+errors with statically allocated arrays. It can only do this for
+dynamically-allocated memory.</em>
+</p>
+</ol>
+
+<br>
+<br>
+<li>
+<p>
+Look at the on-line documentation for <tt>Valgrind</tt>:
+<a href="http://valgrind.org/">http://valgrind.org</a>. In particular, I
+suggest reading quickly through the "Quick Start" information, and also
+Sections 4.1 and 4.3 in the "User Manual".
+
+</ol>
+
+<!--#include file="body-footer.inc" -->
+
+</div>
+<div class="footer">
+
+<!--- CITATION -------------------------------- -->
+<!--
+<hr>
+<small><i>
+Created: March 28, 2007 [Marge Coahran]<br>
+Modified: April 1, 2008 [Marge Coahran]
+</i></small>
+
+HISTORY
+
+April 1, 2008:
+- minor edits and re-arrangements
+- replaced mtrace exercises with valgrind exercises
+
+-->
+<p>
+<hr><p>
+
+This document is available on the World Wide Web as
+
+<PRE>
+     http://www.cs.grinnell.edu/~walker/courses/161.fa14/lab-pointers.shtml
+</PRE>
+
+<hr>
+<table width="100%">
+<tr><td>
+   <em>created 27 March 2007</em> by Marge Coahran<br>
+   <em>revised 1 April 2008</em> by Marge Coahran<br>
+   <em>revised 11 April 2008</em> by Henry M. Walker<br>
+   <em>revised 25 January 2009</em> by Henry M. Walker<br>
+   <em>revised 4 April 2010</em> by Henry M. Walker<br>
+   <em>revised 9 August 2011</em> by David Cowden and Dilan Ustek<br>
+   <em>minor editing 8 November 2011</em> by Henry M. Walker<br>
+   <em>minor editing 21 November 2011</em> by Erik Opavsky<br>
+   <em>minor editing 21 November 2011</em> by Henry M. Walker<br>
+   <em>rewrite of Part D and simplification of Part E 21 August 2012</em> by Henry M. Walker<br>
+   <em>modest reorganization and editing 8-9 February 2014</em> by Henry M. Walker<br>
+   <em>readings added 19 September 2014</em> by Henry M. Walker
+   </td>
+   <td rowspan="2" align="right">
+   <a href="http://validator.w3.org/check/referer"><img border="0"
+      src="/~walker/valid-html401-blue.png" alt="Valid HTML 4.01!" height="31"
+      width="88"></a>
+   <a href="http://jigsaw.w3.org/css-validator/"><img border="0"
+       src="/~walker/vcss-blue.png"
+       alt="Valid CSS!" height="31"
+       width="88"></a>
+   </td>
+</tr>
+<tr><td>
+   For more information, please contact
+   <a class="footer-a" href="/~walker/">Henry M. Walker</a> at
+   <a class="footer-a" href="mailto:walker@cs.grinnell.edu">walker@cs.grinnell.edu</a>.
+   </tr>
+</table>
+
+<hr>
+<!--#include file="copyright-notice.inc"-->
+
+</div>
+</div>
+</body>
+</html>

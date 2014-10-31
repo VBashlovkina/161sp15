@@ -1,0 +1,179 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>scribblerlab.c:  A first C program using the Scribbler 2 robot</title>
+    <link rev="made" href="mailto:walker@cs.grinnell.edu">
+</head>
+
+<body>
+<div class="body">
+<!--#include file="header.inc"-->
+
+<div class="labcontent">
+
+<h1>scribblerlab.c:  A first C program using the Scribbler 2 robot</h1>
+
+<p>
+When a C program is used to control a Scribbler 2 robot, processing follows
+four main steps:
+</p>
+
+<ol>
+<li>
+<p>
+The program references the <code>MyroC</code> library, which contains 
+numerous operations for the Scribbler 2 robot.
+</p>
+
+<li>
+<p>
+The workstation establishes a wireless connection with the robot, using
+the command:  <code>rConnect("/dev/rfcomm0");</code>
+</p>
+
+<li>
+<p>
+Processing with the robot continues, using commands from
+the <code>MyroC</code> library. <br>
+For consistency in naming, all robot commands start with "<code>r</code>",
+such as <code>rConnect</code>, <code>rBeep</code>, and <code>rDisconnect</code> 
+</p>
+
+<li>
+<p>
+The workstation stops its wireless connect with the robot, using
+the command:  <code>rDisconnect();</code>.
+</p>
+</ol>
+
+
+<p>
+These steps are illustrated in the following program; steps for compiling
+and running the code follow the program listing.
+</p>
+
+<hr>
+<pre>
+/* This program illustrates how to connect to the Scribbler robot, beep, and disconnect. 
+ */
+
+#include "MyroC.h" // include the library for Scribbler commands
+
+int
+main()
+{
+  rConnect("/dev/rfcomm0"); // connect to Scribbler
+
+  rBeep(1,550); // beep for 1 second at a frequency of 550 Hz.
+
+  rDisconnect(); // disconnect from Scribbler
+
+  return 0; // return, indicating no errors have occurred
+} // main
+</pre>
+
+<hr>
+
+<h3>Compiling and Running Programs</h3>
+
+<p>
+From <a href="lab-linux-basics-3.shtml">the third lab on Linux basics</a>,
+the following lines should be placed at the bottom of your .bashrc file:
+    <br>
+    <br>
+    <code>
+ &nbsp;&nbsp;&nbsp;&nbsp;  ### MYRO LIBRARIES ### <br> <br>
+ &nbsp;&nbsp;&nbsp;&nbsp;  ## Myro C -- When using libMyroC.so ## <br>
+ &nbsp;&nbsp;&nbsp;&nbsp;  # include the location of the MyroC header # <br>
+ &nbsp;&nbsp;&nbsp;&nbsp;  C_INCLUDE_PATH="$C_INCLUDE_PATH:/home/walker/Myro/include/MyroC" <br> <br>
+ &nbsp;&nbsp;&nbsp;&nbsp;  # include the location of the MyroC shared library object file # <br>
+ &nbsp;&nbsp;&nbsp;&nbsp;  LIBRARY_PATH="$LIBRARY_PATH:/home/walker/Myro/lib" <br> <br>
+ &nbsp;&nbsp;&nbsp;&nbsp;  # make the libraries know to the execution environment # <br>
+ &nbsp;&nbsp;&nbsp;&nbsp;  LD_LIBRARY_PATH="$LS_LIBRARY_PATH:/home/walker/Myro/lib" <br>
+ &nbsp;&nbsp;&nbsp;&nbsp;  <br>
+ &nbsp;&nbsp;&nbsp;&nbsp;  export C_INCLUDE_PATH LIBRARY_PATH LD_LIBRARY_PATH <br> <br>
+ &nbsp;&nbsp;&nbsp;&nbsp;  ###################### <br>
+    </code>
+</p>
+
+<p>
+Assuming the program is called <code>scribblerlab.c</code>, compile the
+program using the following line in your terminal window:
+    <br>
+    <br>
+    <code>
+ &nbsp;&nbsp;&nbsp;&nbsp;gcc -lMyroC -o scribblerlab scribblerlab.c
+    </code>
+</p>
+
+<p>
+Once the program has been compiled (with compiled
+name <code>scribblerlab</code>):
+</p>
+
+<ul>
+<li>
+<p>
+Be sure the Scribbler 2 robot is turned on, with its lights on.
+<br>
+(If the program does not respond to subsequent commands, either turn it off
+and back on again, or press the "reset" button near the IPRE fluke card.)
+</p>
+
+<li>
+<p>
+Run the program in your terminal window just as  you would any C program:
+<br>
+ &nbsp;&nbsp;&nbsp;&nbsp;<code>./scribblerlab</code>
+</p>
+</ul>
+
+</div> <!-- labcontent-->
+
+<div class="footer">
+<hr>
+
+<p>
+This document is available on the World Wide Web as
+</p>
+
+<BLOCKQUOTE>
+<PRE>
+http://www.cs.grinnell.edu/~walker/courses/161.sp12/modules/getting-started/scribblerlab-annotated.shtml
+</PRE>
+</BLOCKQUOTE>
+
+<hr>
+<table width="100%">
+<tr><td valign=top>
+   <em>created created 18 July 2011</em> by Henry M. Walker<br>
+   <em>last revised 19 September 2011</em> by Henry M. Walker
+   </td>
+   <td valign=top rowspan="2" align="right">
+   <a href="http://validator.w3.org/check/referer"><img border="0"
+      src="/~walker/valid-html401-blue.png" alt="Valid HTML 4.01!" height="31"
+      width="88"></a>
+   <a href="http://jigsaw.w3.org/css-validator/"><img border="0"
+       src="/~walker/vcss-blue.png"
+       alt="Valid CSS!" height="31"
+       width="88"></a>
+   </td>
+</tr>
+
+<tr><td valign=top>
+   For more information, please contact
+   <a class="footer-a" href="/~walker/">Henry M. Walker</a> at
+   <a class="footer-a" href="mailto:walker@cs.grinnell.edu">walker@cs.grinnell.edu</a>.
+   </tr>
+</table>
+
+<hr>
+<!--#include file="copyright-notice-reading.inc"-->
+
+</div> <!-- footer -->
+</div> <!-- body -->
+</body>
+</html>

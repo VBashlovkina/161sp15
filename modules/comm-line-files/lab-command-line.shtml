@@ -1,0 +1,267 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>CSC 161 Lab. Exercise on Command-Line Arguments</title>  
+    <link rev="made" href="mailto:walker@cs.grinnell.edu">
+  </head>
+  <body>
+<body>
+<div class="body">
+<!--#include file="header.inc"-->
+
+<div class="labcontent">
+      <h1>Laboratory Exercise on Command-Line Arguments</h1>
+
+
+<h2>Introduction</h2>
+
+<p>Command-line arguments are a great way to give a program input right as
+  the program begins executing. The convention to do this is to give
+  your <tt>main</tt> function two arguments, <tt>argc</tt>
+  and <tt>argv</tt>. <tt>argc</tt> is an integer related to the number of
+  arguments passed in to the program, and <tt>argv</tt> is an array of
+  strings related to those arguments, and thus is declared as <tt>char *
+  argv [ ]</tt>. Let's explore how to use these.
+
+<h2>Preparation before Class</h2>
+
+<ul>
+<li>Reading from Text:
+    <ul>
+    <li>King, Section 13.7
+    <li>K&amp;R 5.10
+    </ul>
+<li>Reading:  <a href="string-processing.shtml">Working with strings</a>
+</ul>
+
+<h2>Work Started in Class</h2>
+
+<h3>argc</h3>
+
+<ol>
+  <li>
+    <p>
+      Write a program, args-example.c, in which the <tt>main</tt> function
+      is in the form: 
+    </p>
+<div class="block"> 
+<pre>
+   int main (int argc, char *argv[])
+</pre>
+</div>
+
+    <p>
+      The program should simply print out <tt>argc</tt>.
+    </p>
+
+    <p>
+      Compile and make the following calls:
+    </p>
+   <div class="block"> 
+     <ol class="withloweralpha">
+      <li><tt>./args-example</tt>
+      <li><tt>./args-example 1 2 3 4</tt>
+      <li><tt>./args-example a b c</tt>
+      <li><tt>./args-example "a b c"</tt>
+      <li><tt>./args-example `ls`</tt>
+      <li><tt>./args-example *a</tt>
+      <li><tt>./args-example hello goodbye good day bye</tt>
+    </ol></div>
+
+    <p>
+      What seems to be the general pattern for <tt>argc</tt>?
+    </p>
+
+</ol>
+
+<h3>argv[0]</h3>
+
+<p>
+  You may have noticed that <tt>argv</tt> is a <tt>char*</tt> array, or in
+  other words, an array of strings. Let's now look at the first element in
+  that array.
+</p>
+
+<ol start=2>
+
+<li>
+<p>
+Modify your program from exercise 1 so it also
+displays <tt>argv[0]</tt>. Then run all of the calls from exercise 1
+again. What is the pattern for <tt>argv[0]</tt>?
+</p>
+
+</ol>
+
+<h3>argv[i]</h3>
+
+<ol start=3>
+<li>
+<p>
+Now modify your program so that it displays every element
+in <tt>argv</tt>. You should be able to use <tt>argc</tt> to help you
+display all of them with a loop. Run all of the calls from exercise 1 one
+last time. What is the pattern for <tt>argv</tt>?
+</p>
+
+</ol>
+
+<h3>Commanding the Robot</h3>
+
+<ol start=4>
+<li>
+<p>
+Look over the program
+skeleton <a href="command-robot.c">command-robot.c</a>. Make sure you
+understand what the program is doing. This is just the skeleton to a
+program you will complete. Now complete the program by filling in the
+question marks so that it supports the following commands:
+</p>
+
+<ul>
+  <li>'l' = turn left
+  <li>'r' = turn right
+  <li>'f' = move forward
+  <li>'b' = move backward
+  <li>'s' = change speed
+</ul>
+
+<p> 
+in the following format: <tt>cd</tt>, where <tt>c</tt> is a command
+character and <tt>d</tt> is a double. Commands will be in the format 
+<tt>l3 b0.5 s.2 r1 b.7</tt>. It should support the four motion commands and
+also the 's' command to modify the speed at which the robot will
+move.
+</p>
+
+<p>
+<i>Hint:</i> C's standard library (&lt;stdlib&gt;) contains
+functions <tt>atoi</tt> and <tt>strtod</tt> that convert strings to
+integers and doubles, respectively.  Use the <tt>man</tt> command in a
+terminal command for details.
+</p>
+
+<li>
+<p>
+Test your program with the following commands and watch the robot to make
+sure it is working as intended:
+</p>
+
+<div class="block">
+  <ol class="withloweralpha">
+    <li>./command-robot f3 b1 l.5 s.5 r1 f1
+    <li>./command-robot s.1 f1 s.3 f1 s.5 f1 s.7 b1 s1 b1
+    <li>./command-robot f1 r2 b3 l3 s.6 b1 f1
+  </ol>
+</div>
+
+</ol>
+
+<h2>Homework</h2>
+
+<h3>Commanding with Flags</h3>
+
+<p>
+As you have surely discovered by now, most Linux utilities have "flag" options,
+where you give the utility a flag when you run it. One example you use whenever
+you compile is the -o
+flag, which you use with gcc when compiling a c program if you don't want your
+executable file to be named "a.out". Such flags are generally in the format -c,
+where c is the character of a particular flag. It would be useful to implement
+this with the robot command program.
+</p>
+
+<ol start=6><li><p>Implement the following five flags for your command-robot
+      program. Your implementation should have a precondition that the flag
+      arguments come before the command arguments.</p>
+
+<ol TYPE="a">
+  <li><p><tt>-r</tt> &mdash; This will reverse the order in which the inputted commands are executed.</p>
+
+  <li><p><tt>-s</tt> &mdash; This will set the the forwardness of the robot to "scribbler-forward".</p>
+
+  <li><p><tt>-f</tt> &mdash; This will set the the forwardness of the robot to "fluke-forward".</p>
+
+  <li><p><tt>-h</tt> &mdash; This will print out help information describing
+  what all of the flag and command options are.</p>
+
+  <li><p><tt>-z</tt> &mdash; This will force the speed to stay at 1 throughout
+  the entire run. The <tt>s</tt> command (not to be confused with the -s flag) will be unable to change the
+  speed of the robot.</p>
+</ol>
+
+<li><p>Test your program with various inputs and flags to make sure everything
+    works properly.</p>
+
+</ol>
+
+<h3><i>For those with extra time</i></h3>
+
+<p>In real utilities, the order and location of flags generally does not matter, and you can
+  even combine flags, so that instead of -c -d, where c and d are two different
+  flags, you can do -cd, or -dc, and the functionality will be the same.</p>
+
+<ol start=8>
+<li><p>Modify your program so that the order and location of flags does not
+    matter. One common method of doing this is going through all of your arguments
+    first to set the flags, and then executing the command arguments.</p>
+
+<li><p>Modify your program so that you can combine flags.</p>
+
+</ol>
+
+<!--#include file="body-footer.inc" -->
+
+</div>
+
+<div class="footer">
+
+<hr><p>
+
+This document is available on the World Wide Web as
+
+<BLOCKQUOTE>
+<PRE>
+    http://www.cs.grinnell.edu/~walker/courses/161.sp12/modules/module-comm-line-files/command-line-lab.shtml
+</PRE>
+</BLOCKQUOTE>
+
+<hr>
+
+<p>
+<table width="100%">
+<tr><td>
+
+   <em>created 5 August 2011 by Erik Opavsky</em><br>
+   <em>last revised 10 August 2011 by Erik Opavsky</em><br>
+   <em>revised 12 December 2011 by Henry M. Walker</em><br>
+   <em>reformatting 2 February 2014 by Henry M. Walker</em><br>
+   <em>readings added 19 September 2014 by Henry M. Walker</em>
+   </td>
+   <td rowspan="2" align="right">
+   <a href="http://validator.w3.org/check/referer"><img border="0" 
+      src="/~walker/valid-html401-blue.png" alt="Valid HTML 4.01!" height="31"
+      width="88"></a>
+   <a href="http://jigsaw.w3.org/css-validator/"><img border="0"
+       src="/~walker/vcss-blue.png" 
+       alt="Valid CSS!" height="31"
+       width="88"></a>
+   </td>
+</tr>
+
+<tr><td>
+   For more information, please contact
+   <a class="footer-a" href="http://www.cs.grinnell.edu/%7Ewalker/">Henry M. Walker</a> at
+   <a class="footer-a" href="mailto:walker@cs.grinnell.edu">walker@cs.grinnell.edu</a>.
+   </td></tr>
+</table>
+
+<hr>
+<!--#include file="copyright-notice.inc"-->
+
+</div>
+</div>
+</body>
+</html>

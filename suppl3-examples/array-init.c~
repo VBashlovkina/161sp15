@@ -1,0 +1,29 @@
+#include <stdio.h>
+
+/* program to illustrate array initialization */
+int main ()
+{
+
+  int a[26] = {0};
+  int b[26] = {7};
+
+  printf ("initialized array values\n")
+  int i;
+
+  printf ("index:    ");
+  for (i = 0; i < 26; i++)
+    printf ("%3d", i);
+  printf ("\n");
+
+  printf ("array a: ");
+  for (i = 0; i < 26; i++)
+    printf ("%3d", a[i]i);
+  printf ("\n");
+
+  printf ("array b: ");
+  for (i = 0; i < 26; i++)
+    printf ("%3d", b[i]);
+  printf ("\n");
+
+
+}

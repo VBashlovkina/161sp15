@@ -1,0 +1,404 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>CSC 161 Reading on Stacks</title>  
+    <link rev="made" href="mailto:walker@cs.grinnell.edu">
+</head>
+<body>
+<div class="body">
+<!--#include file="header.inc"-->
+<div class="labcontent">
+
+
+<h1>Stacks</h1>
+
+<h2>Abstract</h2>
+
+<p>
+This reading introduces the concept of an <i>Abstract Data Type (ADT)</i>
+and describes a <i>stack</i> as a specific example.
+</p>
+
+<h2>Acknowledgement</h2>
+
+<p>
+Most of this reading is an edited version of Henry M. Walker,
+<i>Introduction to Computing and Computer Science with Pascal</i>, Little,
+Brown, and Company, 1986, Sections 17.1-17.2, 17.4, with programming
+examples translated from Pascal to C.  This material is used with
+permission from the copyright holder.
+</p>
+
+<h2>Abstract Data Types</h2> 
+
+<p>
+When we want to work with data on a general level, we often need to
+describe two basic characteristics: the data we will be storing, and the
+operations we will want to perform on these data.  In computer science,
+these two characteristics combine to give the concept of an <i>abstract data
+type</i> or <i>ADT</i> which allows us to work with data on a conceptual
+level without worrying about various programming details.
+</p>
+
+<p>
+The <i>stack</i> discussed in this lab provides one example of an abstract
+data type.  The <i>queue</i>, discussed in
+a <a href="reading-queues.shtml">forthcoming lab</a>, provides a
+second example.
+</p>
+
+<h2>Stacks</h2>
+
+<p>
+A stack mimics the information that we might keep in a pile on our desk.
+For example, on our desk, we may keep separate piles for
+</p>
+
+<ul>
+<li>
+bills that need paying;
+<li>
+magazines that we plan to read; and
+<li>
+notes we have taken.
+</ul>
+
+<p>
+These piles have several properties.  First, each pile contains the same type
+of information (e.g., bills, magazines, or notes).  In addition, for each
+pile, we can do several tasks.
+</p>
+
+<ol class="withupperalpha">
+<li>
+We can add to the pile by putting information on the top.
+<li>
+We can take the top item off of our pile.
+<li>
+We can read the item on the top.
+<li>
+We can tell if a pile is empty. (There may be nothing at the spot where the
+pile should be.)
+</ol>
+
+<p>
+These operations allow us to do all of our normal processing of data at our
+desk.  For example, when we receive bills in the mail, we add them to our
+pile of bills until payday comes.  Then, we take our bills, one at a time,
+off the top of our pile and pay them until our money runs out.
+</p>
+
+<p>
+When discussing these operations, it is customary to call the addition of an
+item to the top of the pile a <i>Push</i> operation and the deletion of an
+item from the top a <i>Pop</i> operation. 
+</p>
+
+<p>
+More formally, a <i>stack</i> is defined as an abstract data type that can
+store data and that has the following operations:
+</p>
+
+<ul>
+
+<li>
+<i>Empty</i><br>
+<i>Empty</i> returns true or false, depending
+upon whether the stack contains any items or not.
+<li>
+<i>Full</i> (optional)<br>
+<i>Full</i> returns true or false, depending upon whether the stack
+contains as much data as it can hold.
+<li>
+<i>Push</i><br>
+If the stack is not full, <i>Push</i> adds the specified item to the top of
+the stack.<br>
+If the stack is full, nothing is added, and an error is reported.
+
+<li>
+<i>Pop</i><br>
+If the stack is not empty, <i>Pop</i> removes the top item from the stack,
+and this item is returned.<br>
+If the stack is empty, nothing is returned, and an error is reported.
+
+<li>
+<i>Top</i><br>
+If the stack is not empty, the top item is returned, but the contents of
+the stack are not changed.<br>
+If the stack is empty, nothing is returned, and an error is reported.
+
+</ul>
+
+<p>
+This specification says nothing about how we will program the various stack
+operations; rather, it tells us how stacks can be used.  We can also infer
+some limitations on how we can use the data.  For example, stack operations
+allow us to work with only the top item on the stack.  We cannot look at
+other pieces of data lower down in the stack without first using <i>Pop</i>
+operations to clear away items above the desired one.
+</p>
+
+<p>
+A <tt>Push</tt> operation always puts the new item on top of the stack, and
+this is the first item returned by a <tt>Pop</tt> operation.  Thus, the last
+piece of data added to the stack will be the first item removed.  For these
+functions (along with <tt>initialize</tt>), you have to pass a pointer to the top of the stack and cannot pass in
+the actual element, because you need the ability to modify the stack itself, not
+just a copy of the element on top.  For other functions which deal with the
+stack, you can generally pass in either a pointer to the top of the stack, or
+the actual element itself.
+</p>
+
+<h2>Implementation of Stacks by Arrays</h2> 
+
+<br clear=all>
+
+<img align=right src="stack-array.gif" alt="An Array Implementation of a
+Stack">
+
+<h3>Stacks in C</h3> 
+
+<p>
+One common implementation of a stack involves the use of an array.
+</p>
+
+<p>
+More precisely, we store each piece of data as an element of an array.  We
+place the first data item at one end of the array.  Then, for a <i>Push</i>
+operation, we add a data item to the next array element. For a <i>Pop</i>
+operation, we return the item at the top of our data, and we record that
+the top has moved down. This processing requires several parts, including an
+array (<i>StackArray</i>) of data to store our data items, a variable
+(<i>topPosition</i>) to keep track of our top element, and a constant
+(<i>MaxStack</i>) to keep track of the size of our array.  Conceptually,
+this setup fits together as shown in the figure.  Note that a stack implementation
+may have the <tt>topPosition</tt> as either the top element in the stack, or a
+pointer to the top empty element.  Both implementations of stacks are valid.
+</p>
+
+<p>
+With this figure, we trace what happens in our stack operations.  We start
+with topPosition equal to -1, since we have no data in the array.  Then, we
+perform a <i>Push</i>, we increment <i>topPosition</i> by one, and we store
+our new item in this new <i>topPosition</i>.  Similarly, for a <i>Pop</i>
+operation, we return the item at the <i>topPosition</i>, and we move the
+<i>topPosition</i> down by one.  Finally, for <i>Full</i> or <i>Empty</i>
+functions, we compare the <i>topPosition</i> with <i>MaxStack-1</i> or -1,
+respectively. 
+</p>
+
+<p>
+Additional details arise because we must check if the stack is full or
+empty before actually performing a <i>Push</i> or <i>Pop</i> operation,
+respectively.
+</p>
+
+<p>
+Finally, we note that sometimes it is convenient to package the
+elements together in a <tt>struct</tt>
+construction, perhaps with a <tt>typedef</tt>. For example, the
+following declarations might be used when the stack is to store 
+strings.
+</p>
+
+<div class="block">
+<pre>
+   #define MaxStack 50;  /* MaxStack stands for the size 
+                            of all stack arrays */
+
+   typedef struct {
+      int topPosition;
+      char * stackArray [MaxStack];
+   } stringStack;      /* type for a stack of strings */
+</pre></div>
+
+
+<br clear=right>
+
+
+<h2>Implementation of Stacks by Pointers</h2> 
+
+<p>
+The previous section on stacks described the use of arrays to implement
+this abstract data type.  That section utilized the following declarations and
+function prototypes: 
+</p>
+
+<div class="block">
+<pre>
+   #define MaxStack  50  /* MaxStack stands for the size of all stack arrays */
+
+   typedef struct {
+      int topPosition;
+      char * stackArray [MaxStack];
+   } stringStack;      
+
+  int empty (stringStack stack)
+  int full (stringStack stack)      
+  void initializeStack (stringStack * stack) 
+  char * pop (stringStack *stack) 
+  int push (stringStack *stack, char * item) 
+  char * top (stringStack stack)
+</pre></div>
+
+<p>
+In this section, we implement the same operations using lists and
+pointers. Further, since applications should consider only the conceptual
+operations of an abstract data type, not the implementation details, we
+will be careful that the new code we develop still uses exactly the same
+procedure and function headers as defined earlier for arrays. 
+</p>
+
+<p>
+When describing this new approach to a stack, we focus on the
+specification of the top of the stack, and we consider how to locate
+subsequent times in the stack after we perform a Pop operation. The
+following figure shows how such a structure could be organized.
+</p>
+
+<center>
+<img src="stack-lists-1.gif" alt="A List/Pointer Implementation of a Stack">
+</center>
+
+<p>
+In this picture, we store a stack Item in a record with a pointer to the
+next lower Item on the stack. Also, we use a pointer variable, which
+specifies the top record. 
+</p>
+
+<p>
+Now suppose that we decide to store string data within a node. 
+There are at least two choices to store the string data:
+</p>
+
+<ul>
+<li>
+<p>
+The node could store a pointer to a string, in which case the appropriate
+declarations for a stack with string data are:
+</p>
+
+<div class="block">
+<pre>
+   typedef stackNode * stringStack;
+   struct node {
+      char * stackArray;
+      struct stackNode * next;
+   } stackNode;     
+
+   stringStack stack;
+</pre>
+</div>
+
+<li>
+<p>
+The node could contain a copy of the data, leading to these declarations
+for string data.
+</p>
+
+<div class="block">
+<pre>
+   typedef stackNode * stringStack;
+   struct node {
+      char stackArray [MaxStringLength];
+      struct stackNode * next;
+   } stackNode;     
+
+   stringStack stack;
+</pre>
+</div>
+
+<p>
+In this case, we would copy an original string into the node for a <tt>push</tt>
+      operation.  A <tt>top</tt> or <tt>pop</tt> operation would allocate
+      new space (with <tt>malloc</tt>) for a new string to be returned;
+      then after the new space is allocated, the string stored at the top
+      of the stack would be copied into this new space.
+</p>
+
+<p>
+With these declarations, we initialize <tt>stack</tt> to <tt>NULL</tt> at
+the beginning of the program, and the Boolean expression 
+</p>
+
+<div class="block">
+	<tt>Stack == Nil</tt>
+</div>
+
+<p>
+allows us to test for an empty stack. Then the <tt>Push</tt>, <tt>Pop</tt>,
+and <tt>Top</tt> operations involve inserting, deleting, and reading items
+at the top of this list structure, respectively. With the use of dynamic
+storage allocation, there is no need to declare a list size initially, and
+the <tt>Full</tt> operation is not needed. However, for compatibility with the
+earlier array implementation of stacks, this function is still included
+and will always return <tt>False</tt>. The outlines of these operations are quite
+similar to the work in the earlier ones. Also, in the <tt>Pop</tt> operation, we
+<tt>free</tt> the list item once we have returned the appropriate
+information. The coding details for these operations are shown below.
+</p>
+
+<p>
+Once these functions and procedures are defined, we can use them just as we
+did before. In a program, we must include the appropriate stack
+declaration (shown earlier in this section); we must write out these
+procedures; and we must call the Initialization procedure. However, once
+these details are completed, the compatibility of the procedure and
+function headers allows us to use <tt>Empty</tt>, <tt>Push</tt>,
+<tt>Pop</tt>, and <tt>Top</tt> without change. Thus, while the
+implementation of stacks has changed dramatically, the use of stacks in
+applications is identical.
+</p>
+</div>
+
+<div class="footer">
+<p>
+<hr>
+
+<p>
+This document is available on the World Wide Web as
+</p>
+
+<pre>
+http://www.cs.grinnell.edu/~walker/courses/161.sp12/modules/module-pointers-stackes-queues/stacks-reading.shtml
+</pre>
+
+<hr>
+
+<table width="100%">
+<tr><td>
+   <em>created 28 April 1997 by Henry Walker</em><br>
+   <em>revised 4 April 2010 by Henry Walker</em><br>
+   <em>revised 17 August 2011 by April O'Neill</em><br>
+   <em>revised 5 December 2011 by Erik Opavsky</em>
+   </td>
+   <td rowspan="2" align="right">
+   <a href="http://validator.w3.org/check/referer"><img border="0" 
+      src="/~walker/valid-html401-blue.png" alt="Valid HTML 4.01!" height="31"
+      width="88"></a>
+   <a href="http://jigsaw.w3.org/css-validator/"><img border="0"
+       src="/~walker/vcss-blue.png" 
+       alt="Valid CSS!" height="31"
+       width="88"></a>
+   </td>
+</tr>
+
+<tr><td>
+   For more information, please contact
+   <a class="footer-a" href="http://www.cs.grinnell.edu/%7Ewalker/">Henry M. Walker</a> at
+   <a class="footer-a" href="mailto:walker@cs.grinnell.edu">walker@cs.grinnell.edu</a>.
+   </td></tr>
+</table>
+
+<hr>
+<!--#include file="copyright-notice-reading.inc"-->
+
+</div>
+</div>
+</body>
+</html>
+
+
+

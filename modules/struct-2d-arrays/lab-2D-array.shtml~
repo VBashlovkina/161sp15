@@ -1,0 +1,576 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <title>CSC 161 Lab. Exercise on Two Dimensional Arrays</title>  
+  <link rev="made" href="mailto:w<h2>Homework</h2>
+alker@cs.grinnell.edu">
+</head>
+<body>
+<div class="body">
+<!--#include file="header.inc"-->
+
+<div class="labcontent">
+
+<h1>Laboratory Exercise on Two Dimensional Arrays</h1>
+
+
+<h2>Introduction</h2>
+
+<p>
+In C, [one-dimensional] arrays provide a mechanism to access a sequence of
+data using a single index, such as <tt>item[0], item[1], item[2],
+    ...</tt>.  Similarly, C supports the organization of data in a table by
+specifying a row and a column:
+</p>
+
+<img align=left src="2D-array.jpg" alt="2 dimensional array" width="50%">
+
+<p>
+As with one-dimensional arrays, two-dimensional arrays can contain data of
+any type, although each entry in a table must have the same type.  Also,
+the size of a two-dimensional array must be declared when it is first
+defined:
+</p>
+
+<pre>
+   int table [5][10];
+</pre>
+
+<p>
+When using a two-dimensional array as a parameter, the declaration of a
+procedure header must know the number of columns in the table (so the
+computer knows when one row stops and the next starts).  As with
+1-dimensional arrays, a procedure header does not need to specify the
+number of rows in the table.  Thus, if the above <tt>table</tt> were passed
+to a <tt>printArray</tt> procedure, the header of <tt>printArray</tt> might
+be given as follows:
+</p>
+
+<pre>
+   void printArray (int arr[][10])
+</pre>
+
+<p>
+The sample program <a href="2D-array-with-proc.c">2D-array-with-proc.c</a>
+shows a 2-dimensional array declared in <tt>main</tt> and passed to
+a <tt>printArray</tt> procedure.
+</p>
+
+<p>
+Altogether, two dimensional arrays are a wonderful way to store lots of
+  data which would normally require lots of arrays!
+</p>
+
+<br clear=left>
+
+<h2>Work Started in Class</h2>
+
+<h3>Initial Experiments</h3>
+
+<ol>
+<li>
+<p>
+<i>The following program will not compile.</i> Copy the
+program <a href="2D-array.c">2D-array.c</a> and look over the various array
+declarations.
+</p> 
+
+<p>
+The program is supposed to print out the sizes of each of the valid arrays
+and all of their rows one by one. Note that an integer is 4 bytes, and
+arrays in the program are arrays of integers.  Thus, to find the size of an
+array the program multiplies how many integers are in the array by the size
+of an integer, which is 4 bytes. This is why you get 4 times the number of
+things there are in the array.
+</p>
+
+<ol class="withloweralpha">
+<li>
+<p>
+Which array declarations are invalid and are preventing the program from
+compiling? Do you see a pattern of when it is invalid? Comment out the
+lines that are not working.
+</p>
+
+<li>
+<p>
+Write in comments next to each array what the size of the whole array is
+and what the size of each row is?
+</p>
+
+<li>
+<p>
+How many elements does each array hold?
+</p>
+
+<li>
+<p>
+Write loops to display the contents of each array. You should
+use seperate nested <tt>for</tt> loops for each array.
+</p>
+
+<li>
+<p>
+Check whether you were correct on how many elements each array holds.
+</p>
+
+<li>
+<p>
+Add another array, <tt>array6[][]</tt>, which has the numbers
+(0, 1, 2, 3) in the first row, (2, 4, 6, 8) in the second row, and
+(3, 6, 9, 12) in the third row.  Display the array once you have
+declared and initialized it.
+</p>
+
+</ol>
+</ol>
+
+<h3>2D Arrays in Songs</h3>
+
+<ol start=2>
+<li>
+<p>
+Recall the program <a href="array-move.c">array-move.c</a>.  While this
+program is nice, we could make it even more concise with two dimensional
+arrays!
+</p>
+
+<ol class="withloweralpha">
+<li>
+<p>
+Write an array of <tt>motion</tt> structures (which store a speed and a
+time) and perform the motions by looping through the structs.
+</p>
+
+<li>
+<p>
+What would the size of a two dimensional array which stores both the speed
+and the time of each motion have to be?
+</p>
+
+<li>
+<p>
+Write a two dimensional <tt>double</tt> array to store all of the
+motions. Then perform all of the motions with a loop.
+</p>
+
+<li>
+<p>
+Write a few sentences discussing the merits and potential hazards of using
+the <tt>structs</tt> method and 2D arrays method.
+</p>
+
+</ol>
+</ol>
+
+<h3>Transforming Pictures</h3>
+
+<p>
+Conceptually, pictures have a similar two-dimensional organization as
+two-dimentional arrays of Pixels.  
+</p>
+
+<ul>
+<li>
+<p>
+<i>Similarlity:</i>  You can iterate through pixel in an picture using
+nested loops to access a row and a column,  in much the same
+way you would iterate through a 2D Pixel array.
+</p>
+
+<li>
+<p>
+<i>Difference:</i>  In a 2D Pixel array, access to a specific Pixel would
+have the form 
+</p>
+
+<div class="block">
+<pre>
+  Pixel rGetPicturePixel (Picture * pic, int row, int col);
+  void rSetPicturePixel (Picture * pic, int row, int col, Pixel pix);
+</pre>
+</div>
+
+<p>
+to retrieve or change a pixel within a picture.  See the
+<a href="../../MyroC.h">MyroC header file</a> for additional details.
+</p>
+</ul>
+
+<ol start=3>
+<li>
+<p>
+Write a function, <tt>void colorToGray (Picture * pic)</tt>, which takes in
+a Picture * and then converts each pixel to its grayscale value. A
+grayscale pixel is a pixel where the RGB are all set to 30% of the red
+value + 59% of the green value + 11% of the blue
+value <i>(source: <a href="http://en.wikipedia.org/wiki/Grayscale">wikipedia.org/Grayscale</a>)</i>. Your
+function should then display the Picture. Test this out on a few pictures
+you take with your robot.
+</p>
+
+<p>
+<i>Note:</i>  When a picture is represented in a grayscale, the red, green,
+and blue values of each pixel should be identical.  Thus, in this problem,
+you will need to compute the composite value:  30% of the red
+value + 59% of the green value + 11% of the blue
+value.  Then, this composite should be assigned to the red, green, and blue
+components of a pixel.
+</p> 
+
+<li>
+<p>
+Write a function, <tt>void setPictureMax (Picture * pic)</tt>, which finds
+what the highest of the RGB of each pixel is and sets that pixel to just
+that value (e.g. a pixel of RGB (50,135,85) will have a new RGB of
+(0,135,0)). That is, <tt>setPictureMax</tt> should not change the RGB value
+of the color with the highest value, but the other two colors should be set
+to 0.
+</p>
+
+<p>
+Your function should then display the Picture. Test this out on a few
+pictures you take with your robot.
+</p>   
+
+</ol>
+
+<h3>2D Array Storage</h3>
+
+<img align=right src="array-storage.png" alt="array storage" width="50%">
+
+<p>
+Now that we have some basic experience with two-dimensional arrays, we need
+to examine more closely how these arrays are stored in main memory.
+Suppose an array is declared:
+</p>
+
+<div class="block">
+<pre>
+ table [row][col];
+</pre>
+</div>
+
+<p>
+where <tt>row</tt> and <tt>col</tt> have been previously specified as
+integer values.  A schematic of the array is shown to the right.
+</p>
+
+<p>
+In main memory, the two-dimensional array <tt>table</tt> is stored
+row-by-row.  First, row 0 is stored, then row 1, then row 2, etc.  Such a
+storage configuration is called <b>row-major</b> order.  Note that no extra
+memory is used to separate one row from another; the elements of one row
+immediately follow the elements of the previous row.
+</p>
+
+<p>
+With this storage configuration, the location of any array element can be
+computed very quickly.  To locate element <tt>table[i][j]</tt>, one
+proceeds as follows:
+</p>
+
+<ul>
+<li>
+Start at the base address given by the <tt>table</tt> variable.
+<li>
+Skip over <tt>i</tt> rows; this involves <tt>i * col</tt> elements.
+<li>
+Skip over <tt>j</tt> elements in the given row.
+</ul>
+
+<p>
+Altogether, the element <tt>table[i][j]</tt> may be found at
+address <tt>table + i*col + j</tt>.  That is, the element itself may be
+referenced with the computation
+</p>
+
+<div class="block">
+<pre>
+element = *(table + i*col + j);
+</pre>
+</div>
+
+<p>
+One consequence of this computation is that the compiler must know how many
+columns are in a two-dimensional array into order to determine where an
+array element might be.  In particular, the signature of a procedure
+involving a two-dimensional array must include the number of columns.  As
+with one-dimensional arrays, the number of rows need not be specified, as
+the computation of an element is valid for any <tt>i</tt> and <tt>j</tt>,
+as long as the number <tt>col</tt> is known.
+</p>
+
+<p>
+In practice, column information may be included in a procedure header in
+either of two ways:
+</p>
+
+<ul>
+<li>
+<p>
+If <tt>col</tt> is an <tt>int</tt> variable declared globally in the
+program, then a procedure may have the header:
+</p>
+
+<div class="block">
+<pre>
+   void proc (int table [] [col]);  // col declared globally
+</pre>
+</div>
+
+<li>
+<p>
+Alternatively, <tt>col</tt> can be passed to the procedure as part of the
+parameters:
+</p>
+
+<div class="block">
+<pre>
+   void proc (int col, int table [] [col]);  // col passed as parameter
+</pre>
+</div>
+</ul>
+
+<br clear=all>
+
+<p>
+The following exercises explore the storage and use of two-dimensional
+arrays further.
+</p>
+
+
+<h3>Declarations, Revisited</h3>
+<p>
+  <i>The following exercise is from Samuel Rebelsky's lab on
+  multi-dimensional
+  arrays: <a href="/~rebelsky/Courses/CSC161/2011S/Labs/multi-arrays-lab.html#multi-arrays-05">multi-dimensional
+  arrays</a></i>
+</p>
+
+<ol start=5>
+  <li>
+    <p>
+      Consider the following code:
+    </p>
+   <div class="block">
+     <pre>
+    int rabbit[2][3] = { 1, 2, 3, 4, 5, 6 };
+    int r, c;
+
+    for (r = 0; r < 2; r++)
+        for (c = 0; c < 3; c++)
+            printf ("rabbit[%d,%d] = %d\n", r, c, rabbit[r][c]);
+     </pre>
+   </div>
+                          
+<ol TYPE="a">
+  <li>
+    <p>
+      What do you expect to happen when you try to compile this code inside
+      of a <tt>main()</tt> method?
+    </p>
+  <li>
+    <p>
+      Check your answer experimentally.
+    </p>
+  <li>
+    <p>
+      What do you expect to happen when you try to run this code?
+    </p>
+  <li>
+    <p>
+      Check your answer experimentally.
+    </p>
+</ol>
+
+  <li>
+    <p>
+      Now replace your display loops with the following code:
+    </p>
+    <div class="block">
+      <pre>
+     for (c = 0; c < 3; c++)
+         for (r = 0; r < 2; r++)
+             printf ("rabbit[%d,%d] = %d\n", r, c, rabbit[r][c]);
+      </pre>
+    </div>
+                          
+<ol TYPE="a">
+  <li>
+    <p>
+      What do you expect to happen when you try to run this code?
+    </p>
+  <li>
+    <p>
+      Check your answer experimentally.
+    </p>
+</ol>
+    
+
+<p>
+What is going on here is that two dimensional arrays are actually stored in
+memory as single dimensional arrays, laid out row after row.  (As noted
+earlier, this is called <i>row-major form.</i>) There are some cool things
+which you can do with this, such as putting a Picture * into a two
+dimensional Pixel array with a function that treats the <tt>Pixel[][]</tt>
+array as a single dimensional Pixel array.  You will see this shortly.
+</p>
+</ol>
+
+
+<h2>Homework</h2>
+
+<h3>Transforming Pixel Arrays</h3>
+
+<p>
+Since pictures are logically two-dimensional structures,
+many algorithms for transforming pictures involve looping over the rows and
+columns of the structures to adjust each pixel. Sometimes, however, it is
+convenient to consider the pixels within a picture as a long,
+one-dimensional array.
+</p>
+
+<p>
+Program <tt>convert-picture.c</tt> contains procedures to transform a
+picture from a Scribbler 2 camera to a two-dimensional array of pixels and
+to a one-dimensional array of pixels.
+</p>
+
+<ol start=7>
+
+<li>
+<p>
+Copy program <a href="convert-picture.c">convert-picture.c</a> to your
+account, compile it (using MyroC), and run it.
+</p>
+
+<ol class="withloweralpha">
+<li>
+Focusing upon the procedures <tt>picToPix2DArray</tt>
+and <tt>pix2DArrayToPic</tt>, explain how the code works:
+<ul>
+<li>
+Within each procedure, how does the computer know the size (height and
+width) of the picture?
+<li>
+How are pixels retrieved or modified in the picture?
+<li>
+How is the two-dimensional array <tt>pixArray</tt> declared and used?
+</ul>
+
+<li>
+<p>
+The shell of the procedure <tt>flipPicUpsideDown</tt> calls procedures
+for two-dimensional array processing.  Complete this procedure by moving
+pixels within each column of the picture.
+</p>
+
+<p>
+<i>Hint:</i>  If <tt>a</tt> and <tt>b</tt> are two values of type <tt>T</tt>,
+  then interchanging the values in these variables cannot be done easily
+  with simple assignments:
+</p>
+
+<div class="block">
+<pre>
+a = b;
+b = a;
+</pre>
+</div>
+
+<p>
+In this code, the original value of <tt>a</tt> is overwritten in the first
+assignment, so there is no way to give <tt>b</tt> the original value
+of <tt>a</tt>.  Instead, in normal processing, interchanging the values of
+two variables requires an additional storage location:
+</p>
+
+<div class="block">
+<pre>
+T temp = a;   // declare temporary variable strong data of the relevant type
+a = b;
+b = temp;
+</pre>
+</div>
+
+</ol>
+
+<li>
+<p>
+Focus on the parts of program <tt>convert-picture.c</tt> related to
+one-dimensional array processing.
+</p>
+
+<ol class="withloweralpha">
+<li>
+Why do procedures <tt>picToPix1DArray</tt> and <tt>pix1DArraytoPic</tt> not
+need a parameter <tt>width</tt> in their signature?
+<li>
+Why does the computation <tt>i*width + j</tt> place pixel information in an
+appropriate place within a 1-dimensional array?
+
+<li>
+The shell of the procedure <tt>flipPicLeftToRight</tt> calls procedures
+for one-dimensional array processing.  Complete this procedure by moving
+pixels within each row of the picture.
+</ol>
+
+</ol>
+
+<!--#include file="body-footer.inc" -->
+
+</div>
+
+<div class="footer">
+
+<hr><p>
+
+This document is available on the World Wide Web as
+
+<BLOCKQUOTE>
+<PRE>
+     http://www.cs.grinnell.edu/~walker/courses/161.sp14/modules/struct-2d-arrays/lab-2D-array.shtml
+</PRE>
+</BLOCKQUOTE>
+
+<hr>
+
+<p>
+<table width="100%">
+<tr><td>
+   <em>created 2 August 2011 by Erik Opavsky</em><br>
+   <em>revised 8 August 2011 by Erik Opavsky</em><br>
+   <em>modest editing 23 October 2011 by Dilan Ustek and Henry M. Walker</em><br>
+   <em>modest reformatting 6 November 2011 by Henry M. Walker</em><br>
+   <em>minor editing 25 October 2013 by Henry M. Walker</em><br>
+   <em>reformatting, modest editing, discussion of 2D storage 1-2 February 2014 by Henry M. Walker</em>
+   
+   </td>
+   <td rowspan="2" align="right">
+   <a href="http://validator.w3.org/check/referer"><img border="0" 
+      src="/~walker/valid-html401-blue.png" alt="Valid HTML 4.01!" height="31"
+      width="88"></a>
+   <a href="http://jigsaw.w3.org/css-validator/"><img border="0"
+       src="/~walker/vcss-blue.png" 
+       alt="Valid CSS!" height="31"
+       width="88"></a>
+   </td>
+</tr>
+
+<tr><td>
+   For more information, please contact
+   <a class="footer-a" href="http://www.cs.grinnell.edu/%7Ewalker/">Henry M. Walker</a> at
+   <a class="footer-a" href="mailto:walker@cs.grinnell.edu">walker@cs.grinnell.edu</a>.
+   </td></tr>
+</table>
+
+<hr>
+<!--#include file="copyright-notice.inc"-->
+
+</div>
+</div>
+</body>
+</html>

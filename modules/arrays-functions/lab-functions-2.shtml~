@@ -1,0 +1,464 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <title>CSC 161 Lab. Exercise on Functions, Part 2:  Value and Reference Parameters</title>  
+  <link rev="made" href="mailto:walker@cs.grinnell.edu">
+</head>
+
+<body>
+<div class="body">
+<!--#include virtual="header.inc" -->
+
+<div class="labcontent">
+
+<h1>Laboratory Exercise on Functions, Part 2:  Value and Reference Parameters</h1>
+
+<h2>Preparation before Class</h2>
+
+<ul>
+<li>Reading from Text
+    <ul>
+    <li>King: Section 9.3, pages 191-200
+    <li>K&amp;R:  1.7, 4.1-4.3
+    </ul>
+<li>    Examples
+    <ul>
+    <li><a href="perim-area-1.c">perim-area-1.c</a>
+    <li><a href="perim-area-2.c">perim-area-2.c</a>
+    <li><a href="perim-area-2a.c">perim-area-2a.c</a>
+    <li><a href="amp-example.c">amp-example.c</a>
+    <li><a href="/~walker/c/examples/lab2-1.c">/home/walker/c/examples/lab2-1.c</a>
+    <li><a href="/~walker/c/examples/lab2-2.c">/home/walker/c/examples/lab2-2.c</a>
+    <li><a href="/~walker/c/examples/lab2-3.c">/home/walker/c/examples/lab2-3.c</a>
+    </ul>
+</ul>
+
+<h2>Work Started in Class</h2>
+
+<h3>Finding the Perimeter and Area of a Rectangle</h3>
+
+<p>
+In the <a href="lab-functions-1.shtml">previous lab</a>, you were asked to
+write two functions related to circles:  one computed the circumference
+given the radius, and the second computed the area given the radius.
+Following the same approach,
+program <a href="perim-area-1.c">perim-area-1.c</a> computes the perimeter
+and area of a rectangle, given the lengths of the two sides.
+</p>
+
+<ol>
+<li>
+<p>
+Copy <a href="perim-area-1.c">perim-area-1.c</a> to your account. compile
+and run it, and review how the program works.
+</p>
+
+<ol class="withloweralpha">
+<li>
+<p>
+Following the approach of the <a href="lab-functions-1.shtml">previous
+    lab</a>, draw a schematic diagram of main memory after the
+    function <tt>perimeter</tt> has been called; and draw a second schematic
+    diagram of main memory after the function <tt>area</tt> has been called.
+</p>
+
+<li>
+<p>
+In C, the address operator (&amp;) allows one to determine the location in
+main memory where a variable is located.  Make the following insertions
+into perim-area-1.c:
+</p>
+
+<p>
+Insert into <tt>perimeter</tt> just before the <tt>return</tt> statement:
+</p>
+
+<div class="block">
+<pre>
+  printf ("parameter side1:  location: %u, value: %lf\n", &amp;side1, side1);
+  printf ("parameter side2:  location: %u, value: %lf\n", &amp;side2, side2);
+  printf ("local lengthPlusWidth:  location: %u, lengthPlusWidth: %lf\n", &amp;lengthPlusWidth, lengthPlusWidth);
+</pre>
+</div>
+
+<p>
+Insert into <tt>area</tt> just before the <tt>return</tt> statement:
+</p>
+
+<div class="block">
+<pre>
+  printf ("parameter side1:  location: %u, value: %lf\n", &amp;side1, side1);
+  printf ("parameter side2:  location: %u, value: %lf\n", &amp;side2, side2);
+</pre>
+</div>
+
+<p>
+Insert into <tt>main</tt> just before the <tt>return</tt> statement:
+</p>
+
+<div class="block">
+<pre>
+  printf ("variable length:  location: %u, value: %lf\n", &amp;length, length);
+  printf ("variable width:   location: %u, value: %lf\n", &amp;width, width);
+  printf ("variable perim:   location: %u, value: %lf\n", &amp;perim, perim);
+  printf ("variable area:    location: %u, value: %lf\n", &amp;ar, ar);
+</pre>
+</div>
+
+<p>
+<i>Note:</i> In this code, format <tt>%u</tt> prints a decimal integer, but
+ignores any initial minus sign.  (We will talk more about signed and
+unsigned integers later in the course, when we study the representation of
+different types of data within a computer.)
+</p>
+
+<p>
+Recompile and rerun your program.  To interpret the output, suppose that
+the first print statement in the <tt>perimeter</tt> function produced the
+output:
+</p>
+
+<div class="block">
+<pre>
+  parameter side1:  location: 28580, value: 5.00000
+</pre>
+</div>
+
+<p>
+This indicates that the parameter <tt>side1</tt> corresponds to memory
+location 28580, and the value 5.0 is stored there.  This part of the
+schematic diagram might look like:
+</p>
+
+<hr>
+
+<center>
+<img align=right src="perim-area-diam1.png" alt="main">
+</center>
+
+<br clear=all>
+
+<hr>
+
+<p>
+Use the address information from the inserted print statements to annotate
+the schematic diagrams from Step 1a with the actual locations or addresses
+where each parameter and variable was stored.
+</p>
+</ol>
+</ol>
+
+<p>
+Program <a href="perim-area-1.c">perim-area-1.c</a> computed perimeter and
+area in two functions, because each function can only return one value.  To
+obtain more than one result from a function, we have to change the nature
+of the parameters.  This is illustrated
+in <a href="perim-area-2.c">perim-area-2.c</a>
+</p>
+
+<h3>Value and Reference Parameters</h3>
+
+<p>
+<b>Be sure you have completed the reading on value and reference parameters
+  before continuing with this lab!</b>
+</p>
+
+<ol start=2>
+<li>
+<p>
+Copy <a href="perim-area-2.c">perim-area-2.c</a>, compile and run it, and
+check that it produces exactly the same output as <tt>perim-area.1.c</tt>
+</p>
+
+<p>
+To understand how <tt>perim-area-2.c</tt> works, several print statements
+have been added to yield program 
+<a href="perim-area-2a.c">perim-area-2a.c</a>.  Compile and run this
+program.
+</p>
+
+<p>
+When the program was run on one machine, the program generated the
+following output:
+</p>
+
+<div class="block">
+<pre>
+working with a rectangle of width 7.000000 and length 5.000000
+compute:  addresses, values, and pointer references
+             side1:  address: 640370600, value: 5.000000
+             side2:  address: 640370592, value: 7.000000
+   lengthPlusWidth:  address: 640370616, value: 12.000000
+   perimeter:        address: 640370584, value: 640370664, *perimiter: 24.000000
+   area:             address: 640370576, value: 640370656, *area: 35.000000
+the rectangle's perimeter is 24.000000
+the rectangle's area is 35.000000
+main:  variable addresses and values
+   length:  address: 640370680, value: 5.000000
+   width:   address: 640370672, value: 7.000000
+   perim:   address: 640370664, value: 24.000000
+   ar:      address: 640370656, value: 35.000000
+</pre>
+</div>
+
+<p>
+This information gives rise to the following schematic for main memory that
+would have been encountered immediately before thwidthe <tt>compute</tt>
+procedure finished.
+</p>
+
+<hr>
+<img align=middle src="perim-area-diam2.png" alt="main">
+<br clear=all>
+<hr>
+
+<p>
+As we shall discover later in the course, each <tt>double</tt> requires 8
+units (technically called <i>bytes</i>) of memory, so many of the locations
+give are 8 numbers apart.
+</p>
+
+<ol class="withloweralpha">
+<li>
+<p>
+Explain why the values stored in main memory for <tt>side1</tt>
+and <tt>side2</tt> duplicate the numbers stored in main memory
+for <tt>length</tt> and <tt>width</tt>, respectively.
+</p>
+
+<li>
+<p>
+The print statement involving <tt>perimeter</tt> in <tt>compute</tt>
+indicates
+</p>
+
+<ul>
+<li>
+the address of <tt>perimeter</tt> (i.e., <tt>&amp;perimeter</tt>) is 640370584; that is the
+variable <tt>perimeter</tt> is stored at location 640370584
+<li>
+the value stored for <tt>perimeter</tt> is 640370664; note that this is the
+location of the <tt>perim</tt> variable in <tt>main</tt>
+<li>
+the value referenced by the location stored in <tt>perimeter</tt> (i.e.,
+the value stored in <tt>perim</tt>) is 24.00000.
+</ul>
+
+<p>
+Write similar statements about what is printed regarding the
+parameter <tt>area</tt>.
+</p>
+
+</ol>
+</ol>
+
+<ol start=3>
+<li>
+<p>
+In the <a href="lab-functions-1.shtml">previous lab</a>, you wrote two
+functions that computed the circumference and the area of a circle.  
+Write a new version of your solution, so that
+the program has just one procedure <tt>circleCompute</tt> that 
+has three parameters, the radius of a circle, the circumference, and the
+area. <tt>circleCompute</tt> has a <tt>void</tt> return type, but takes the
+radius as input and returns the circumference and area as changed
+parameters.  (You will need to pass in the addresses of the circumference and
+area variables from your <tt>main</tt> procedure.)
+</p>
+
+<li>
+<p>
+Copy program <a href="amp-example.c">amp-example.c</a> to your account.
+</p>
+
+<ol class="withloweralpha">
+<li>
+Write a few sentences explaining what the program does.
+<li>
+Draw a schematic diagram of main memory for just
+before <tt>valIncrease</tt> finishes.
+<li>
+Draw another schematic diagram of main memory for just
+before <tt>refIncrease</tt> finishes.
+</ol>
+<li>
+<p>
+Consider the program <a
+href="/~walker/c/examples/lab2-1.c">/home/walker/c/examples/lab2-1.c</a>.
+</p>
+
+<ol type="a">
+<li>
+Copy this program to your account.
+
+<li>
+Compile and run this program.  Explain each value printed.
+
+<li>
+Draw a schematic memory diagram, showing variables and their values just
+before the <tt>pr</tt> procedure finishes.
+
+<li>
+Edit out the address operation & in the call <tt>pr (x, &amp;y)</tt>, and
+make the corresponding changes in the <tt>pr</tt> procedure itself (e.g.,
+remove the <tt>*</tt> as needed).  Recompile and run. Again, explain why
+the resulting output occurs.
+
+</ol>
+</ol>
+
+<h2>Homework</h2>
+
+<ol start=6>
+<li>
+<p>
+Consider the program <a
+href="/~walker/c/examples/lab2-2.c">/home/walker/c/examples/lab2-2.c</a>.
+</p>
+
+<ol type="a">
+<li>
+Copy this program to your account.
+
+<li>
+Compile and run this program.  Explain each value printed.
+
+<li>
+Draw a schematic memory diagram, showing variables and their values just
+before the <tt>pr</tt> procedure finishes.
+
+<li>
+Add the declaration <tt>int w = 100;</tt> as the <i>first</i> statement in
+the <tt>main</tt> procedure (before the declaration <tt>int x = 3;</tt>).
+Recompile and rerun your program.  Does the output change?  Explain.  Does
+the result depend upon the value assigned to <tt>w</tt>?  Why or why not?
+
+<li>
+Add the declaration <tt>int z = 25;</tt> immediately after the declaration
+of <tt>y</tt> in <tt>main</tt>.  Recompile and rerun.  Again, does the
+output change?  Why or why not?
+
+<li>
+Within the <tt>printf</tt> statements for <tt>pr</tt>, change each
+<tt>a</tt> to <tt>*a</tt> and each <tt>b</tt> to <tt>*b</tt>.  Recompile,
+rerun your program, and explain the resulting output.
+
+<li>
+Replace the line <tt>*a = *b;</tt> by the statement <tt>a = b;</tt>.
+Again, recompile and rerun, and explain the resulting output.
+
+<li>
+Replace the same line (now <tt>a = b;</tt>) by the statement <tt>*a =
+b;</tt>.  Try to predict what will be printed.  Then recompile, rerun
+the program, and explain what happens.
+
+<li>
+Change <tt>*a = b;</tt> back to <tt>*a = *b;</tt>, and change the subsequent
+assignment <tt>*b = 6;</tt> to <tt>*a = 6;</tt>.  Again, predict,
+recompile, rerun, and explain.
+
+</ol>
+
+<li>
+<p>
+Consider the program <a
+href="/~walker/c/examples/lab2-3.c">/home/walker/c/examples/lab2-3.c</a>.
+</p>
+
+<ol type="a">
+<li>
+Copy this program to your account.
+
+<li>
+Compile and run this program.  Explain each value printed.
+
+<li>
+Draw a schematic memory diagram, showing variables and their values just
+before the <tt>prA</tt> procedure finishes.
+
+<li>
+Within the <tt>printf</tt> statements, change each <tt>*s</tt> to
+<tt>s</tt> and each <tt>*b</tt> to <tt>b</tt>.  Recompile, rerun, and
+explain, as before.
+
+<li>
+Within <tt>prA</tt>, change each <tt>*s</tt> to <tt>s</tt>.  Recompile,
+rerun, and explain.
+
+<li>
+Within <tt>prA</tt>, change each <tt>r</tt> to <tt>*r</tt>.  Recompile,
+... .
+
+</ol>
+
+</ol>
+
+<!--#include file="body-footer.inc"-->
+
+</div> <!--labcontent-->
+
+<div class="footer">
+
+<hr>
+
+<p>
+This document is available on the World Wide Web as
+</p>
+
+<div class="address">
+<PRE>
+http://www.cs.grinnell.edu/~walker/courses/161.ap14/modules/lab-functions.shtml
+</PRE>
+</div> <!--address-->
+
+<hr>
+
+<p>
+<table width="100%">
+<tr><td>
+    Steps 1-6:
+    <ul>
+      <li><em>created 20 July 2011 by Erik Opavsky</em>
+      <li><em>revised 29 July 2011 by Erik Opavsky and Dilan Ustek</em>
+      <li><em>revised 12 October 2011 by Erik Opavsky</em>
+      <li><em>revised 31 October 2011 by Henry M. Walker</em>
+      <li><em>revised (step 6 reworded) 22 July 2012 by Henry M. Walker</em>
+    </ul>
+    Steps 7-8:
+    <ul>
+     <li><em>created 22 July 2012 by Henry M. Walker</em>
+     <li><em>revised 22 July 2012 by Henry M. Walker</em>
+    </ul>
+    <em>composite editing 22 July 2012 by Henry M. Walker</em><br>
+    <em>minor editing, typo fixed 13 October 2013 by Henry M. Walker</em><br>
+    <em>introductory material expanded 30-31 January 2014 by Henry M. Walker</em><br>
+   <em>readings added 19 September 2014 by Henry M. Walker</em> 
+
+   </td>
+   <td rowspan="2" align="right">
+   <a href="http://validator.w3.org/check/referer"><img border="0" 
+      src="/~walker/valid-html401-blue.png" alt="Valid HTML 4.01!" height="31"
+      width="88"></a>
+   <a href="http://jigsaw.w3.org/css-validator/"><img border="0"
+       src="/~walker/vcss-blue.png" 
+       alt="Valid CSS!" height="31"
+       width="88"></a>
+   </td>
+</tr>
+
+<tr><td>
+   For more information, please contact
+   <a class="footer-a" href="/~walker/">Henry M. Walker</a> at
+   <a class="footer-a" href="mailto:walker@cs.grinnell.edu">walker@cs.grinnell.edu</a>.
+   </td></tr>
+</table>
+
+<hr>
+<!--#include file="copyright-notice.inc"-->
+
+</div> <!--footer-->
+</div> <!--body-->
+</body>
+</html>

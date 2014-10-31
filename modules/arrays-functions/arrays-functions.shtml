@@ -1,0 +1,417 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>CSC 161 Module to Introduce Arrays, Functions, Testing, and Addresses</title>
+    <link rev="made" href="mailto:walker@cs.grinnell.edu">
+</head>
+
+<body>
+<div class="body">
+<!--#include file="header.inc"-->
+
+<div class="labcontent">
+
+<h1>CSC 161 Module to Introduce Arrays, Functions, Testing, and Addresses</h1>
+
+<h2>Introduction</h2>
+<p>
+This module introduces CSC 161 students to fundamental elements of
+programming in C, including
+</p>
+
+<ol>
+<li> Arrays
+<li> Functions and Parameters
+<li> Values and Addresses
+<li> Testing
+</ol>
+
+<h2>Day-by-day Details</h2>
+
+<table border>
+
+<tr>
+  <th>Day
+  <th>Topic
+  <th>Preparation
+  <th>In-class
+  <th>Due Date
+  <th>Availability<br>for<br>Extra<br>Credit
+</tr>
+
+<tr>
+  <td valign=top>Wednesday, September&nbsp;17
+  <td valign=top>Examples<br>
+
+      Module 010: Arrays, Functions, Testing, Values, and Addresses
+  <td valign=top>&nbsp;
+  <td valign=top>Examples:
+    <ul class="index">
+        <li><a href="follower.c">follower.c</a>
+        <li><a href="wall.c">wall.c</a>
+        <li><a href="max-min.c">max-min.c</a>
+        <li><a href="trap-1.c">trap-1.c</a>
+        <li><a href="trap-2.c">trap-2.c</a>
+        <li><a href="trap-3.c">trap-3.c</a>
+        <li><a href="trap-4.c">trap-4.c</a>
+        <li><a href="trap-5.c">trap-5.c</a>
+        <li><a href="darts.c">darts.c</a>
+    </ul>
+  <td valign=top>&nbsp;
+
+  <td valign=top>&nbsp;
+</tr>
+
+<tr>
+  <td valign=top>Friday, September&nbsp;19
+  <td valign=top><b>Hour Test 1</b>
+  <td valign=top colspan=2>Covers through Module 001
+  <td valign=top>&nbsp;
+  <td valign=top>&nbsp;
+</tr>
+
+<tr>
+  <td valign=top>Monday, September&nbsp;22
+  <td valign=top>Functions
+    <ul>
+       <li> with and without value parameters
+       <li> return values and <tt>void</tt> functions
+    </ul>
+  <td valign=top>
+    <ul class="index">
+      <li>Reading from Text:
+      <ul class="index">
+        <li>King:  Sections 9.1-9.2, 9.4, pages 183-192, 201-202
+        <li>K&amp;R: 1.7, 4.1-4.3
+      </ul>
+      <li><a href="quadratic.c">quadratic.c</a>
+      <li><a href="yoyo-program.c">yoyo-program.c</a>
+      <li><a href="lab-value-parm.c">lab-value-parm.c</a>
+     </ul>
+  <td valign=top><a href="lab-functions-1.shtml">lab exercise</a>
+
+  <td valign=top>&nbsp;
+  <td valign=top>&nbsp;
+</tr>
+
+
+<tr>
+  <td valign=top>Tuesday, September&nbsp;23
+  <td valign=top>More functions and parameters
+    <ul>
+      <li>Review value parameters
+      <li>Clarify lab on passing values as parameters
+      <li>Begin work with passing pointers as parameters
+    </ul>
+  <td valign=top>
+    <ul class="index">
+      <li>Reading from Text
+        <ul class="index">
+          <li>King:  Section 9.1-9.4, pages 183-202
+          <li>K&amp;R: 1.6-1.7,, 1.9, 4.1-4.3
+        </ul>
+      <li>Examples:
+      <ul class="index">
+        <li><a href="func-sphere.c">func-sphere.c</a>
+        <li><a href="perim-area-1.c">perim-area-1.c</a>
+        <li><a href="perim-area-2.c">perim-area-2.c</a>
+        <li><a href="perim-area-2a.c">perim-area-2a.c</a>
+      </ul>
+    </ul>
+  <td valign=top>
+    <ul class="index">
+      <li> Review/clarify <a href="lab-functions-1.shtml">lab
+          exercise</a>
+      <li> Start <a href="lab-functions-2.shtml">lab exercise</a>
+    </ul>
+  <td valign=top>&nbsp;
+  <td valign=top>&nbsp; 
+ </tr>
+
+<tr>
+  <td valign=top>Wednesday, September&nbsp;24
+  <td valign=top>Functions:  passing values and pointers as parameters
+     
+  <td valign=top>
+    <ul class="index">
+      <li>Reading from Text
+        <ul class="index">
+          <li>King:  Section 9.3, pages 191-200
+          <li>K&amp;R: 1.7, 4.1-4.3
+      </ul>
+      <li>Examples:
+      <ul class="index">
+        <li><a href="perim-area-1.c">perim-area-1.c</a>
+        <li><a href="perim-area-2.c">perim-area-2.c</a>
+        <li><a href="perim-area-2a.c">perim-area-2a.c</a>
+        <li><a href="amp-example.c">amp-example.c</a>
+        <li><a href="/~walker/c/examples/lab2-1.c">/home/walker/c/examples/lab2-1.c</a>
+        <li><a href="/~walker/c/examples/lab2-2.c">/home/walker/c/examples/lab2-2.c</a>
+        <li><a href="/~walker/c/examples/lab2-3.c">/home/walker/c/examples/lab2-3.c</a>
+      </ul>
+
+    </ul>
+  <td valign=top><a href="lab-functions-2.shtml">lab exercise</a>
+  <td valign=top>&nbsp;
+  <td valign=top>&nbsp; 
+ </tr>
+
+<tr>
+  <td valign=top>Friday, September&nbsp;26
+  <td valign=top>Arrays
+  <td valign=top>
+    <ul class="index">
+      <li>Reading from Text
+        <ul class="index">
+          <li>King: Section 8.1, pages 161-169
+          <li>K&amp;R: 1.6, 1.9, 5.7
+        </ul>
+      <li><a href="reading-array-notes.shtml">Notes on arrays</a>
+      <li><a href="reading-array-parm.shtml">Array parameters</a>
+      <li>
+        Examples
+        <ul class="index">
+          <li><a href="array-scale.c">array-scale.c</a>
+          <li><a href="array-move.c">array-move.c</a>
+          <li><a href="photographer.c">photographer.c</a>
+          <li><a href="max-min.c">max-min.c</a>
+          <li><a href="max-array.c">max-array.c</a>
+        </ul>
+    </ul>`
+  <td valign=top><a href="lab-arrays.shtml">lab exercise</a>
+  <td valign=top>&nbsp;
+  <td valign=top>&nbsp;
+</tr>
+
+<tr>
+  <td valign=top>Monday, September&nbsp;29
+  <td valign=top>
+    More parameters
+    <ul>
+      <li>
+        More passing values and pointers as parameters
+      <li>
+        Function pointers
+    </ul>
+    Testing
+  <td valign=top>
+    <ul class="index">
+      <li>Reading from Text
+        <ul class="index">
+          <li>King: Sections 9.3, 11.1-11.2, pages 191-200, 241-245
+          <li>K&amp;R: 1.7, 4.1-4.3, 5.1, 5.2
+        </ul>
+        <li><a href="reading-func-pointers.shtml">Function pointers</a>
+      <li> <a href="reading-testing.shtml">Reading on correctness</a>
+     </ul>
+  <td valign=top><a href="lab-testing.shtml">lab exercise</a>
+  <td valign=top>&nbsp;
+  <td valign=top>&nbsp;
+</tr>
+
+<tr>
+   <td valign=top>Tuesday, September&nbsp;30
+ <td valign=top><a href="../../suppl-prob.shtml#2"><b>Supplemental Problem&nbsp;2</b></a>
+  <td valign=top>&nbsp;
+  <td valign=top><a href="../../suppl-prob.shtml#2">Supplemental Problem&nbsp;2</a> (done individually)
+  <td valign=top>Tuesday, September&nbsp;30
+  <td valign=top>&nbsp;
+</tr>
+
+<tr>
+  <td valign=top>Friday, October&nbsp;3
+  <td valign=top>Project
+  <td valign=top><a href="darts.c">darts.c</a> (program with random number generator)
+  <td valign=top>Uninterpretable Dance 
+
+  <td valign=top>Due:  Tuesday, October&nbsp;7
+  <td valign=top>&nbsp;
+</tr>
+
+</table>
+
+<a name="project2"></a>
+<h2>Project: Uninterpretable Dance</h2>
+<p>
+Working in pairs, students should develop a program which makes the robot
+perform a randomized dance.  That is, the program should have these
+features.
+</p>
+
+<ul>
+<li>
+<p> The program should contain at least five dance functions, each of
+which instructs the robot to follow a different sequence of activities
+(beeps and movements) in a dance pattern.
+</p>
+<li>
+<p> The <tt>main</tt> function should make at least five calls at
+random to the five movement functions.  The functions should be executed in
+a different random order each time the program is run.
+</p>
+<li>
+<p> The program need not ensure that each function is called at least
+once for any single run of the program, but all functions should have an
+equal probability of being called in each program execution.
+
+</p>
+<li>
+<p> 
+The program must have:
+</p>
+
+<ul>
+<li>
+no global variables,
+<li>
+at least one dance function with an array parameter,
+<li>
+at least one dance function to which a value is passed as a parameter, and
+<li>
+at least one dance function to which a pointer is passed as a parameter
+which is not an array.
+
+<ul>
+<li>
+The function which uses the pointer parameter should modify the
+value in a significant way within the function.  
+<li>
+The function which calls this function with a pointer parameter
+should then be effected by the change of that variable.
+</ul>
+</ul>
+
+<li>
+<p>
+Well-written code should should be easy to read, understand, and modify;
+and the code should run efficiently.  In the context of this project,
+therefore, your program should have these characteristics:
+<ul>
+<li>
+<p>
+There should be no redundant or unused code.  For example, 
+</p>
+<ul>
+<li>
+If a code segment is repeated several places, consider collecting the code
+in a procedure that is called as needed.
+<li>
+If the same statements are repeated several times in a row, consider
+placing one copy of the statements in a loop.
+</ul>
+
+<li>
+<p>
+The code should be formatted to be easily readable.  For example, 
+</p>
+<ul>
+<li>
+Each procedure should have comments that describe what the procedure does
+(including any pre- and post-conditions).
+<li>
+Comments should outline the main sections within a procedure.  (It is
+distracting for a comment to simply repeat what the code does, but it is
+helpful to have a high-level comment that describes the idea behind a
+section of code.)
+<li>
+Variable names should be descriptive. (Use variable names <tt>b1, b2,</tt>
+etc. only for vitamins.)
+<li>
+Formatting/indenting should clarify the structure of the programs.  (For
+example, indent consistently with in a loop and within conditional
+statements.)
+</ul>
+
+<li>
+<p>
+The code should also be reasonably efficient.  For example, 
+</p>
+<ul>
+<li>
+If variables <tt>i</tt> and <tt>j</tt> always have the same value, then one
+could be used throughout and the other discarded.
+<li>
+If a value can be computed directly, do not use a loop.  (No need to count
+1 by 1 to ten, if one can simply make the assignment <tt>value = 10</tt>.)
+<li>
+If logic seems particularly complex for one section of code, consider if
+there is a simpler way.
+</ul>
+</ul>
+</ul>
+
+<h4>Grading</h4>
+
+<ul>
+<li>
+<a href="grading-form.pdf">General Grading Form</a>
+<li>
+<a href="dance-grading-form.shtml">Project-specific Grading Form</a>
+</ul>
+
+</div> <!-- labcontent-->
+
+<div class="footer">
+
+<hr>
+<p>
+This document is available on the World Wide Web as
+</p>
+
+<PRE>
+     http://www.cs.grinnell.edu/~walker/courses/161.fa14/modules/arrays-functions/arrays-functions.shtml
+</PRE>
+
+<hr>
+<table width="100%">
+<tr><td>
+   <em>created 19 July 2011 by Dilan Ustek</em><br>
+   <em>full revision 26 July 2011 by Dilan Ustek</em><br>
+   <em>full revision 14 October 2011 by Henry M. Walker</em><br>
+   <em>revised 30 October 2011 by Erik Opavsky</em><br>
+   <em>revised 26 August 2012 by Henry M. Walker</em><br>
+   <em>dates updated 1 September 2012, 31 December 2012, 14 August 2013,
+     21 September 2013 by Henry M. Walker</em><br>
+   <em>modest lab restructuring 25 September 2013 by Henry M. Walker</em><br>
+   <em>complete reorganization of module 26 January 2014 by Henry M. Walker</em><br>
+   <em>project clarified 17 March 2014 by Henry M. Walker</em><br>
+   <em>wording refined for passing values and addresses as parameters 21 September 2014 by Henry M. Walker</em>
+   
+   </td>
+   <td rowspan="2" align="right">
+   <a href="http://validator.w3.org/check/referer"><img border="0"
+      src="/~walker/valid-html401-blue.png" alt="Valid HTML 4.01!" height="31"
+      width="88"></a>
+
+   <a href="http://jigsaw.w3.org/css-validator/"><img border="0"
+       src="/~walker/vcss-blue.png"
+       alt="Valid CSS!" height="31"
+       width="88"></a>
+   </td>
+</tr>
+
+<tr><td>
+   For more information, please contact
+   <a class="footer-a" href="/~walker/">Henry M. Walker</a> at
+   <a class="footer-a" href="mailto:walker@cs.grinnell.edu">walker@cs.grinnell.edu</a>.
+   </tr>
+</table>
+
+<hr>
+<!--#include file="copyright-notice.inc"-->
+
+</div> <!-- footer -->
+</div> <!-- body -->
+</body>
+</html>
+
+
+
+
+
+
+
+

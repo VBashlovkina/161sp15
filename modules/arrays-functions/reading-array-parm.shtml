@@ -1,0 +1,305 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>Reading on Array Parameters</title>
+    <link rev="made" href="mailto:walker@cs.grinnell.edu">
+</head>
+
+<body>
+<div class="body">
+
+<!--#include file="header.inc"-->
+
+<div class="labcontent">
+
+<h1>Array Parameters</h1>
+
+<p>
+The concepts of passing arrays as parameters follows from the underlying
+philosophy of arrays in C.  In order to understand array parameters, it
+helps to first review the mechanisms available for passing simple types
+(e.g., <tt>int</tt>s, <tt>double</tt>s) to functions in C.
+</p>
+
+<h2>Summary of Value and Reference Parameters</h2>
+<p>
+The <a href="lab-functions-1.shtml">lab on functions and parameters</a>
+considered two basic types of function parameters:
+</p>
+
+<p>
+Suppose variable <tt>number</tt> is declared as follows in a <tt>main</tt>
+function:
+</p>
+<pre>
+double number = 123.45;
+</pre>
+
+<h3>Value Parameter Passage</h3>  
+<p>
+In the following code, execution of the <tt>byValue</tt> function creates a
+new variable <tt>valueParm</tt>, and the call of the <tt>byValue</tt>
+copies a value to <tt>valueParm</tt>.
+</p>
+
+<p>
+As an example, consider the following code:
+</p>
+
+<pre>
+void byValue (double valueParm)
+{
+   printf ("value of valueParm at start of byValue: %lf\n", valueParm);
+   valueParm = 543.21;
+   printf ("value of valueParm at end of byValue: %lf\n", valueParm);
+}
+
+int main ()
+{
+   double number = 123.45;
+   byValue (number);
+   printf ("value of number after byValue completed:  %lf\n", number);
+}
+</pre>
+
+<p>
+When this code is executed, 
+</p>
+
+<ul>
+<li><tt>number</tt> gets an initial value of 123.45
+<li>when <tt>byValue</tt> is called, 
+   <ul>
+     <li>new storage is allocated for <tt>valueParm</tt>
+     <li>123.45 is copied into <tt>valueParm</tt>
+     <li>the value of <tt>valueParm</tt> (123.45) is printed
+     <li>the value stored in <tt>valueParm</tt> is changed to 543.21
+         (but the value stored in <tt>number</tt> is unaffected)
+     <li>the new value 543.21 of <tt>valueParm</tt> is printed
+     <li>when <tt>byValue</tt> is done, <tt>valueParm</tt> is deallocated,
+     and the value 543.21 is lost
+   </ul>
+<li>
+  <tt>number</tt> remains 123.45, and this number is printed
+  in <tt>main</tt>
+</ul>
+</pre>
+
+<p>
+Altogether, value parameter passage copies a value to the new parameter,
+work in the function works with the copied value, and changes to the new
+parameter do not affect the original variable (in <tt>main</tt>).
+</p>
+
+<h3>Reference Parameter Passage</h3>  
+
+<p>
+In the following code, execution of the <tt>byReference</tt> function
+stores the address (not the value) of the original variable.  Using the
+address as a reference, changes to variable values refer back to
+the <tt>main</tt> variable.
+</p>
+
+<p>
+As an example, consider the following code:
+</p>
+
+<pre>
+void byReference (double *refParm)
+{
+   printf ("value of valueParm at start of byValue: %lf\n", *refParm);
+   *refParm = 543.21;
+   printf ("value of valueParm at end of byValue: %lf\n", *refParm);
+}
+
+int main ()
+{
+   double number = 123.45;
+   byReference (&number);
+   printf ("value of number after byValue completed:  %lf\n", number);
+}
+</pre>
+
+<p>
+When this code is executed, 
+</p>
+
+<ul>
+<li><tt>number</tt> gets an initial value of 123.45
+<li>when <tt>byReference</tt> is called, 
+   <ul>
+     <li><tt>refParm</tt> is given the address of variable <tt>number</tt>
+     <li>the value in the location reference by <tt>refParm</tt> (123.45)
+     is printed
+     <li>the value at the location reference by <tt>refParm</tt> is changed
+         to 543.21 
+         (i.e., the value stored in <tt>number</tt> is changed)
+     <li>the new value 543.21 referenced by <tt>refParm</tt> is printed
+     <li>when <tt>byValue</tt> is done, <tt>valueParm</tt> is deallocated,
+     but the changed value in <tt>number</tt> remains
+   </ul>
+<li>
+  <tt>number</tt> contains 543.21, and this number is printed
+  in <tt>main</tt>
+</ul>
+
+<h2>Array Parameters</h2>
+
+<p>
+In C, the declaration
+</p>
+
+<pre>
+double numberArr [5] = {43.7, 23.1, -56.2, 98.6, -40.0};
+</pre>
+
+<p>
+allocates space for 5 <tt>double</tt> precision numbers and initializes those
+values.  The variable <tt>numberArr</tt> refers to the<i> address of the first
+array
+    element.</i>  <a href="http://c-faq.com/~scs/cgi-bin/faqcat.cgi?sec=aryptr#aryptrequiv">From
+    a compiler's perspective,</a> a reference to the
+variable <tt>numberArr</tt> usually is equivalent to the
+expression <tt>&amp;numberArr[0]</tt>. (Documentation lists three
+exceptions, as noted in the given link.)
+</p>
+
+<p>
+Since <tt>numberArr</tt> is actually an address, parameter
+passage for arrays is by reference &mdash; without specifying a ampersand
+&amp;, the reference to the array is passed to the function.
+</p>
+
+<p>
+As an example, consider the following code:
+</p>
+
+<pre>
+#include &lt;stdio.h&gt;
+
+/* illustration of parameter passage of an array */
+
+void arrFunc (double arrayParm[])
+{
+  int i;
+  printf ("values of array at start of function: ");
+  for (i = 0; i &lt; 5; i++)
+    printf ("%8.2lf", arrayParm[i]);
+  printf ("\n");
+  arrayParm[1] += 100;
+  arrayParm[3] += 300;
+  printf ("values of array at end of function:   ");
+  for (i = 0; i &lt; 5; i++)
+    printf ("%8.2lf", arrayParm[i]);
+  printf ("\n");
+}
+
+int main () 
+{
+  double numberArr [5] = {43.7, 23.1, -56.2, 98.6, -40.0};
+  arrFunc(numberArr);
+  int k;
+  printf ("values of array at end of main:       ");
+  for (k = 0; k &lt; 5; k++)
+    printf ("%8.2lf", numberArr[k]); 
+  printf ("\n");
+
+  return 0;
+}
+</pre>
+
+<p>
+When this program is run, initial values are stored in
+the <tt>numberArr</tt> array.  When function <tt>arrFunc</tt> is called,
+the base address of the <tt>numberArr</tt> array is copied to
+the <tt>arrayParm</tt> parameter, but the values within the are are not
+copied.  Thus, array references within the <tt>arrFunc</tt> function refer
+to the original array &mdash; there is not another copy of the array.
+</p>
+
+<p>
+The resulting output from this program follows:
+</p>
+
+<pre>
+values of array at start of function:    43.70   23.10  -56.20   98.60  -40.00
+values of array at end of function:      43.70  123.10  -56.20  398.60  -40.00
+values of array at end of main:          43.70  123.10  -56.20  398.60  -40.00
+</pre>
+
+<p>
+Note that the changes to array elements 2 and 4, made within the function,
+are record in the main array.
+</p>
+
+<h3>Observation</h3>
+<p>
+As a secondary observation, note that an array variable
+(e.g., <tt>numberArr</tt>) contains information about where the array
+begins.  However, the array does NOT contain information about how long it
+is or where it stops.  Thus, in the sample program, the programmer had to
+remember that <tt>numberArr</tt> was declared with 5 elements, and this
+information was hard coded into the program in both <tt>arrFunc</tt>
+and </tt>main</tt>.  
+</p>
+
+<p>
+If a function will be called with several arrays, it is common for an extra
+parameter (the array length) to be added, so the function will know how
+many array elements might be involved in processing.
+</p>
+
+
+<!--#include file="body-footer.inc" -->
+
+</div> <!--labcontent-->
+
+<div class="footer">
+<hr>
+
+<p>
+This document is available on the World Wide Web as
+</p>
+
+<div class="address">
+<PRE>
+   http://www.cs.grinnell.edu/~walker/courses/161.fa12/modules/arrays-functions/
+reading-array-param.shtml
+</PRE>
+</div> <!--address-->
+
+<hr>
+<table width="100%">
+<tr><td>
+   <em>created 21 July 2012 by Henry M. Walker</em><br>
+   <em>revised 21 July 2012 by Henry M. Walker</em>
+   </td>
+
+   <td rowspan="2" align="right">
+   <a href="http://validator.w3.org/check/referer"><img border="0"
+      src="/~walker/valid-html401-blue.png" alt="Valid HTML 4.01!" height="31"
+      width="88"></a>
+   <a href="http://jigsaw.w3.org/css-validator/"><img border="0"
+       src="/~walker/vcss-blue.png"
+       alt="Valid CSS!" height="31"
+       width="88"></a>
+   </td>
+</tr>
+
+<tr><td>
+   For more information, please contact
+   <a class="footer-a" href="/~walker/">Henry M. Walker</a> at
+   <a class="footer-a" href="mailto:walker@cs.grinnell.edu">walker@cs.grinnell.edu</a>.
+   </tr>
+</table>
+
+<hr>
+<!--#include file="copyright-notice-reading.inc"-->
+
+</div> <!--footer-->
+</div> <!--body-->
+</body>
+</html>

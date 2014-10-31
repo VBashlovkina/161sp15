@@ -1,0 +1,249 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>Laboratory Exercise on Scheme-like Lists in C</title> 
+    <link rev="made" href="mailto:walker@cs.grinnell.edu">
+</head>
+<body>
+<div class="body">
+<!--#include file="header.inc"-->
+
+<!--
+<div id="header-bottom">&nbsp;</div>
+-->
+
+<div class="labcontent">
+
+<h1>Laboratory Exercise on Scheme-like Lists in C</h1>
+
+<h2>Goals</h2>
+
+<p>
+This lab applies ideas of box-and-pointer representations and
+provides practice implementing lists in C.
+</p>
+
+<h2>Background: Lists in Scheme</h2>
+
+<p>
+<a href="reading-lists-c-1.shtml">The reading for this
+lab</a> describes <i>box-and-pointer diagrams</i> as a graphical
+model for lists.
+</p>
+
+<ol>
+<li>
+<p>
+Draw box-and-pointer diagrams for each of the following lists:
+</p>
+
+<div class="block"><code>
+((x) y z)<br>
+(x (y z))<br>
+((a) b (c ()))<br>
+</code></div> 
+</ol>
+
+<h2>Implementing Scheme List Operations</h2>
+
+<p>
+<a href="reading-lists-c-1.shtml">The reading</a>
+also describes the implementation of lists in C and presents program <a
+href="scheme-lists.c">scheme-lists.c</a> that
+presents relevant C functions and several test cases.  
+</p>
+
+<ul>
+<li>
+<p>
+The <tt>car</tt> function returns the contents of the <tt>data</tt>
+field in the <tt>listNode</tt> designated by <tt>list</tt>.  This
+information is obtainable as <tt>first.data</tt>.
+</p>
+
+<li>
+<p>
+For the <tt>cdr</tt> function, we must choose whether to alter the current
+list, return a pointer to the tail of the current one, or return a new one.  
+For illustration, we return a pointer to the tail of the current list.
+</p>
+
+<li>
+<p>
+We implement <tt>cons</tt> by building a new node and copying relevant
+information into the <tt>data</tt> and <tt>next</tt> fields.
+</p>
+
+<li>
+<p>
+The <tt>listPrint</tt> function uses a temporary variable <tt>listPtr</tt>
+to move progressively down the list node by node, printing as it goes.
+</p>
+
+<li>
+<p>
+The <tt>listInit</tt> function requires that we pass the address of a
+<tt>first</tt> pointer.  The formal header is
+</p>
+
+<div class="block">
+<code>
+void listInit (struct ** list)
+</code>
+</div>
+
+<p>
+or equivalently
+</p>
+
+<div class="block"><code>
+   void listInit (listType * list)
+</code></div>
+
+<p>
+Assignment of <tt>NULL</tt> to this address uses the syntax:
+</p>
+
+<div class="block"><code>
+   *list = NULL
+</code></div>
+
+
+<li>
+<p>
+The <tt>listDelete</tt> procedure recursively deallocates space for the
+rest of the list before it uses C's <tt>free</tt> function to deallocate
+space for the head of a list.
+</p>
+
+</ul>
+
+<p>
+Copy program <a
+href="scheme-lists.c">scheme-lists.c</a> to your
+account, compile it, and run it.  This program will serve as the basis for
+the remaining steps of this lab.  Be sure to ask about any sections you do
+not understand.
+</p>
+
+<ol start=2>
+
+<li>
+<p>
+Add a function <tt>second</tt> to this program that returns the second
+element in a list (if present) or an empty string if the list is null or has
+only one element.  (In this exercise and the subsequent ones, you will want to add
+lines to <tt>main</tt> to test your methods.)
+</p>
+
+<li>
+<p>
+Add a function <tt>count</tt> which counts how many times a specified item
+appears on a list.  <tt>count</tt> should have two parameters: the list (of
+type <tt>listType</tt>) and the desired item (of type <tt>char *</tt>) for the
+search.  In writing this code, you should use an iterative approach.</p>
+	<ol class="withloweralpha" >
+	<li>Test your code to see if it works for a null list.
+	<li>Test it for other various numbers.
+	</ol>
+
+
+<li>
+<p>
+Add a function <tt>last</tt> which returns the last item on the list.
+</p>
+	<ol class="withloweralpha">
+	<li>Test your function to see if it works for a null list.
+	<li>Test it for a list with only one element.
+	<li>Test it for a list which has more than one elements.
+	</ol>
+
+<li>
+<p>Add a function <tt>get-index</tt> that finds the first index of the string 
+<tt>str</tt> in a list. As parameters, it should take a pointer to the list 
+and a string to look for. It should produce <tt>i</tt>, an integer.Consider different test cases such as:</p>
+	<ol class="withloweralpha">
+	<li>There is a null list.
+	<li>There are no <tt>str</tt>s in the list.
+	<li><tt>str</tt> appears once in the list.
+	<li><tt>str</tt>appears more than once in the list.
+	</ol>
+ 
+
+
+<li>
+<p>
+The program <a
+href="scheme-lists.c">scheme-lists.c</a> 
+deallocates all nodes for <tt>d</tt>'s list and also sets <tt>d</tt> to
+<tt>NULL</tt>.  However, <tt>listDelete</tt> would not affect variables
+<tt>a</tt>, <tt>b</tt>, <tt>c</tt>, or <tt>e</tt>.  For these variables,
+the nodes have been deallocated, but the variables still refer to the old
+memory locations.  (Thus, the program sets each of these variables to
+<tt>NULL</tt> explicitly.)  
+
+<ol class="withloweralpha">
+<li>
+<p>
+What happens if try to print list <tt>c</tt> or <tt>d</tt> immediately
+after the
+statement <tt> listDelete (&amp;d);</tt> (before the <tt>NULL</tt>
+assignments)?
+</p>
+<li>
+<p>
+Why do you think you get this result?
+</p>
+</ol>
+  
+</ol>
+
+<!--#include file="body-footer.inc" -->
+
+</div>
+
+<div class="footer">
+<p>
+<hr>
+
+<p>
+This document is available on the World Wide Web as
+</p>
+
+<blockquote>
+<pre>
+http://www.cs.grinnell.edu/~walker/courses/161.fa11/modules/module-lists/lab-lists-c-1.shtml
+</pre>
+</blockquote>
+
+<hr>
+
+<table width="100%">
+<tr><td>
+   <em>created 4 May 2000 by Henry Walker</em><br>
+   <em>last revised 4 August 2011 by David Cowden and Dilan Ustek</em>
+   </td>
+   <td rowspan="2" align="right">
+   <a href="http://validator.w3.org/check/referer"><img border="0" 
+      src="/~walker/valid-html401-blue.png" alt="Valid HTML 4.01!" height="31"
+      width="88"></a>
+   <a href="http://jigsaw.w3.org/css-validator/"><img border="0"
+       src="/~walker/vcss-blue.png" 
+       alt="Valid CSS!" height="31"
+       width="88"></a>
+   </td>
+</tr>
+
+<tr><td>
+   For more information, please contact
+   <a class="footer-a" href="http://www.cs.grinnell.edu/%7Ewalker/">Henry M. Walker</a> at
+   <a class="footer-a" href="mailto:walker@cs.grinnell.edu">walker@cs.grinnell.edu</a>.
+   </td></tr>
+</table>
+
+</div>
+</div>
+</BODY>
+</HTML>

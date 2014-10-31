@@ -1,0 +1,278 @@
+/*  Program to play a modified game of Scrabble
+    Details of the problem are given at
+       http://www.cs.grinnell.edu/~walker/courses/161.sp14/suppl-prob.shtml#4
+
+    Approach 1:
+       input using scanf
+       work divided into many procedures:
+         check_horizontal:  determine if word fits horizontally at given place
+         check_vertical:  determine if word fits verticaly at given place
+         insert_horizontal:  insert word horizontally at place
+         insert_vertical:    insert word vertically at place
+         process_random:     coordinate placing word at random
+         print_board:  print current Scrabble board
+
+       notes:  check_horizontal and check_vertical assume at least one
+                  word already located on board
+               random placement tries 100 random locations before giving up
+*/
+
+#include <stdio.h>
+#include <ctype.h>
+#include <string.h>
+#include <stdlib.h>
+#include <time.h>
+
+const max_attempts = 100;  // limit on number of locations attempted
+                          // for random insertion 
+
+/* check if the given word can be added horizontally at the given location
+   pre-conditions
+      row is a valid row location within the grid
+      col is a valid column location within the grid
+      word is a valid string and fits in grid
+      num_rows is the total number of rows in the grid
+      num_cols is the total number of columns in the grid
+      grid is the two-dimensional array representing the grid
+      at least one word already present in grid
+   post-conditions
+      returns true (i.e., 1) if the word can be added to the grid
+              horizontally with the first letter at the given row and col
+      returns false (i.e., 0) otherwise
+      the grid is NOT changed
+*/
+int check_horizontal (char * word, int row, int col, 
+                      int num_rows, int num_cols, char grid[num_rows][num_cols])
+{
+  int count_overlap = 0;
+  int i;
+  for (i = 0; i < strlen(word); i++)
+    {
+      if (grid[row][col+i] == word[i])
+        count_overlap++;
+      else if (grid[row][col+i] != ' ')
+        return 0;
+    }
+  return count_overlap > 0;
+}
+
+/* check if the given word can be added horizontally at the given location
+   pre-conditions
+      row is a valid row location within the grid
+      col is a valid column location within the grid
+      word is a valid string and fits in grid
+      num_rows is the total number of rows in the grid
+      num_cols is the total number of columns in the grid
+      grid is the two-dimensional array representing the grid
+      at least one word already present in grid
+   post-conditions
+      returns true (i.e., 1) if the word can be added to the grid
+              vertically with the first letter at the given row and col
+      returns false (i.e., 0) otherwise
+      the grid is NOT changed
+*/
+int check_vertical (char * word, int row, int col, 
+                      int num_rows, int num_cols, char grid[num_rows][num_cols])
+{
+  int count_overlap = 0;
+  int j;
+  for (j = 0; j < strlen(word); j++)
+    {
+      if (grid[row+j][col] == word[j])
+        count_overlap++;
+      else if (grid[row+j][col] != ' ')
+        return 0;
+    }
+  return count_overlap > 0;
+}
+
+/* insert word horizontally into grid, starting at row, col
+   pre-conditions
+      word can be inserted legally at given position
+   post-condition:
+      word has been inserted
+*/
+void insert_horizontal (char * word, int row, int col, 
+                      int num_rows, int num_cols, char grid[num_rows][num_cols])
+{
+  int i;
+  for (i = 0; i < strlen(word); i++)
+    grid[row][col+i] = word[i];
+}
+
+/* insert word vertically into grid, starting at row, col
+   pre-conditions
+      word can be inserted legally at given position
+   post-condition:
+      word has been inserted
+*/
+void insert_vertical (char * word, int row, int col, 
+                      int num_rows, int num_cols, char grid[num_rows][num_cols])
+{
+  int j;
+  for (j = 0; j < strlen(word); j++)
+    grid[row+j][col] = word[j];
+}
+
+/* insert word randomly into grid
+   pre-conditions:  none
+   post-conditions:
+       up to 100 random locations checked to determine if word fits
+       if so, word is inserted
+ */
+void process_random (char * word, int num_rows, int num_cols, char grid[num_rows][num_cols],
+                     int * num_words_added, int * word_inserted)
+{
+  *word_inserted = 0;
+  int attempts = 0;
+  int row, col;
+  /* try up to max_attempts locations for word */
+  while ((!(*word_inserted)) && attempts < max_attempts)
+    { /* chose horizontal, vertical orientations randomly */
+      attempts++;
+      if (rand() % 2 == 0)
+        { /* try horizontal insertion */
+          /* generate potential starting point */
+          row = rand () % num_rows;
+          col = rand () % (num_rows - strlen(word));
+          if (((*num_words_added) == 0)
+              || check_horizontal (word, row, col, num_rows, num_cols, grid))
+            {
+              insert_horizontal (word, row, col, num_rows, num_cols, grid);
+              (*num_words_added)++;
+              (*word_inserted) = 1;
+            }
+        }
+      else 
+        { /* try vertical insertion */
+          /* generate potential starting point */
+          row = rand () % num_rows;
+          col = rand () % (num_rows - strlen(word));
+          if (((*num_words_added) == 0)
+              || check_vertical (word, row, col, num_rows, num_cols, grid))
+            {
+              insert_vertical (word, row, col, num_rows, num_cols, grid);
+              (*num_words_added)++;
+              (*word_inserted) = 1;
+            }
+        }
+    }
+}
+
+/* print grid in neat rows and columns
+   pre-condition
+      num_rows and num_cols give dimensions of the Scrabble board
+   post-condition
+      board is printed
+ */
+void print_board (int num_rows, int num_cols, char board[num_rows][num_cols])
+{
+  int i, j;
+  printf ("current state of the Scrabble board:\n   ");
+  for (i = 0; i < num_rows; i++)
+    {
+      for (j = 0; j < num_cols; j++)
+        printf (" %c", board[i][j]);
+      printf ("\n   ");
+    }
+}
+
+/* procedure to control overall processing
+ */
+int main ()
+{
+  printf ("program to play a simplified game of Scrabble\n");
+  int num_rows, num_cols;
+  printf ("enter size of board (rows columns):\n");
+  scanf ("%d %d", &num_rows, &num_cols);
+
+  /* declare and initialize variables */
+  char grid[num_rows][num_cols];  // game board
+  int i, j;
+  for (i = 0; i < num_rows; i++)
+    for (j = 0; j < num_cols; j++)
+      grid[i][j] = ' ';
+  printf ("working with a %d by %d board\n", num_rows, num_cols);
+
+  char word[num_rows + num_cols]; // word to be added to board
+  int row, col;                   // where word to be placed, if known
+  int num_words_added = 0;        // record number of words on grid
+
+  /* set up random number generator */
+  srand (time ((time_t *) 0) );
+
+  /* main loop to read new words and placements */
+  while (1)
+    {
+      printf ("enter word, mode (H, V, R), and row, column, as needed\n");
+      char mode [10];  // mode:  H (horizontal), V (vertical), R (random)
+      scanf ("%s", word); 
+
+      /* change word to upper case */
+      for (i = 0; i < strlen(word); i++)
+        word[i] = toupper(word[i]);
+
+      // if QUITQUIT entered, no need for further processing
+      if (strcmp (word, "QUITQUIT") == 0)
+        break;
+
+      scanf ("%s", mode);
+      if (toupper(mode[0]) == 'H')
+        {/* horizontal processing */
+          scanf ("%d %d", &row, &col);
+          printf ("checking horizontal insertion of %s at (%d, %d)\n", word, row, col);
+          /* check if grid big enough for word */
+          if ((0 <= row) && (row < num_rows) &&
+              (0 <= col) && (col+strlen(word) < num_cols))
+            {
+              /* add if first word or if word fits letters on board */
+              if (num_words_added == 0
+                 || check_horizontal (word, row, col, num_rows, num_cols, grid))
+                {
+                  insert_horizontal (word, row, col, num_rows, num_cols, grid);
+                  num_words_added++;
+                }
+              else
+                printf ("word conflicts with board at row/col\n");
+            }
+          else
+            printf ("not enough room in board for word\n");
+        }
+
+      else if (toupper(mode[0]) == 'V')
+        {/* vertical processing */
+          scanf ("%d %d", &row, &col);
+          printf ("checking vertical insertion of %s at (%d, %d)\n", word, row, col);
+          /* check if grid big enough for word */
+          if ((0 <= row) && (row+strlen(word) < num_rows) &&
+              (0 <= col) && (col < num_cols))
+            {
+              /* add if first word or if word fits letters on board */
+              if (num_words_added == 0
+                 || check_vertical (word, row, col, num_rows, num_cols, grid))
+                {
+                  insert_vertical (word, row, col, num_rows, num_cols, grid);
+                  num_words_added++;
+                }
+              else
+                printf ("word conflicts with board at row/col\n");
+            }
+          else
+            printf ("not enough room in board for word\n");
+        }
+
+      else if (toupper(mode[0]) == 'R')
+        {/* random processing */
+          int word_inserted;
+          process_random (word, num_rows, num_cols, grid, &num_words_added, &word_inserted);
+          if (word_inserted == 0)
+            printf ("could not find place to add word\n");
+        }
+
+        print_board (num_rows, num_cols, grid);
+   } /* end main processing loop */
+
+  printf ("game over with %d words inserted\n\n", num_words_added);
+
+  return 0;
+}

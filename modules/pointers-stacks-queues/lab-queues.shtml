@@ -1,0 +1,394 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>CSC 161 Lab. Exercise on Queues</title>  
+    <link rev="made" href="mailto:walker@cs.grinnell.edu">
+</head>
+
+<body>
+<div class="body">
+<!--#include file="header.inc"-->
+<div class="labcontent">
+
+<h1>Laboratory Exercise on Queues</h1>
+
+<h2> Goals</h2> 
+
+<p>
+This laboratory exercise introduces the concept of the queue abstract data
+type and provides experience implementing this ADT.
+</p>
+
+<p>
+After introductory material on queues as abstract data types, the lab is
+organized into two parts:
+</p>
+
+<ol class="withupperroman">
+<li>
+<a href="#array-implementation">Implementation of queues with arrays</a>
+<li>
+<a href="#list-implementation">Implementation of queues with linked lists</a>
+</ol>
+
+<h2>Preparation before Class</h2>
+
+<ul>
+<li>Reading:  <a href="reading-queues.shtml">Queues</a>
+</ul>
+
+<h2>Queues as ADTs</h2>
+
+<p>
+Today's <a href="reading-queues.shtml">reading on queues</a> describes a
+    queue as an ADT that can store data and that has the following
+    operations:
+</p>
+
+<ul>
+<li>
+<i>initializeQueue</i><br>
+Initializes <tt>count</tt> as 0, <tt>first</tt> as 0, and <tt>last</tt> as
+MaxQueue - 1.
+
+
+<li><p>
+<i>create</i><br>
+Create a new, empty queue object.
+</p></li>
+
+<li><p>
+<i>empty</i><br>
+Determine whether the queue is empty; return <i>true</i> if it is and
+<i>false</i> if it is not.
+</p></li>
+
+<li><p>
+<i>full</i><br>
+Determine whether the queue is full; return <i>true</i> if it is and
+<i>false</i> if it is not.
+</p></li>
+
+<li><p>
+<i>enqueue</i><br>
+Add a new element at the rear of a queue.
+
+</p></li>
+
+<li><p>
+<i>dequeue</i><br>
+Remove an element from the front of the queue and return it.  (This
+operation cannot be performed if the queue is empty.)
+</p></li>
+
+<li><p>
+<i>front</i><br>
+Return the element at the front of the queue (without removing it from the
+queue).  (Again, this operation cannot be performed if the queue is empty.)
+</p></li>
+</ul>
+
+<a name="array-implementation"></a>
+<h2>Part I:  Implementing Queues with Arrays</h2>
+
+<p>
+Be sure you have read the <a href="reading-queues.shtml">reading on
+    queues</a> and the
+    <a href="reading-queues.shtml#queues-with-arrays">reading on
+    the implementation of queues by arrays</a> before continuing.
+</p>
+
+<p>
+In this part of the lab, we will focus on arrays of strings, and this leads
+to the following declarations for queues:
+</p>
+
+<div class="block">
+<pre>
+#define MaxQueue 50  /* size of all queue arrays */
+
+typedef struct {
+   int first;
+   int last;
+   int count;
+   char * queueArray [MaxQueue];
+} stringQueue;
+</pre>
+</div>
+<p>
+With this framework, the signatures for the various queue operations might
+be as follows:
+</p>
+
+<div class="block">
+<pre>
+   void initializeQueue (stringQueue * queue)
+   int empty (stringQueue queue)
+   int full (stringQueue queue)
+   int enqueue (stringQueue * queue, char* item) 
+      (returns length of string added or -1 if queue is full)
+   char * dequeue (stringQueue * queue)
+      (returns string removed from queue)
+</pre>
+</div>
+
+<h3>Work Started in Class:  Day 1</h3>
+
+<p>
+Additional implementation notes may be found in today's reading on Queues.
+</p>
+
+<ol>
+<li>
+<p>
+Write an implementation of a queue of strings by implementing these operations.
+</p>
+
+<li>
+<p>
+Use the queue operations within a <tt>main</tt> procedure to provide
+thorough testing of each operation.
+</p>
+</ol>
+
+<h3>Homework after Day 1</h3>
+
+<ol start=3>
+<li>
+<p>
+Add to the queue ADT an additional procedure <code>print</code>
+that displays each of the elements of the queue on a separate line
+(without actually removing any of them from the queue).  
+</p>
+</li>
+
+<li>
+<p>
+An alternative approach for the <tt>dequeue</tt> procedure would add a
+parameter <tt>item</tt> to the list of parameters and change the return type
+to an <tt>int</tt> type.  The idea is that the string would be
+returned as a parameter <tt>char * item</tt> and the procedure would return
+the length of the string <tt>item</tt> or -1 if the queue was empty.
+The relevant procedure signature might be:
+
+</p>
+
+<div class="block">
+<pre>
+   int dequeue (stringQueue * queue, char ** item)
+</pre>
+</div>
+
+<p>
+and this procedure would be called within the context:
+</p>
+
+<div class="block">
+<pre>
+  char * frontItem;
+  int returnValue;
+  stringQueue myQueue;
+  ...
+  returnValue = dequeue (&amp;myQueue, &amp;frontItem)
+</pre>
+</div>
+
+<ol class="withloweralpha">
+<li>
+The parameter <tt>item</tt> has type <tt>char **</tt>, and the
+call to <tt>queue</tt> includes <tt>&amp;frontItem</tt>.  Explain why 
+<tt>**</tt> and <tt>&amp;</tt> are needed here.
+
+<li>
+Write this alternative version of the <tt>dequeue</tt> operation.
+</ol>
+</ol>
+
+<a name="list-implementation"></a>
+<h2>Part II:  Implementing Queues with Linked Lists</h2>
+
+<p>
+Be sure you have read
+the <a href="reading-queues.shtml#queues-with-lists">reading on the
+implementation of queues by linked lists</a> before continuing.
+</p>
+
+<h3>Work Started in Class:  Day 2</h3>
+
+<ol start=5>
+<li><p>
+Rewrite your program from the first part of this lab on
+<i>Implementing Queues with Arrays</i>, changing the implementation to use a linked list
+instead of an array.
+</p>
+
+</ol>
+
+<h3>Homework after Day 2</h3>
+
+<ol start=6>
+<li><p>
+The <tt>enqueue</tt> operation allocates space for a new <tt>node</tt> and
+copies the string <tt>item</tt> into that node.  The <tt>dequeue</tt> could
+return a pointer to the character array within the <tt>node</tt> or it
+could copy the string back to a newly created array before passing back a
+reference.  Is there an advantage of one of these approaches over the
+other?  Explain.
+
+</p>
+
+<p>
+<i>Note:</i>  <tt>dequeue</tt> should deallocate space for the node that is
+removed.
+</p>
+
+<li><p>
+Write a <tt>print</tt> function that prints all elements on a queue, from
+the head of the queue to its tail.  (This function can be helpful in
+testing.)
+</p>
+</ol>
+
+<h3><i>For those with extra time:</i></h3>
+<ol start=8>
+<li><p>
+Test your program carefully.
+</p>
+
+<ol class="withloweralpha">
+<li><p>
+Think of a set of test cases that will thoroughly test your program. What
+test cases should you include?
+</p>
+
+<p>
+It is troublesome, but true, that there is as much art as science in
+testing programs well, given that one goal of testing is to think of
+unusual occurrences that may not come readily to mind.
+</p>
+
+<p>
+At the very least, be sure that your cases include an example of each
+response required by the problem specification.  (For example, you should
+consider when error conditions should arise, and your testing should
+include those cases &mdash; does the program handle these cases
+appropriately?)  You should also pay particular attention to "boundary
+cases" that may arise: in the context of queues, reasonable candidates for
+boundary cases might include adding or deleting items from queues with 0,
+1, or perhaps more items.
+</p>
+
+<li><p>
+Note that this program for queues is written to accept input repeatedly
+from the user. To "automate" such a user, enter your test data in a file
+with one input value per line, so that the newline character in the file
+simulates the user pressing the enter key. You do not need to type ctrl-d
+into your test data file to indicate the end of the file: just end the
+file, and your program will correctly detect when it reaches the end of the
+file.
+</p>
+
+<p>
+Now rebuild your program and run it, re-directing it to get its input from
+the test data file. For example, your run command might look like this:
+</p>
+
+<div class="block">
+<code>
+   ./a.out &lt; queue-test.dat
+
+</code>
+</div>
+
+<p>
+Obviously, you will want to examine your output for correctness.
+</p>
+
+<p>
+Your output from running the program this way may look strange because the
+input prompts appear, but the user input does not. Depending on the
+situation, you may want to comment the prompts out of your code, or you may
+want to just put up with odd looking output.
+</p>
+
+<p>
+The value of testing C programs in this way is that it allows you to use
+the same test cases multiple times without retyping them. Why is this
+useful? Consider the possibility that the first time you test a given case,
+your program gives an incorrect response. Once you fix the problem, you
+will want to test it again, and you will want to be sure that you have
+tested it on the same data. Further, you will want to re-test all of your
+previously working cases to make sure that your most recent change did not
+cause other cases to fail.
+</p>
+
+<p>
+It is good practice (though a somewhat difficult habit to get started) to
+maintain a set of test cases for each program you write. This makes it easy
+to re-test your entire program when a new change is made. Re-running all
+your test cases for each new change is known as system testing.
+</p>
+
+</ol>
+
+
+</ol>
+
+<!--#include file="body-footer.inc" -->
+</div>
+
+<div class="footer">
+<p>
+<hr>
+
+<p>
+This document is available on the World Wide Web as
+</p>
+
+<blockquote>
+<pre>
+http://www.cs.grinnell.edu/~walker/courses/161.fa14/modules/pointers-stacks-queues/lab-queues.shtml
+</pre>
+</blockquote>
+
+<hr>
+
+<table width="100%">
+<tr><td>
+   <em>created 16 August 2011 by Dilan Ustek (questions by Henry Walker)</em>
+<br>
+   <em>revised 16 August 2011 by Dilan Ustek</em><br>
+   <em>reformatted and edited 4 February 20134 by Henry M. Walker</em><br>
+   <em>readings added 19 September 2014 by Henry M. Walker</em>
+   </td>
+   <td rowspan="2" align="right">
+   <a href="http://validator.w3.org/check/referer"><img border="0" 
+      src="/~walker/valid-html401-blue.png" alt="Valid HTML 4.01!" height="31"
+      width="88"></a>
+   <a href="http://jigsaw.w3.org/css-validator/"><img border="0"
+       src="/~walker/vcss-blue.png" 
+       alt="Valid CSS!" height="31"
+       width="88"></a>
+   </td>
+
+</tr>
+
+<tr><td>
+   For more information, please contact
+   <a class="footer-a" href="http://www.cs.grinnell.edu/%7Ewalker/">Henry M. Walker</a> at
+   <a class="footer-a" href="mailto:walker@cs.grinnell.edu">walker@cs.grinnell.edu</a>.
+   </td></tr>
+</table>
+
+<hr>
+<!--#include file="copyright-notice.inc"-->
+
+</div>
+</div>
+</BODY>
+</HTML>
+
+
+

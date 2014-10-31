@@ -1,0 +1,631 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <link rel="stylesheet" type="text/css" href="style.css">
+     <title>CSC 161 Lab. Types and Variables</title>  
+    <link rev="made" href="mailto:walker@cs.grinnell.edu">
+</head>
+
+<body>
+<div class="body">
+<!--#include file="header.inc"-->
+
+<div class="labcontent">
+  <h1>Laboratory Exercise: Types and Variables</h1>
+  <h2>Goals</h2>
+  <p>
+    The purpose of this lab is to explore types and variables in C.
+  </p>
+  <h2>Introduction</h2>
+  
+  <p>
+    In Scheme, a variable (or identifier or parameter) can represent any
+    type of data, and the type of a variable may change from one call of a
+    procedure to another.  For example, consider the following Scheme
+    procedure that adds all numbers on a list or its sublists:
+  </p>
+
+<div class="block">
+<pre>
+   (define sum-numbers
+      (lambda (ls)
+          (cond ((number? ls) ls)
+                ((not (list? ls))  0)
+                ((null? ls) 0)
+                (else (+ (sum-numbers (car ls)) 
+                         (sum-numbers (cdr ls))))
+          )
+      )
+   )
+  </pre>
+</div>
+
+
+  <p>
+    When <tt>sum-numbers</tt> is called:
+  </p>
+
+<div class="block">
+  <pre>
+    (sum-numbers '((1) 2.0 four ((3/4) (five) 6)))
+  </pre>
+</div>
+
+<p>
+the parameter <tt>ls</tt> starts as a list, but various calls will
+give <tt>ls</tt> various values, including sublists, integers (e.g., 1, 6),
+real numbers (2.0), fractions (3/4), and symbols (e.g., <tt>four,
+five</tt>).  At the end of this example, <tt>sum-numbers</tt> returns 9.75.
+</p>
+
+<p>
+In C, the data type of each variable must be declared before the variable
+is used in a program (or procedure).  Once declared, the data type cannot
+change within the procedure; values can change, but not the type of data.
+</p>
+
+<p>
+When you start programming in C, you need to be familiar with the few
+primitive types of variables provided to manage data with.  Often
+processing proceeds according to the type of data involved.  However, in
+some processing situations, C allows for implicit and explicit type
+conversions between these storage classes.  In this lab you will perform
+different operations, and examine the results.
+</p>
+        
+<!--...........................................................-->
+
+<h2>Primitive Types</h2>
+
+<p>
+In C there are 4 primitive types:
+</p>
+
+<div class="block">
+<pre>
+   char     /* a character */
+   int      /* an integer  */
+   float    /* a real number (single-precision)*/
+   double   /* a real number that needs twice the space as a float (double-precision) */
+</pre>
+</div>
+
+<p>
+The following notes provide some background about each of these data types, 
+</p>
+
+<ul>
+  <li>
+    a <tt>char</tt> is a character that you might type at the keyboard,
+    such as <tt>A</tt>, <tt>q</tt>, <tt>;</tt> (semi-colon), <tt>*</tt>
+    (asterisk), etc.<br>
+    In C, a <tt>char</tt> value is identified with single quotes, such as
+    'a', 'b', 'A', '8', ';', etc. 
+  <li>
+    an <tt>int</tt> is an integer (a whole number with no decimal point)
+  <li>
+    a <tt>float</tt> and a <tt>double</tt> represent a real number
+    (a number with a decimal point).  
+    <ul>
+      <li>
+        a <tt>float</tt> typically maintains about 7 digits of accuracy, and
+        requires a relatively small amount of memory
+      <li>
+        a <tt>double</tt> typically maintains about 16 digits of accuracy, and
+        requires twice the amount of space required by a <tt>float</tt>
+    </ul>
+</ul>
+
+<p>
+As we shall discuss in several weeks, these types of data are
+represented in different ways within a computer.  
+</p>
+
+<ul>
+  <li>
+    Each data type may take up a different amount storage.
+  <li>
+    The amount of storage may vary from one machine to another.  
+  <li>
+    Each data type has a limited range of values.  
+    <ul>
+      <li>
+        Details of these limits are given in a library
+        package, <tt>limits.h</tt>.  
+        <a href="http://pic.dhe.ibm.com/infocenter/aix/v6r1/index.jsp?topic=%2Fcom.ibm.aix.files%2Fdoc%2Faixfiles%2Flimits.h.htm">A
+          good reference is available from IBM.</a>
+      <li>
+        For example, an <tt>int</tt> has values between -2,147,483,648
+        (<tt>INT_MIN</tt> in <tt>limits.h</tt>) and 2,147,483,647
+        (<tt>INT_MAX </tt>in <tt>limits.h</tt>), inclusive.
+    </ul>
+</ul>
+
+<h2>Work Started in Class</h2>
+
+<h3>Computations with <tt>int</tt>s and <tt>double</tt>s</h3>
+
+<p>
+C provides common arithmetic operations for both <tt>int</tt>s
+and <tt>double</tt>s, with an extra capability for for <tt>int</tt>s.
+</p>
+
+<ul>
+<li> 
+<tt>+</tt> and <tt>-</tt> represent addition and subtraction
+<li>
+<tt>*</tt> and <tt>/</tt> represent multiplication and division
+<li>
+for <tt>int</tt>s,  <tt>%</tt> represents integer remainder.
+</ul>
+
+<p>
+Basic rules:
+</p>
+
+<ul>
+<li>
+Arithmetic with <tt>int</tt>s is particularly efficient fast,
+and the result is always an <tt>int</tt>.
+<li>
+Arithmetic with <tt>double</tt>s may be somewhat slower, and the result is
+always a <tt>double</tt>.
+<li>
+Arithmetic involving an <tt>int</tt> and a <tt>double</tt> proceeds in two
+steps:  first the <tt>int</tt> is converted to a <tt>double</tt>, and
+second the operation is applied to the two <tt>double</tt>s to obtain
+a <tt>double</tt>.
+</ul>
+
+<ol>
+  <li>
+  <p>
+  Include the following code segment in a C program, compile the program,
+  and observe the results:
+  </p>
+<div class="block">
+     
+<pre>
+  int a = 5;
+  int b = 6;
+  int c = a/b;
+  int d = b/a;
+  int e = (a + b) / 10;
+  int f = (a + b) % 10;
+  double x = (a + b) / 10;
+  double y = (a + b) / 10.0;
+  printf ("a=%d, b=%d, c=%d, d=%d, e=%d, f=%d, x=%lf, y=%lf\n", a, b, c, d, e, f, x, y);
+</pre>
+</div>
+
+<ol class="withloweralpha">
+<li>
+Review what is printed and explain each result.
+<li>
+What happens if one changes the computation for variables <tt>f</tt>
+and <tt>y</tt> to <tt>(a + b) % 10.0;</tt> ?  Explain why the compiler
+produces this result.
+</ol>
+</ol>
+
+<p>
+<i>Observation:</i> You may recall there is a fourth type, <tt>float</tt>,
+that was not involved in Step 1.  <tt>double</tt>s are often preferred
+to <tt>float</tt>s, because a <tt>double</tt> is stored more accurately
+than a <tt>float</tt>.  Also, constants, such as <tt>3.14</tt> are almost
+always stored as <tt>double</tt>s in C.  An exception arises when memory is
+scarce, and one wants to use as little space as possible within a
+computer's memory.  With the size of main memory in today's computer,
+however, size often is not a consideration, and <tt>double</tt>s typically
+are used rather than <tt>float</tt>s.
+</p>
+
+<p>
+We will discuss details of the various data types,
+including both <tt>double</tt>s and <tt>float</tt>s, in a few weeks.
+ </p>
+
+
+<h3>Assignment and Casting</h3>
+
+<p>
+In Step 1, the computations <tt>a/b</tt> and <tt>b/a</tt> were performed
+with <tt>int</tt>s.  That is, the result was an integer, and any fraction
+of an integer was discarded.  Also, in the case of computing <tt>y</tt>,
+the presence of the <tt>double</tt> 10.0 caused the machine to
+convert <tt>(a + b)</tt> to <tt>double</tt> and then perform division.  In
+this case, the implicit type 10.0 caused conversion to <tt>double</tt>
+before the computation took place.  
+</p>
+
+<p>
+In C, we can assign values implicitly to <tt>int</tt> and <tt>double</tt>
+variables, but we also can explicitly ask the computer to change the data
+type before an operation.  This explicit specification of a change in type
+is called <i>casting</i>
+</p>
+
+<ol start=2>
+<li>
+<p>
+Include the following code segment in a C program, compile the program, and
+observe the results:
+</p>
+<div class="block">
+     
+<pre>
+  int k = 5.0;
+  int m = 7.7;
+  double n = 5;
+  int p = k/m;
+  double q = k/m;
+  printf ("k = %d, m=%d, n=%lf, p=%d, q=%lf\n", k, m, n, p, q);
+  double r = (double) (k/m);
+  double s = (double) k / m;
+  double t = k / (double) m;
+  double u = (double) k / (double) m;
+  printf ("r=%lf, s=%lf, t=%lf, u=%lf\n", r, s, t, u);
+</pre>
+</div>
+
+<ol class="withloweralpha">
+<li>
+Review what is printed.
+<li>
+For each result printed, explain whether the division is done
+with <tt>int</tt>s or <tt>double</tt>s and which, if any, numbers are
+converted to <tt>double</tt>s when.
+</ol>
+</ol>
+
+<p>
+<i>Observation:</i> Sometimes there can be a danger in casting.  Types have
+sizes. If you try to put a number that is bigger than the size of the type
+you are casting it to, you may get undesired results.
+</p>
+
+<h3>Operator Precedence</h3>
+
+<p>
+After deciding what operator you will use, you need to put them in
+certain order or in parentheses because the program will be read in a
+certain order and so the operators will be applied in a certain order.
+</p>
+
+<ol start = 3>
+<li>Copy this code in a program. What do you think the result will be? Test
+this out by printing the value.
+<div class="block">
+<pre>
+    	int v;
+	v = 5 + 4 * 3 + 1
+</pre>
+</div>
+<li>Copy this code in the same program. Think about your expected result and then see what the program prints.
+<div class="block">
+<pre>
+	int w;
+	w = (5 + 4) * (3 + 1)
+	
+</pre>
+</div>
+</ol>
+
+
+<h4>Incrementing and Decrementing  Numbers</h4>
+<p>
+Suppose you have a counter <tt>days</tt> that counts down the number of
+days you have left for the summer.  Every day that passes, you need to
+decrement the number of days to get your countdown going. You could do it
+like this:
+</p>
+<div class="block">
+<pre>
+	days = days - 1;
+</pre>
+</div>
+<p>This would mean that your are taking the number of days, subtracting 1
+from it, and setting that as my new <tt>days</tt> value. </p>
+<p>There is a shortcut to saying that the new value of <tt>days</tt> is the
+old value of <tt>days</tt> -1. Here it is:</p>
+<div class="block">
+<pre>
+	days -= 1
+</pre>
+</div>
+<p>You can do a variety of operations just like this:</p>
+<ul>
+<li>a += b means a = a+b
+<li>a /= b means a = a/b
+<li>a *= b means a = a*b
+</ul>
+
+<p>
+In practice, 1 is the most common value to add or subtract from a variable,
+and C provides two special ways to increment by 1. For a variable a,
+</p>
+
+<ul>
+<li>
+<tt>++a</tt> is called a <i>pre-increment</i> operation:  add 1 to a before
+anything else happens in the expression.
+<li>
+<tt>a++</tt> is called a <i>post-increment</i> operation:  add 1 to a after
+anything else happens in the expression.
+</ul>
+
+<ol start=5>
+<li>
+<p>
+Examine the output of the following code, in which variables are
+incremented as the only part of an expression.
+</p>
+<div class="block">
+<pre>
+   int a = 1;
+   int b = 7;
+   printf ("a = %d, b = %d\n", a, b);
+   a++;
+   ++b;
+   printf ("a = %d, b = %d\n", a, b);
+</pre>
+</div>
+
+<p>
+In this code the <tt>++</tt> operation is the only part of the statement.
+Note what results are obtained.
+</p>
+
+<li>
+<p>
+Now consider the following example that combines the increment operators
+    with other activities (e.g., assignment)
+</p>
+<div class="block">
+<pre>
+  int a,b,c;
+  a = 0;
+  b = a++;
+  c = ++a;
+  printf(" a = %d b = %d c = %d\n", a,b,c);
+  a = 0;
+  b = ++a;
+  c = a++;
+  printf(" a = %d b = %d c = %d\n", a,b,c);	
+</pre>
+</div>
+
+<p>
+Examine the output and explain the result.  For example, explain any
+difference observed between the two increment operators in this context.  
+</p>
+
+<li>
+<p>
+The next block combines the increment operators within a print and within
+arithmetic expressions.  Examine the output to determine whether or not
+there is a difference between the two increment operators in this context.
+</p>
+<div class="block">
+<pre>
+  int r, s;
+  r = 5;
+  s = 7;
+  printf(" r = %d s = %d\n", ++r, s++);
+  printf(" r = %d s = %d\n", r, s);	
+  int t = r++ + s++;
+  printf(" r = %d s = %d, t = %d\n", r, s, t);	
+  int u = ++r + ++s;
+  printf(" r = %d s = %d, u = %d\n", r, s, u);	
+
+</pre>
+</div>
+
+<li>
+<p>
+In addition to the increment operators, <tt>++a</tt> and <tt>a++</tt>, C
+provides pre- and post-decrement, <tt>--a</tt> and <tt>a--</tt>, that
+subtract one from the variable.  
+</p>
+
+<p>
+  Repeat Step 7, replacing <tt>++</tt> by <tt>--</tt> throughout.  Again,
+  examine the output and explain what is printed.
+</p>
+
+</ol>
+
+<p>
+Conclusion: When combined with other operations, the increment operations
+++a (pre-increment) and a++ (post-increment) cause different values to be
+used in processing.  This observation yields the following programming
+observation and suggestion:
+</p>
+
+<ul>
+<li>
+The use of pre- and post-increment operators in the context of other
+operations is widely observed to be error prone.
+<li>
+Avoid combining pre- and post-increment operators with activities in the
+same statement.
+</ul>
+
+
+<h2>Homework</h2>
+
+<h3>Characters</h3>
+
+<p>
+In C, a character is stored as in a coded form &mdash; an integer between 0
+and 255.  (Historically, the code used numbers 0 to 127, but the extended
+code now uses codes over the full range 0 to 255.)  Thus,
+a <tt>char</tt> is considered to be an integer with a restricted size.  For
+the most part, we do not care what the internal code is for an integer
+&mdash; conceptually, we just have a character.  Technically, the
+underlying code is called the <i>American Standard Code for Information
+Interchange</i> or <i>ASCII</i>.
+</p>
+
+<ol start=9>
+<li>
+<p>
+The program <a href="ascii-print.c">ascii-print.c</a> prints many of the
+ASCII values along with their corresponding characters.  Codes smaller than
+32 correspond to characters that are not printable (e.g., a backspace, tab,
+line feed, return, etc.).  Similarly, codes larger than 126 may not print
+properly in terminal windows (e.g., code 177 is &#177;, code 181 is &#181;,
+and code 216 is &#216;).  Since only codes between 32 and 126 (inclusive)
+reliably print in a terminal window, the program uses a <tt>for</tt> loop
+that starts with code 32, the code for a space character, and ends at 126.
+</p>
+
+
+<ol class="withloweralpha">
+
+<li> What is the corresponding character to the ASCII value 85?
+<li> What is the ASCII value for the character 'A'?
+<li> What is the ASCII value for the character 'a'?
+<li> What is the integer difference between the values of 'A' and 'a' ?
+<li> What relationship can you observed for the codes for 'a', 'b', 'c',
+  'd', and the other lower case letters?
+<li> What relationship can you observed for the codes for '0', '1', '2',
+  '3', and the other digit characters?
+<li> What relationship can you observed for the codes for 'A', 'B', 'C',
+  'D', and the other upper case letters?
+<li> What code is used for the character <tt>0</tt>?  (Note that the code
+  for <tt>char 0</tt> is not zero!)
+</ol>
+</ol>
+
+<h3>Adding <tt>int</tt>s to <tt>chars</tt></h3>
+    
+<p>
+Since characters are stored according to their integer codes, it is
+possible to add an integer value to a <tt>char</tt> value.
+</p>
+
+<ol start=10>
+  <li>
+    <p>
+      Include the following lines of code within a program:
+    </p>
+<div class="block">
+<pre>
+  char ch = 'a';
+  ch = ch + 7;
+  printf("ch + 7  = '%c'\n", ch);
+</pre>
+</div>
+
+<ol class="withloweralpha">
+  <li>Save, compile, and run the program again.  
+  <li>What is the value of <tt>ch</tt>?
+</ol>
+
+  <li>
+    <p>
+      Add 7 to <tt>ch</tt> again (you can just copy the last two lines again)
+      and a print out the value.
+    </p>
+    <ol class="withloweralpha">
+      <li>What is printed?  
+      <li>Is th
+at what you expected?
+    </ol>
+  <li>  <p>
+      In C, a <tt>char</tt> is considered a type of small <tt>int</tt>,
+      so it is possible to assign a <tt>char</tt> variable an integer value.
+      Set <tt>ch</tt> to 48 and print out the result:  
+    </p>
+<div class="block">
+<pre>
+  ch = 48;
+  printf("char ch = '%c'\n", ch);
+</pre>
+</div>
+<p>
+Note what is printed.  Can you explain why?
+
+<li>
+  <p>
+    Set <tt>ch</tt> equal to the integer 0 and print it again.  
+  </p>
+
+
+<p>
+  You may notice the print statement doesn't print out <tt>ch</tt> as being
+  zero; rather the two single quotes are printed next to each other.  The
+  reason is that the character code for the integer 0 is called a "NULL";
+  when printed the cursor does not move in any way &mdash; effectively
+  printing of the character for code 0 is ignored in the output.
+</p>
+
+</ol>
+
+<!--#include virtual="body-footer.inc"-->
+
+</div> <!-- labcontent -->
+
+<!-- . . . . . . . -->
+
+<div class="footer">
+<p>
+<hr>
+This document is available on the World Wide Web as
+    
+<div class="address">
+<pre>
+http://www.cs.grinnell.edu/~walker/courses/161.sp14/modules/cond-loops-testing/lab-types-variables.shtml
+</pre>
+</div> <!-- address -->
+
+<hr>
+
+<p>
+<table width="100%">
+<tr><td>
+   <em>created 21 July 2011 by David Cowden</em><br>
+   <em>last revised 21 July 2011 by David Cowden</em><BR>
+   <em>minor editing 24 August 2011 by Henry M. Walker</em><br>
+   <em>additional editing 3 September 2011 by Henry M. Walker</em><br>
+   <em>further revision 26 September 2011 by Henry M. Walker</em><br>
+   <em>revision (representation, conversion) 20 July 2012 by Henry M. Walker</em><br>
+   <em>revision (incrementing, limits.h) 1 February 2013 by Henry M. Walker</em><br>
+   <em>revision (revised chars discussion, omitted unsigned types) 10 September 2013 by Henry M. Walker</em><br>
+   <em>reorganized 21 January 2014 by Henry M. Walker</em>
+
+  </td>
+  <td rowspan="2" align="right">
+    <a href="http://validator.w3.org/check/referer">
+      <img border="0" src="/~walker/valid-html401-blue.png" 
+           alt="Valid HTML 4.01!" height="31" width="88">
+    </a>
+    <a href="http://jigsaw.w3.org/css-validator/">
+      <img border="0" src="/~walker/vcss-blue.png" 
+           alt="Valid CSS!" height="31" width="88"></a> 
+  </td>
+</tr>
+
+<tr><td> 
+    For more information, please contact
+    <a class="footer-a"
+       href="http://www.cs.grinnell.edu/~walker/"> 
+      Henry M. Walker
+    </a> 
+    at
+    <a class="footer-a" href="mailto:walker@cs.grinnell.edu">
+      walker@cs.grinnell.edu
+    </a>.
+</td></tr>
+</table>
+
+<hr>
+<!--#include file="copyright-notice.inc"-->
+
+</div> <!-- footer -->
+</div>
+</body>
+</html>

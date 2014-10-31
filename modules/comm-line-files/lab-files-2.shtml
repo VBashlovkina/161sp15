@@ -1,0 +1,297 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>Lab on FILEs</title>
+    <link rev="made" href="mailto:walker@cs.grinnell.edu">
+</head>
+
+<body>
+<div class="body">
+<!--#include file="header.inc"-->
+<div class="labcontent">
+
+
+<h1>Second Laboratory Exercise on FILEs</h1>
+
+<h2>Goals:</h2>  
+<p>
+  The goal of this lab is to cover more complex access to and manipulation
+  of <tt>FILE</tt>s in C.
+</p>
+
+<h2>Preparation before Class</h2>
+
+<ul>
+<li>Readings from Text:
+    <ul>
+    <li> King, Sections 22.1-22.5 OR
+    <li>K&amp;R 8.1 - 8.5 
+    </ul>
+<li>Example:
+    <ul>
+    <li><a href="state-year.c">state-year.c</a>
+    </ul>
+</ul>
+
+<h2>Work Started in Class</h2>
+
+<h3>Part A: Processing Data Files:  Median Family Income</h3>
+
+<p>
+File <a href="state-income.dat">state-income.dat</a>
+contains information about the median annual income for a 4-person family
+for the various states for the years 1997 back to 1979.  As shown in the
+file sample that follows, the first five lines contain header information
+(2 lines of title, a blank line, column headings for various years, and
+another blank line).  Thereafter, the information about each state is on a
+separate line.  Within a line, the state name is left justified in the
+first 21 characters, and income figures are in 6-character-wide columns
+(the income appears as 5 characters, and a blank spaces separates one
+year's income figure from the next).
+</p>
+
+<p>
+To illustrate the format, the first part of the file is shown below.
+</p>
+
+<pre>
+                         Median Income for 4-Person Families, by State, According to the U.S. Census Bureau
+                        Reported November 3, 1999 on Web site http://www.census.gov/hhes/income/4person.html
+
+Year                  1997  1996  1995  1994  1993  1992  1991  1990  1989  1988  1987  1986  1985  1984  1983  1982  1981  1980  1979
+
+United States        53350 51518 49687 47012 45161 44615 43056 41451 40763 39051 36812 34716 32777 31097 29184 27619 26274 24332 22395
+Alabama              48240 44879 42617 41730 37975 39659 37638 35937 34930 33022 31221 29799 28407 26595 25117 24181 22443 22026 18613
+Alaska               57474 62078 56045 53555 51181 49632 49721 51538 48411 47247 47106 41292 42897 44017 38238 31823 35834 32745 31037
+Arizona              47133 45032 44526 41599 39679 39900 39364 38799 38347 36892 35711 33477 32129 29431 27551 29835 25163 23832 23000
+Arkansas             38646 36828 38520 36510 32594 36682 34566 31913 31853 28665 27415 27157 26255 23075 21524 20710 20583 19448 18493
+California           55217 53807 51519 48755 44643 46774 46643 45184 42813 41425 40218 37655 36223 33711 31967 29885 27763 26070 25109
+Colorado             58988 53632 50941 48801 47112 45021 43136 41803 40265 39095 37778 36026 35214 34154 32294 30663 28756 25943 25228
+Connecticut          72706 67380 62157 62107 59288 55061 54479 53931 53313 50720 47195 44330 40677 39070 37703 35361 31108 28376 24410
+</pre>
+
+<p>
+Use the information in this file for the following questions.
+</p>
+
+<p>
+<b>Do ONE of the following questions (one of step 1, 2, or 3).</b><br>
+Additional problems may be done for further credit.
+<p>
+
+<ol>
+<li>
+<p>
+Extract from this file the name of each state and its median income for
+1995.
+Put the results in a new file, called <tt>state-income-for-1995</tt>
+</p>
+
+<p>
+That is, after processing the above file, the new file
+<tt>state-income-for-1995</tt> should begin:
+</p>
+
+<pre>
+
+State          1995 Median Income
+
+United States        49687
+Alabama              42617
+Alaska               56045
+Arizona              44526
+Arkansas             38520
+California           51519
+</pre>
+
+
+<li>
+<p>
+From the original <tt>state-income</tt> file, extract each state's median income for a given year.
+
+<p>
+That is, the program (or program segment) should ask a user for a year
+between 1979 and 1997 (inclusive) and print to the screen a listing of
+state names and their median incomes for that year.
+</p>
+
+<li>
+<p>
+From the original <tt>state-income</tt> file, print to the screen the names
+of those states for which the median income decreased from some year to the
+next.
+</p>
+</ol>
+
+<h2>Homework</h2>
+
+<p>
+<b>Do a SECOND of the questions (step 1, 2, or 3).</b>
+</p>
+
+<hr>
+
+<h2>For those with extra time</h2>
+
+<h3>Part B: Binary File Input and Output</h3>
+
+<p>
+  Previously, you have only worked with writing character data to files in
+  the form of <tt>char</tt>s and strings.
+  However, complex programs often require you to write large chunks of
+  information to a file.  Examples include large databases, a scientific
+  dataset, or even an
+  executable program itself.
+  In C there are two functions that facilitate this this type of reading
+  and writing: <tt>fread</tt> and <tt>fwrite</tt>.
+</p>
+
+<ol start=4>
+
+<li>
+  <p> Review the man pages for <tt>fread</tt> and <tt>fwrite</tt>.  How are
+  these functions different from <tt>fprintf</tt> and <tt>fgets</tt>?  How
+  are they similar?
+</p>
+</ol>
+
+
+<h4>Writing Ar<b><em>bit</em></b>rary Data</h4>
+<p>
+  <tt>fwrite</tt> literally writes bits (the 0s and 1s that 
+  represent whatever is pointed to in its first argument) to the file you
+  specify in its last argument.  However, to know how many bits to write
+  you have to 
+  tell <tt>fwrite</tt> how big (how many bytes) the data you want to write
+  is and how much data there is.  This information corresponds to the
+  second and third arguments respectively.
+</p>
+<p>
+  Suppose you want to write an array of 10 <tt>doubles</tt>
+  (we'll call it <tt>array</tt>) to a file.  The
+  call to <tt>fwrite</tt> would look something like this:
+</p>
+<div class="block">
+  <code>
+    fwrite (array, sizeof(double), 10, yourFile);
+  </code>
+</div>
+<p>
+  If you wanted to write just one <tt>Pixel</tt> structure you had
+  previously declared as <tt>pxl</tt>, the call would resemble:
+</p>
+<div class="block">
+  <code>
+    fwrite (&amp;pxl, sizeof(Pixel), 1, yourFile);
+  </code>
+</div>
+
+<p><b>Do either 5 or 6:</b></p>
+
+
+<ol start=5>
+<li>
+  <p>
+  Write a program that reads in a series of integers from standard input
+  using any method you prefer.  The program should then imediately write
+  these integers to a binary file of your choosing using <tt>fwrite</tt>.
+</p>
+<li>
+  <p>
+  Write a program that instructs the robot to take a picture and then
+  converts that picture to a <tt>Pixel</tt> array.  <em>Code for the
+  conversion from <tt>Picture</tt> to <tt>Pixel</tt> array can be found in
+  the module on structs.</em>  Write the width as an integer to a binary
+  file.  Then 
+  write the height to the file. Finally, write the entire <tt>Pixel</tt>
+  array to the file using <tt>fwrite</tt>.
+</p>
+</ol>
+
+<h4>Reading Bits Back In</h4>
+<p>
+  Not suprisingly, <tt>fread</tt> functions exactly like <tt>fwrite</tt>
+  except in reverse.  It reads the data in in the same manner -- where you
+  specify the data to be read, the <tt>sizeof</tt> the data, and how many
+  'packets' of data you want.
+</p>
+
+<p><b>Complete the question you chose to do earlier:</b></p>
+
+<ol start=7>
+  <li>
+    <p>
+      Write a program that reads in integers from the binary file and writes
+      them - each on a new line - to <tt>stdout</tt>.
+    </p>
+  <li>
+    <p>
+    Write a program that reads in an array of <tt>Pixel</tt>s from a file
+    and displays the picture using <tt>rShowPicture</tt> from
+    the <tt>MyroC</tt> header. You should first read in the width and
+    height of the picture (the first 8 bytes [two four byte integers] of
+    the file) so you know how 
+    many <tt>Pixel</tt>s are stored in the picture.  Then you can read the
+    entire array back in using <tt>fread</tt>.
+</p>
+<p>
+<em>Note you will have to create a blank 
+  picture first and then set each pixel according to the data obtained from
+  <tt>fread</tt>.</em>
+</p> 
+</ol>
+
+<!--#include file="body-footer.inc" -->
+
+</div>
+
+<div class="footer">
+<p>
+<hr><p>
+
+This document is available on the World Wide Web as
+
+<PRE>
+     http://www.cs.grinnell.edu/~walker/courses/161.fa14/modules/module-comm-line-files/lab-files-2.shtml
+</PRE>
+
+<hr>
+<table width="100%">
+<tr><td>   
+   <em>Part A:  created and revised 27 September 2001 - 2 May 2005</em> by
+   Henry M. Walker<br>
+   <em>Part B:  created and revised 11 August 2011 by David Cowden and
+   Erik Opavsky</em><br>
+   <em>edited 12 December 2011 by Henry M. Walker</em><br>
+   <em>outdated URL reference removed 1 November 2013 by Henry M. Walker</em><br>
+   <em>reformatted 2-3 February 2014 by Henry M. Walker</em><br>
+   <em>readings added 19 September 2014 by Henry M. Walker</em>
+   </td>
+   <td rowspan="2" align="right">
+   <a href="http://validator.w3.org/check/referer"><img border="0"
+      src="/~walker/valid-html401-blue.png" alt="Valid HTML 4.01!" height="31"
+      width="88"></a>
+   <a href="http://jigsaw.w3.org/css-validator/"><img border="0"
+       src="/~walker/vcss-blue.png"
+       alt="Valid CSS!" height="31"
+       width="88"></a>
+   </td>
+</tr>
+<tr><td>
+   For more information, please contact
+   <a class="footer-a" href="/~walker/">Henry M. Walker</a> at
+   <a class="footer-a" href="mailto:walker@cs.grinnell.edu">walker@cs.grinnell.edu</a>.
+   </tr>
+</table>
+
+<hr>
+<!--#include file="copyright-notice.inc"-->
+
+</div>
+</div>
+</body>
+</html>
+

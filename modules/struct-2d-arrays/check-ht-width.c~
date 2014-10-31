@@ -1,0 +1,16 @@
+#include "MyroC.h"
+
+int main ()
+{
+  Picture * pic = rLoadPicture ("blank.jpg");
+  
+  Pixel px = {0, 0, 0};
+
+  rSetPicturePixel (pic, 3, 150, px);
+  rDisplayPicture (pic);
+
+
+
+  return 0;
+
+}

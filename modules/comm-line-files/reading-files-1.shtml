@@ -1,0 +1,270 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <link rel="stylesheet" type="text/css" href="style-walker.css">
+    <title>CSC 161 Reading on File Streams</title>  
+    <link rev="made" href="mailto:walker@cs.grinnell.edu">
+</head>
+<body>
+<div class="body">
+<!--#include file="header-walker.inc"-->
+
+<div class="labcontent">
+
+<h1>Reading on File Streams</h1>
+
+<h2>Introduction</h2>
+
+<p>
+Users generally think of files in either of two ways:
+</p>
+
+<ol class="withupperalpha">
+<li>
+<i>Streams:</i> Files may be considered as streams of data (e.g., sequences
+of characters, sequences of integers, sequences of real numbers)
+<li>
+<i>Text Files:</i>  Files may be considered as being divided into lines,
+with processing proceeding line by line.
+</ol>
+
+<p>
+This reading focuses on streams; <a href="reading-files-2.shtml">the next
+reading</a> covers text files.
+</p>
+
+<h2>Overview of Working with Files</h2>
+<p>
+Working with files (either streams or text files) generally involves three
+main steps:
+</p>
+
+<ol>
+<li>
+<i>Opening a file:</i>  Preparing to read or write
+<li>
+<i>Processing file data:</i>  Files may be considered either as streams or
+text files
+<li>
+<i>Closing the file:</i>  Wrapping up by performing final operations
+</ol>
+
+<h3>Opening a File</h3>
+<p>
+Users typically think of a file as a logical entity &mdash; often with a
+descriptive name, such as <tt>myData.dat</tt>.  Within the machine,
+however, the file has a specific location on the disk or other storage
+medium.  Also, during processing, the computer must keep track of what part
+of the file has already been processed and what data will be considered
+next.  In addition, behind the scenes, the computer must handle details of
+moving data between main memory and the disk or other storage device.
+</p>
+
+<p>
+In C, both input and output files are declared as pointer variables to
+elements of type <tt>FILE</tt>.  Preparation to use a file involves
+connecting the user's logical name with the file variable, and setting up
+the internal details for reading or writing.  These details are handled by
+the <tt>fopen</tt> procedure.  The basic form of the command is:
+</p>
+
+<pre>
+   &lt;variable&gt = fopen (&lt;file-name&gt;, &lt;mode&gt;)
+</pre>
+
+<p>
+In this context, 
+</p>
+
+<ul>
+<li>
+<tt>&lt;file-name&gt;</tt> is the logical name of the file, given by the
+user, and the parameter to <tt>fopen</tt> may be any string enclosed in
+double quotes.
+
+<li>
+<tt>&lt;mode&gt;</tt> denotes how the file will be used:
+<ul>
+<li>
+<tt>"r"</tt> for reading from a file
+<li>
+<tt>"w"</tt> for writing to a file
+<li>
+<tt>"a"</tt> for appending additional information to the end of an existing
+file
+</ul>
+</ul>
+
+<p>
+For example, we might write:
+
+</p>
+
+<pre>
+  FILE * myfile = fopen("integers.dat", "r");
+</pre>
+
+<p>
+to prepare to <b>read</b> a file that the user called "integers.dat".
+</p>
+
+<h3>Closing a File</h3>
+
+<p>
+When we are done working with a file, we close it with <tt>fclose</tt>, as
+illustrated in the following example:
+
+<pre>
+  close(myfile);
+</pre>
+
+<h3>Working with Streams of Numbers</h3>
+
+<p>
+A <i>stream</i> is a sequence of data elements (normally of the same type).
+Two common types of streams sequences of numbers and sequences of characters.
+</p>
+
+<p>
+Programs <a href="genfiles.c">genfiles.c</a>
+and <a href="readfiles.c">readfiles.c</a> illustrate processing with
+streams of numbers.  Both programs work with a file of
+integers <tt>"integer.file"</tt> and a file of real
+numbers <tt>"real.file"</tt>.  For readability, these files place each
+number on a separate line, but file processing ignores the lines and
+proceeds simply number-by-number.
+</p>
+
+<p>
+Pragmatically, the process of writing and reading to files is much the same
+as writing and reading with a terminal window, except that we must specify
+which file to use.  Thus, we use <tt>fprintf</tt> and <tt>fscanf</tt>
+instead of <tt>printf</tt> and <tt>scanf</tt>.  In each case, the file
+procedures have an additional first parameter, which indicates a file
+variable (for a file that has already been opened).
+</p>
+
+<p>
+When using <tt>fscanf</tt> for reading, the procedure returns an integer as
+follows:
+</p>
+
+<ul>
+<li>
+When values are read successfully according to the format
+string, <tt>fscanf</tt> returns the number of variables actually read.
+<li>
+When <tt>fscanf</tt> encounters the end of the file, <tt>fscanf</tt>
+returns a special value <tt>EOF</tt>, which is defined in <tt>stdio</tt>.
+</ul>
+
+<p>
+Thus, testing <tt>(fscanf ( ... ) != EOF)</tt> provides a natural way to
+continue processing until the end of a file is encountered.
+</p>
+
+<p>
+For example, the following code segment reads three real numbers from a
+file "real.file" and computes their average:
+</p>
+
+<pre>
+   FILE * rFile = fopen ("real.file", "r");
+   double x, y, z;
+   if ((fscanf (rFile, "%lf", &amp;x) == EOF)
+           || (fscanf (rFile, "%lf", &amp;y) == EOF)
+           || (fscanf (rFile, "%lf", &amp;z) == EOF))
+       printf ("error:  three numbers needed for average\n");
+   else {
+       double average = (x + y + z) / 3.0;
+       printf ("the average is %lf\n", average);
+       fclose(rFile);
+   }
+</pre>
+
+<p>
+Programs <a href="genfiles.c">genfiles.c</a>
+and <a href="readfiles.c">readfiles.c</a> provide additional examples of
+generating and reading files of numbers.
+</p>
+
+<h3>Working with Streams of Characters</h3>
+
+<p>
+When considering a file as a sequence of characters, one approach would be
+to use 
+</p>
+
+<pre>
+   fscanf (rFile, "%c", &amp;ch);
+</pre>
+
+<p>
+However, a more common approach
+uses <tt>ch = fgetc(rFile)</tt> or its alternative  
+<tt>ch =  getc(rFile)</tt>.  (Differences between  <tt>fgetc</tt> and 
+<tt>getc</tt> involve some behind-the-scenes technicalities in C, and we
+ignore such matters here.)
+</p>
+
+<p>
+Program <a href="fileletters-1.c">fileletters-1.c</a> shows the use of a
+character stream in an application that counts the number of times various
+letters appear in a file.  Although the program handles a range of cases, the
+main loop show the key elements of using a stream of characters:
+</p>
+
+<pre>
+   /* processing the file */
+   while ((ch = getc (file_var)) != EOF)
+   {
+     /* process the character before going on 
+        to the next character in the file */
+   }
+</pre> 
+ 
+</div> <!--labcontent-->
+
+<div class="footer">
+
+<hr>
+<p>
+This document is available on the World Wide Web as
+</p>
+
+<div class="address">
+<PRE>
+http://www.cs.grinnell.edu/~walker/courses/161.fa11/modules/module-comm-line-files/reading-files-1.shtml
+</PRE>
+</div> <!--address-->
+
+<hr>
+
+<p>
+<table width="100%">
+<tr><td>
+   <em>created 4 December 2011 by Henry M. Walker</em><br>
+   <em>revised 4 December 2011 by Henry M. Walker</em>
+   </td>
+   <td rowspan="2" align="right">
+   <a href="http://validator.w3.org/check/referer"><img border="0" 
+      src="/~walker/valid-html401-blue.png" alt="Valid HTML 4.01!" height="31"
+      width="88"></a>
+   <a href="http://jigsaw.w3.org/css-validator/"><img border="0"
+       src="/~walker/vcss-blue.png" 
+       alt="Valid CSS!" height="31"
+       width="88"></a>
+   </td>
+</tr>
+
+<tr><td>
+   For more information, please contact
+   <a class="footer-a" href="http://www.cs.grinnell.edu/%7Ewalker/">Henry M. Walker</a> at
+   <a class="footer-a" href="mailto:walker@cs.grinnell.edu">walker@cs.grinnell.edu</a>.
+   </td></tr>
+</table>
+</div><!--footer-->
+</div><!--body-->
+</body>
+</html>

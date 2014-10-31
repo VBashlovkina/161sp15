@@ -1,0 +1,6 @@
+/* this program compares methods for determining the number of non-trivial
+   factors for each integer in a range 2..M, for various values of M
+
+   method 1:  Sieve of Erastosthenes
+   method 2:  examine each number smaller than a given integer
+   method 3:  examine each number smaller than a given integer/2

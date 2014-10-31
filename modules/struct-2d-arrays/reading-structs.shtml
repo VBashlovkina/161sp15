@@ -1,0 +1,202 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>CSC 161 Reading. Reading on Structs </title>  
+    <link rev="made" href="mailto:walker@cs.grinnell.edu">
+  </head>
+<body>
+<div class="body">
+    <!--#include file="header.inc"-->
+
+<div class="labcontent">
+
+
+<h1>Structures in C &mdash; <tt>structs</tt></h1>
+
+<h2>Additional Notes</h2>
+
+<p>
+The following commentary comes from Marge Coahran with minor editing.
+</p>
+
+<h3>Some Background</h3>
+
+<p>
+A <em>struct</em> in C is the same as a record in many other
+(pre-object-oriented) programming languages. A <tt>struct</tt> is a
+collection of data.  Functions that operate on a <tt>struct</tt> are not
+embedded within the <tt>struct</tt>; rather, we write such functions
+separately and pass <tt>struct</tt>s to them as arguments.
+</p>
+
+<p>
+For example, a program for keeping track of students might use the 
+following collection of variables:
+<pre>
+    struct student {
+        int number;
+        double testGrades[2];
+        double grade;
+    };
+</pre>
+The <tt>struct</tt> is named <code>student</code> while its <i>members</i>
+ are <code>number</code>, <code>testGrades</code>, and <code>grade</code>.
+ The name of a <tt>struct</tt> is also called a <i>tag</i>.
+
+<p> A later declaration of
+<pre>
+    struct student hannah;
+</pre>
+will create a structure variable named <code>hannah</code>.  The individual 
+member variables can be referred to using the syntax 
+<code>variableName.memberName</code>, as in the following example:
+<pre>
+    hannah.number = 991234567;
+    hannah.testGrades[0] = 10.;
+    hannah.testGrades[1] = 11.;
+    hannah.grade  = (hannah.testGrades[0] / 15. + hannah.testGrades[1] / 12.) / 2.;
+</pre>
+
+<p> The declaration
+<pre>
+    struct student csc201[30];
+</pre>
+might be used to create an array of student records.
+
+<h3>Use of a <tt>typedef</tt> Declaration</h3>
+
+<p> Alternatively, we can define a new data type to describe our
+student information, using the instruction:
+<pre>
+    typedef struct {
+        int number;
+        double testGrades[2];
+        double grade;
+    } student_t;
+</pre>
+
+and then declare our variables using this new type, with instructions like:
+
+<pre>
+    student_t hannah;
+    student_t csc161[300];
+</pre>
+
+<p> You might find it helpful to think of the <code>typedef</code> 
+instruction as giving a "blueprint" for the creation of a 
+<code>student_t</code> struct variable,
+while the declarations cause the "construction" of variables having type
+<code>student_t</code> by setting aside memory.
+
+<h4>A Common Naming Convention</h4>
+
+<p>
+Although any almost name can be specified as a type using a <tt>typedef</tt>
+statement, a common approach uses a <tt>struct</tt> followed by an
+underscore and a <tt>t</tt>.  For example, in the student example,
+</p>
+
+<ul>
+<li>
+<tt>struct student</tt> was the original name for the <tt>struct</tt>
+including student information, and
+<li>
+<tt>student_t</tt> was the name given to the new type for this student
+information.
+</ul>
+
+<p>
+With this convention <tt>student_t</tt> is a new type for a <tt>student</tt>.
+</p>
+
+<h3>Representing Time with a Struct</h3>
+
+<p>
+The following struct may be used to represent a time value in hours,
+minutes and seconds format (e.g., 12:34:56.123):
+<pre>
+        typedef struct {
+            int hours;
+            int mins;
+            double secs;
+        } timeinfo_t;
+</pre>
+The <code>timeinfo_t</code> identifier
+is the struct "tag". A new type called <code>timeinfo_t</code> is created.
+We did not call it <code>time</code>, because there is already a C library 
+function called <code>time</code>.
+
+<p>
+Structure types may be used as return types or argument types in functions.
+A function that converts time values given in seconds (e.g., 12345.67)
+to time values given in hh:mm:ss.sss format might have the prototype:
+<pre>
+    timeinfo_t convertTime( double realTime )
+</pre>
+and would look like:
+<pre>
+    timeinfo_t convertTime( double realTime )
+    {
+        timeinfo_t result;
+        .
+        .
+        .
+        return result;
+    }
+</pre>
+
+
+</div>
+
+<div class="footer">
+
+<hr><p>
+
+This document is available on the World Wide Web as
+
+<BLOCKQUOTE>
+<PRE>
+http://www.cs.grinnell.edu/~walker/courses/161.fa13/modules/struct-2d-arrays/reading-structs.shtml
+</PRE>
+</BLOCKQUOTE>
+
+<hr>
+
+<p>
+<table width="100%">
+<tr><td>
+
+   <em>created 11 April 2008 by Marge Coahran</em><br>
+   <em>revised 3 August 2011 by Erik Opavsky</em><br>
+   <em>full revision 14 November 2011 by Erik Opavsky</em><br>
+   <em>minor editing 14 November 2011 by Henry Walker</em><br>
+   <em>naming convention subsection added 17 August 2012 by Henry Walker</em><br>
+   <em>minor editing 26 October 2013 by Henry Walker</em>
+   </td>
+   <td rowspan="2" align="right">
+   <a href="http://validator.w3.org/check/referer"><img border="0" 
+      src="/~walker/valid-html401-blue.png" alt="Valid HTML 4.01!" height="31"
+      width="88"></a>
+   <a href="http://jigsaw.w3.org/css-validator/"><img border="0"
+       src="/~walker/vcss-blue.png" 
+       alt="Valid CSS!" height="31"
+       width="88"></a>
+   </td>
+</tr>
+
+<tr><td>
+   For more information, please contact
+   <a class="footer-a" href="http://www.cs.grinnell.edu/%7Ewalker/">Henry M. Walker</a> at
+   <a class="footer-a" href="mailto:walker@cs.grinnell.edu">walker@cs.grinnell.edu</a>.
+   </td></tr>
+</table>
+
+<hr>
+<!--#include file="copyright-notice-reading.inc"-->
+
+</div>
+</div>
+</body>
+</html>

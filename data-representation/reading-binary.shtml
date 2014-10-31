@@ -1,0 +1,1135 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+    <title>Binary Representation of Integers in C and Java</title>
+
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" type="text/css" href="espresso-rebelsky.css">
+</head>
+
+<body>
+<!--#include file="header.inc"-->
+
+<div class="rebelskyStyle">
+<h1><a name="binary">Binary Representation of Integers in C and Java</a></h1>
+
+<p>
+<strong>Summary:</strong> We consider the underlying binary representation
+of numbers.
+</p>
+
+<p>
+<strong>Contents:</strong>
+</p>
+
+<ul>
+  <li><a href="#binary">Background: Representing Values</a>
+  </li><li><a href="#basics">Basic Concepts Behind the Binary System</a>
+  <ul>
+    <li><a href="#ex">Exercises</a>
+  </li></ul>
+  </li><li><a href="#add">Binary Addition</a>
+  </li><li><a href="#mult">Binary Multiplication</a>
+  </li><li><a href="#div">Binary Division</a>
+  </li><li><a href="#dec2bin">Decimal to Binary</a>
+  <ul>
+    <li><a href="#dec2b-two">Another algorithm for converting decimal to binary</a>
+  </li></ul>
+  </li><li><a href="#negation">Negation in the Binary System</a>
+  <ul>
+    <li><a href="#signedmagnitude">Sign-Magnitude</a>
+    </li><li><a href="#onescomplement">One's Complement</a>
+    </li><li><a href="#twoscomplement">Two's Complement</a>
+    </li><li><a href="#excess">Excess 2<sup>(m-1)</sup></a>
+    </li><li><a href="#notes">Notes</a>
+  </li></ul>
+  </li><li><a href="#integers-in-java">Representing Integers</a>
+  </li><li><a href="#bitwise">Bitwise Operations</a>
+  </li><li><a href="#answers">Answers</a>
+</li></ul>
+<p>
+
+</p>
+
+<h2><a name="binary">Background: Representing Values</a></h2>
+
+<p>
+In your previous experiences with C or various other programming languages,
+you may have noticed that you got some fairly odd results when
+you add to the largest integer (or <tt>int</tt>) or subtract from the smallest
+integer (or <tt>int</tt>).  Why?  Because C, Java, and various other
+languages have chosen an interesting way to represent these values.  
+</p>
+
+<p>
+Behind the scenes on almost every computer, every value is represented
+as a series of bits (0's and 1's).  Computers use such a two-value system
+because it is easy to represent physically or electronically.  However,
+the two-value system means that designers of languages and computers must
+figure out how to convert from and to other representations (such as the
+<q>traditional</q> representation of integers).  In the next
+few sections, we will consider some basic issues of binary numbers and
+the representation of integers in binary.  We will then return to the
+details of these representations in C, Java, and various other languages.
+</p>
+
+
+
+<h2><a name="basics">Basic Concepts Behind the Binary System</a></h2>
+
+<p>
+To understand binary numbers, begin by recalling elementary school math.
+When we first learned about numbers, we were taught that, in the decimal
+system, things are organized into columns:
+</p>
+
+<pre>  H | T | O
+  1 | 9 | 3
+</pre>
+
+<p>
+such that "H" is the hundreds column, "T" is the tens column, and "O"
+is the ones column.  So the number "193" is 1-hundreds plus 9-tens
+plus 3-ones.  Years later, we learned that the ones column meant 10<sup>0</sup>,
+the tens column meant 10<sup>1</sup>, the hundreds column 10<sup>2</sup> and so on, such that
+</p>
+
+
+<table>
+<tr>
+   <td> 10<sup>2</sup> <td> | 
+   <td> 10<sup>1</sup> <td> | 
+   <td> 10<sup>0</sup>
+</tr>
+<tr>
+   <td align=center>  1<sup> </sup> <td> | 
+   <td align=center>  9<sup> </sup> <td> | 
+   <td align=center>  3<sup> </sup>
+</tr>
+</table>
+
+
+<p>
+The number 193 is really [(1*10<sup>2</sup>)+(9*10<sup>1</sup>)+(3*10<sup>0</sup>)].
+</p>
+
+<p>
+As you know, the decimal system uses the digits 0-9 to represent numbers.
+If we wanted to put a larger number in column 10<sup>n</sup> (e.g.,
+10), we would have to multiply 10*10<sup>n</sup>, which would give
+10<sup>(n+1)</sup>, and be carried a column to the left.  For example,
+putting ten in the 10<sup>0</sup> column is impossible, so we put
+a 1 in the 10<sup>1</sup> column, and a 0 in the 10<sup>0</sup>
+column, thus using two columns.  Twelve would be 12*10<sup>0</sup>,
+or 10<sup>0</sup>(10+2), or 10<sup>1</sup>+2*10<sup>0</sup>, which also
+uses an additional column to the left (12).
+</p>
+
+<p>
+The binary system works under the exact same principles as the decimal
+system, only it operates in base 2 rather than base 10.  In other words,
+instead of columns being
+</p>
+
+<blockquote><tt>
+  10<sup>2</sup>|10<sup>1</sup>|10<sup>0</sup>
+</tt></blockquote>
+<p>
+they are
+</p>
+<blockquote><tt>
+  2<sup>2</sup>|2<sup>1</sup>|2<sup>0</sup>
+</tt></blockquote>
+
+
+<p>
+Instead of using the digits 0-9, we only use 0-1 (again, if we used anything larger it would be like multiplying 2*2<sup>n</sup> and getting 2<sup>(n+1)</sup>, which would not fit in the 2<sup>n</sup>
+column. Therefore, it would shift you one column to the left. For
+example, "3" in binary cannot be put into one column. The first column
+we fill is the right-most column, which is 2<sup>0</sup>, or 1.  Since 3&gt;1, we need to use an extra column to the left, and indicate it as "11" in binary (1*2<sup>1</sup>) + (1*2<sup>0</sup>).
+</p>
+
+<h3><a name="ex">Exercises</a></h3>
+
+<p>
+<a name="1011-q"><strong>What would the binary number 1011 be in decimal notation?</strong></a>
+</p>
+
+<p>
+<a href="#1011-a">Click here to see the answer.</a>
+</p>
+
+<p>
+<a name="b2d-q"><strong>Try converting these numbers from binary to decimal</strong></a>
+</p>
+
+<ul>
+<li>10
+</li><li>111
+</li><li>10101
+</li><li>11110
+</li></ul>
+
+<p>
+Remember:
+</p>
+
+<table>
+<tr>
+   <td>  2<sup>4</sup>
+   <td> | <td> 2<sup>3</sup>
+   <td> | <td> 2<sup>2</sup>
+   <td> | <td> 2<sup>1</sup>
+   <td> | <td> 2<sup>0</sup>
+</tr>
+<tr>
+   <td>  <sup> </sup>
+   <td> | <td>  <sup>  </sup>
+   <td> | <td>  <sup>  </sup>
+   <td> | <td> 1<sup>  </sup>
+   <td> | <td> 0<br>
+<tr>
+   <td>  <sup> </sup>
+   <td> | <td>  <sup>  </sup>
+   <td> | <td> 1<sup>  </sup>
+   <td> | <td> 1<sup>  </sup>
+   <td> | <td> 1<br>
+<tr>
+   <td>  1<sup> </sup>
+   <td> | <td> 0<sup> </sup>
+   <td> | <td> 1<sup> </sup>
+   <td> | <td> 0<sup> </sup>
+   <td> | <td> 1<br>
+<tr>
+   <td>  1<sup> </sup>
+   <td> | <td> 1<sup> </sup>
+   <td> | <td> 1<sup> </sup>
+   <td> | <td> 1<sup> </sup>
+   <td> | <td> 0
+</table>
+
+
+<p>
+<a href="#b2d-a">Click here to see the answer</a>
+</p>
+
+
+
+
+
+<h2><a name="add">Binary Addition</a></h2>
+
+<p>
+Consider the addition of decimal numbers:
+</p><pre>     23
+    +48
+    ___
+</pre>
+
+
+<p>
+We begin by adding 3+8=11.  Since 11 is greater than 10, a one is put
+into the 10's column (carried), and a 1 is recorded in the one's column
+of the sum.  Next, add [(2+4) +1] (the one is from the carry)=7, which
+is put in the 10's column of the sum.  Thus, the answer is 71.
+</p>
+
+<p>
+Binary addition works on the same principle, but the numerals are
+different.  Begin with one-bit binary addition:
+</p>
+
+<pre>    0    0    1    1
+   +0   +1   +0    1
+  ___  ___  ___  ___  
+    0    1    1   ??
+</pre>
+
+<p>
+1+1 carries us into the next column.  In decimal form, 1+1=2.  In binary,
+any digit higher than 1 puts us a column to the left (as would 10 in
+decimal notation).  The decimal number "2" is written in binary notation
+as "10" (1*2<sup>1</sup>)+(0*2<sup>0</sup>).  Record the 0 in the ones column, and carry the
+1 to the twos column to get an answer of "10."  In our vertical notation,
+</p>
+
+<pre>    1
+   +1
+  ___
+   10
+</pre>
+ 
+
+<p>
+The process is the same for multiple-bit binary numbers:
+</p><pre>   1010
+  +1111
+ ______
+</pre>
+
+
+
+
+<ul>
+<li>Step one:<br>
+  Column 2<sup>0</sup>:  0+1=1.<br>
+  Record the 1.   <br>
+  Temporary Result: 1; Carry: 0
+</li><li>Step two:<br>
+  Column 2<sup>1</sup>:  1+1=10.  <br>
+  Record the 0, carry the 1.<br>
+  Temporary Result: 01; Carry: 1
+</li><li>Step three:<br>
+  Column 2<sup>2</sup>:  1+0=1  Add 1 from carry:  1+1=10. <br>
+  Record the 0, carry the 1.<br>
+  Temporary Result: 001; Carry: 1
+</li><li>Step four:<br>
+  Column 2<sup>3</sup>:  1+1=10.  Add 1 from carry: 10+1=11.<br>
+  Record the 11. <br>
+  Final result: 11001
+</li></ul>
+
+<p>
+Alternately:
+</p><pre>    11   (carry)
+    1010
+   +1111
+  ______
+   11001
+</pre>
+
+
+<p>
+<strong>Always remember</strong>
+</p>
+<ul>
+<li>  0+0=0
+</li><li>  1+0=1
+</li><li>  1+1=10
+</li></ul>
+
+
+<p>
+<a name="binadd-q">Try a few examples of binary addition:</a>
+</p><pre>       111      101      111
+      +110     +111     +111
+    ______    _____    _____
+</pre>
+<br><br>
+<a href="#binadd-a">Click here to see the answer</a>
+
+
+
+
+<h2><a name="mult">Binary Multiplication</a></h2>
+
+<p>
+Multiplication in the binary system works the same way as in the decimal
+system.
+</p>
+
+<p>
+For one-digit values:
+</p>
+<ul><li>0*0=0
+</li><li>1*0=0
+</li><li>0*1=0
+</li><li>1*1=1
+</li></ul>
+
+<ul>
+<li> For multiple digit values, we use our standard technique
+<pre>   101                      
+  * 11
+  ____
+   101
+  1010
+ _____
+  1111
+</pre>
+</li></ul>
+
+<p>
+Note that multiplying by two is extremely easy.  To multiply by two,
+just add a 0 on the end.
+</p>
+
+
+
+<h2><a name="div">Binary Division</a></h2>
+
+<p>
+Follow the same rules as in decimal division.  Normally, 
+for the sake of simplicity, the remainder is ignored when dividing integers.
+</p>
+
+<p>
+For Example:  111011/11
+</p><pre>
+      10011 r 10
+    _______
+  11)111011
+    -11
+     ______
+       101
+       -11
+     ______
+        101
+         11
+     ______
+         10
+</pre>
+
+
+
+
+<h2><a name="dec2bin">Decimal to Binary</a></h2>
+
+<p>
+Converting from decimal to binary notation is slightly more difficult
+conceptually, but can easily be done once you know an algorithm.  
+Begin by thinking of a few examples.  We can easily see
+that the number 3= 2+1, and that this is equivalent to (1*2<sup>1</sup>)+(1*2<sup>0</sup>).
+This translates into putting a  "1" in the 2<sup>1</sup> column and a "1" in the
+2<sup>0</sup> column, to get "11". Almost as intuitive is the number 5:  it is
+obviously 4+1, which is the same as saying [(2*2) +1], or 2<sup>2</sup>+1.  This can
+also be written as [(1*2<sup>2</sup>)+(1*2<sup>0</sup>)].  Looking at this in columns,
+</p>
+
+<table>
+<tr>
+   <td>  2<sup>2</sup> <td> | 
+   <td>  2<sup>1</sup> <td> | 
+   <td>  2<sup>0</sup>
+</tr>
+<tr>
+   <td align=center>  1<sup> </sup> <td> | 
+   <td align=center>  0<sup> </sup> <td> | 
+   <td align=center>  1
+</tr>
+</table>
+
+<p>
+or 101.
+</p>
+
+<p>
+What we're doing here is finding the largest power of two within the number (2<sup>2</sup>=4
+is the largest power of 2 in 5), subtracting that from the number
+(5-4=1), and finding the largest power of 2 in the remainder (2<sup>0</sup>=1
+is the largest power of 2 in 1). Then we just put this into columns.
+This process continues until we have a remainder of 0. Let's take a
+look at how it works. We know that:
+</p>
+
+<table>
+<tr>
+   <td>  2<sup>0</sup>=1
+</tr>
+<tr>
+   <td>  2<sup>1</sup>=2
+</tr>
+<tr>
+   <td>  2<sup>2</sup>=4
+</tr>
+<tr>
+   <td>  2<sup>3</sup>=8
+</tr>
+<tr>
+   <td>  2<sup>4</sup>=16
+</tr>
+<tr>
+   <td>  2<sup>5</sup>=32
+</tr>
+<tr>
+   <td>  2<sup>6</sup>=64
+</tr>
+<tr>
+   <td>  2<sup>7</sup>=128
+</tr>
+</table>
+
+<p>and so on. To convert the decimal number 75 to binary, we would find
+the largest power of 2 less than 75, which is 64. Thus, we would put a
+1 in the 2<sup>6</sup> column, and subtract 64 from 75, giving us 11.  The largest power of 2 in 11 is 8, or 2<sup>3</sup>.  Put 1 in the 2<sup>3</sup> column, and 0 in 2<sup>4</sup> and 2<sup>5</sup>.  Subtract 8 from 11 to get 3.  Put 1 in the 2<sup>1</sup> column, 0 in 2<sup>2</sup>, and subtract 2 from 3.  We're left with 1, which goes in 2<sup>0</sup>, and we subtract one to get zero.  Thus, our number is 1001011.
+</p>
+
+<p>
+Making this algorithm a bit more formal gives us:
+</p>
+
+<div class="code">
+<ol>
+<li>Let D=number we wish to convert from decimal to binary
+<li>Repeat until D=0
+   <ol class="withloweralpha">
+   <li>Find the largest power of two in D.  Let this equal P.
+   <li>Put a 1 in binary column P.
+   <li>Subtract P from D.
+   </ol>
+<li>Put zeros in all columns which don't have ones.  
+</ol></div>
+
+<p>
+This algorithm is a bit awkward.  Particularly step 3, "filling in
+the zeros."  Therefore, we should rewrite it such that we ascertain the
+value of each column individually, putting in 0's and 1's as we go:
+</p>
+
+<div class="code">
+<ol>
+<li> Let D= the number we wish to convert from decimal to binary
+<li> Find P, such that 2<sup>P</sup> is the largest power of two smaller than D.
+<li> Repeat until P&lt;0
+   <ol class="withloweralpha">
+   <li>  If 2<sup>P</sup>&lt;=D then
+       <ol class="withlowerroman">
+       <li>   Put 1 into column P
+       <li>   Subtract 2<sup>P</sup> from D
+      </ol>
+   <li>  Else
+       <ol class="withlowerroman">
+       <li>   Put 0 into column P
+      </ol>
+   <li>  Subtract 1 from P
+   </ol>
+</ol>
+</div>
+
+
+<p>
+Now that we have an algorithm, we can use it to convert numbers from
+decimal to binary relatively painlessly. Let's try the number D=55.
+</p>
+<ul>
+<li>Our first step is to find P.  We know that 2<sup>4</sup>=16, 2<sup>5</sup>=32, and 2<sup>6</sup>=64.  Therefore, P=5.
+</li><li>2<sup>5</sup>&lt;=55, so we put a 1 in the 2<sup>5</sup> column:  <code>1-----</code>.
+</li><li>Subtracting 55-32 leaves us with 23.  Subtracting 1 from P gives us 4.
+</li><li>Following step 3 again, 2<sup>4</sup>&lt;=23, so we put a 1 in the 2<sup>4</sup> column:  
+  <code>11----</code>. 
+</li><li>Next, subtract 16 from 23, to get 7.  Subtract 1 from P gives us 3.
+</li><li>2<sup>3</sup>&gt;7, so we put a 0 in the 2<sup>3</sup> column: <code>110---</code>
+</li><li>Next, subtract 1 from P, which gives us 2.
+</li><li>2<sup>2</sup>&lt;=7, so we put a 1 in the 2<sup>2</sup> column: <code>1101--</code>
+</li><li>Subtract 4 from 7 to get 3.  Subtract 1 from P to get 1.
+</li><li>2<sup>1</sup>&lt;=3, so we put a 1 in the 2<sup>1</sup> column: <code>11011-</code>
+</li><li>Subtract 2 from 3 to get 1.  Subtract 1 from P to get 0.
+</li><li>2<sup>0</sup>&lt;=1, so we put a 1 in the 2<sup>0</sup> column: <code>110111</code>
+</li><li>Subtract 1 from 1 to get 0.  Subtract 1 from P to get -1.
+</li><li>P is now less than zero, so we stop.
+</li></ul>
+
+<h3><a name="dec2b-two">Another algorithm for converting decimal to binary</a></h3>
+
+<p>
+However, this is not the only approach possible.  We can start at the right, rather than the left.
+</p>
+
+<p>
+All binary numbers are in the form
+</p>
+
+<blockquote><tt>
+   a[n]*2<sup>n</sup> + a[n-1]*2<sup>(n-1)</sup>+...+a[1]*2<sup>1</sup> + a[0]*2<sup>0</sup>
+</tt></blockquote>
+
+<p>where each a[i] is either a 1 or a 0 (the only possible digits for
+the binary system). The only way a number can be odd is if it has a 1
+in the 2<sup>0</sup>
+column, because all powers of two greater than 0 are even numbers (2,
+4, 8, 16...). This gives us the rightmost digit as a starting point.
+</p>
+
+<p>Now we need to do the remaining digits. One idea is to "shift" them.
+It is also easy to see that multiplying and dividing by 2 shifts
+everything by one column: two in binary is 10, or (1*2<sup>1</sup>).  Dividing (1*2<sup>1</sup>) by 2 gives us (1*2<sup>0</sup>), or just a 1 in binary.  Similarly, multiplying by 2 shifts in the other direction:  (1*2<sup>1</sup>)*2=(1*2<sup>2</sup>) or 10 in binary.  Therefore
+</p>
+
+<blockquote><tt>
+{a[n]*2<sup>n</sup> + a[n-1]*2<sup>(n-1)</sup> + ... + a[1]*2<sup>1</sup> + a[0]*2<sup>0</sup>}/2
+</tt></blockquote>
+
+<p>
+is equal to 
+</p>
+
+<blockquote><tt>
+a[n]*2<sup>(n-1)</sup> + a[n-1]*2<sup>(n-2)</sup> + ... + a[1]2<sup>0</sup> 
+</tt></blockquote>
+
+<p>
+Let's look at how this can help us convert from decimal to binary. Take
+the number 163. We know that since it is odd, there must be a 1 in the 2<sup>0</sup> column (a[0]=1).  We also know that it equals 162+1. If we put the 1 in the 2<sup>0</sup> column, we have 162 left, and have to decide how to translate the remaining digits.
+</p>
+
+<p>
+Two's column:  Dividing 162 by 2 gives 81.  The number 81 in binary would also have a 1 in the 2<sup>0</sup> column.  Since we divided the number by two, we "took out" one power of two.  Similarly, the statement  a[n-1]*2<sup>(n-1)</sup> + a[n-2]*2<sup>(n-2)</sup> + ... + a[1]*2<sup>0</sup> has a power of two removed.  Our "new" 2<sup>0</sup> column now contains a1.  We learned earlier that there is a 1 in the 2<sup>0</sup>
+column if the number is odd. Since 81 is odd, a[1]=1. Practically, we
+can simply keep a "running total", which now stands at 11 (a[1]=1 and
+a[0]=1). Also note that a 1 is essentially "remultiplied" by two just by
+putting it in front of a[0], so it is automatically fit into the
+correct column.
+</p>
+
+<p>Four's column: Now we can subtract 1 from 81 to see what remainder
+we still must place (80). Dividing 80 by 2 gives 40. Therefore, there
+must be a 0 in the 4's column, (because what we are actually placing is
+a 2<sup>0</sup> column, and the number is not odd).
+</p>
+
+<p>
+Eight's column: We can divide by two again to get 20. This is even, so
+we put a 0 in the 8's column. Our running total now stands at a[3]=0,
+a[2]=0, a[1]=1, and a[0]=1.
+</p>
+
+<p>
+We can continue in this manner until there is no remainder to place.
+</p>
+
+<p>
+Let's formalize this algorithm:
+</p>
+
+<div class="code"><pre>1. Let D= the number we wish to convert from decimal to binary.
+2. Repeat until D=0
+   a. If D is even, put "0" in the leftmost open column.
+   a. Else if D is odd, put "1" in the leftmost open column, and subtract 1 from D.
+   c. Divide D by 2.
+</pre></div>
+
+<p>
+For the number 163, this works as follows:
+</p>
+<div class="code">
+
+<table border="1">
+<tr>
+  <th colspan=2>Algorithm<br>Step
+  <th>Processing<br>Description
+  <th>Result<br>so far
+  <th>New D<br>Value
+  <th>Final<br>Comments
+</tr>
+<tr>
+  <td colspan=2>Start
+  <td>&nbsp;
+  <td valign=bottom>&nbsp;
+  <td valign=bottom>163
+  <td valign=bottom>&nbsp;
+</tr>
+<tr>
+  <td>2.<td> b.
+  <td>D is odd<br>
+      Put a 1 in the 2<sup>0</sup> column.<br>
+      Subtract 1 from D to get 162.
+  <td valign=bottom align=right>1
+  <td valign=bottom>162
+  <td valign=bottom>On to step 2c within this loop.
+</tr>
+<tr>
+  <td>&nbsp; <td>c.
+  <td>Divide D=162 by 2.
+  <td valign=bottom>&nbsp;
+  <td valign=bottom>81
+  <td valign=bottom>D does not equal 0, so we repeat step 2.
+</tr>
+<tr>
+  <td>2. <td>b. 
+  <td>D is odd<br>
+      Put a 1 in the 2<sup>1</sup> column.<br>
+      Subtract 1 from D to get 80.
+  <td valign=bottom align=right>11
+  <td valign=bottom>80
+  <td valign=bottom>On to step 2c within this loop.
+</tr>
+<tr>
+  <td>&nbsp; <td>c.
+  <td>Divide D=80 by 2.
+  <td valign=bottom>&nbsp;
+  <td valign=bottom>40
+  <td valign=bottom>D does not equal 0, so we repeat step 2.
+</tr>
+<tr>
+  <td>2. <td>a. 
+  <td>D is even<br>
+      Put a 0 in the 2<sup>2</sup> column.
+  <td valign=bottom align=right>011
+  <td valign=bottom>40
+  <td valign=bottom>On to step 2c within this loop.
+</tr>
+<tr>
+  <td>&nbsp; <td>c.
+  <td>Divide D by 2.
+  <td valign=bottom>&nbsp;
+  <td valign=bottom>20
+  <td valign=bottom>D does not equal 0, so we repeat step 2.
+</tr>
+<tr>
+  <td>2. <td>a. 
+  <td>D is even<br>
+      Put a 0 in the 2<sup>3</sup> column.
+  <td valign=bottom align=right>0011
+  <td valign=bottom>20
+  <td valign=bottom>On to step 2c within this loop.
+</tr>
+<tr>
+  <td>&nbsp; <td>c.
+  <td>Divide D by 2.
+  <td valign=bottom>&nbsp;
+  <td valign=bottom>10
+  <td valign=bottom>D does not equal 0, so we repeat step 2.
+</tr>
+<tr>
+  <td>2. <td>b. 
+  <td>D is even<br>
+      Put a 0 in the 2<sup>4</sup> column.
+  <td valign=bottom align=right>00011
+  <td valign=bottom>10
+  <td valign=bottom>On to step 2c within this loop.
+</tr>
+<tr>
+  <td>&nbsp; <td>c.
+  <td>Divide D by 2.
+  <td valign=bottom>&nbsp;
+  <td valign=bottom>5
+  <td valign=bottom>D does not equal 0, so we repeat step 2.
+</tr>
+<tr>
+  <td>2. <td>b.
+  <td>D is odd<br>
+      Put a 1 in the 2<sup>5</sup> column.<br>
+      Subtract 1 from D to get 4.
+  <td valign=bottom align=right>100011
+  <td valign=bottom>4
+  <td valign=bottom>On to step 2c within this loop.
+</tr>
+<tr>
+  <td>&nbsp; <td>c.
+  <td>Divide D by 2.
+  <td valign=bottom>&nbsp;
+  <td valign=bottom>2
+  <td valign=bottom>D does not equal 0, so we repeat step 2.
+</tr>
+<tr>
+  <td>2. <td>a.
+  <td>D is even<br>
+      Put a 0 in the 2<sup>6</sup> column.
+  <td valign=bottom align=right>0100011
+  <td valign=bottom>2
+  <td valign=bottom>On to step 2c within this loop.
+</tr>
+<tr>
+  <td>&nbsp; <td>c.
+  <td>Divide D by 2.
+  <td valign=bottom>&nbsp;
+  <td valign=bottom>1
+  <td valign=bottom>D does not equal 0, so we repeat step 2.
+</tr>
+<tr>
+  <td>2. <td>b.
+  <td>D is odd<br>
+      Put a 1 in the 2<sup>7</sup> column.<br>
+      Subtract 1 from D to get D=0.
+  <td valign=bottom align=right>10100011
+  <td valign=bottom>0
+  <td valign=bottom>On to step 2c within this loop.
+</tr>
+<tr>
+  <td>&nbsp; <td>c.
+  <td>Divide D by 2.
+  <td valign=bottom>&nbsp;
+  <td valign=bottom>0
+  <td valign=bottom>D does not equal 0, so we repeat step 2.
+</tr>
+<tr>
+  <td colspan=2>D=0
+  <td>Loop terminates
+  <td valign=bottom align=right>10100011
+  <td valign=bottom>&nbsp;
+  <td valign=bottom>&nbsp;
+</tr>
+</table>
+
+<p>
+Conclusion: the decimal number 163 is equivalent to the binary number 
+10100011.
+</p>
+</div>
+
+<p>
+Since we already knew how to convert from binary to decimal, we can easily verify our result.  
+</p>
+
+<ul>
+<li> 10100011
+</li><li> = (1*2<sup>0</sup>)+(1*2<sup>1</sup>)+(1*2<sup>5</sup>)+(1*2<sup>7</sup>)
+</li><li> = 1+2+32+128
+</li><li> = 163.
+</li></ul>
+
+
+
+
+
+<h2><a name="negation">Negation in the Binary System</a></h2>
+
+<p>
+The techniques discussed above work well for non-negative integers,
+but how do we indicate negative numbers in the binary system?  Before we
+investigate negative numbers, we note that the computer uses a fixed
+number of "bits" or binary digits.  An 8-bit number is 8 digits long.
+For this section, we will work with 8 bits.
+  </p>
+
+<h3><a name="signedmagnitude">Sign-Magnitude Notation</a></h3>
+
+<p>
+The simplest way to indicate negation is sign-magnitude notation.  In
+sign-magnitude notation, the left-most bit is not actually part of the number, but
+is just the equivalent of a +/- sign.  "0" indicates that the number
+is positive, "1" indicates negative.  In 8 bits, 00001100 would be 12
+(break this down into (1*2<sup>3</sup>) + (1*2<sup>2</sup>) ).  To indicate -12, we would
+simply put a "1" rather than a "0" as the first bit:  10001100.
+</p>
+
+
+<h3><a name="onescomplement">One's Complement</a></h3>
+
+<p>
+In one's complement, positive numbers are represented as usual in
+regular binary.  However, negative numbers are represented differently.
+To negate a number, replace all zeros with ones, and ones with zeros -
+flip the bits.  Thus, 12 would be 00001100, and -12 would be 11110011.
+As in signed magnitude, the leftmost bit indicates the sign (1 is
+negative, 0 is positive).  To compute the value of a negative number,
+flip the bits and translate as before.
+</p>
+
+
+
+<h3><a name="twoscomplement">Two's Complement</a></h3>
+
+<p>
+Two's complement is an interesting variant of one's complement that
+is more procedural than anything.  You can negate a number by flipping
+all the bits and then adding 1 with the techniques of binary addition.
+(A little math will tell you that this technique works correctly when
+you doubly negate a number.)
+<!-- MMC: I found this confusing. The alg works correctly as stated
+     above whether the original number is positive or negative.
+Begin with the number in one's complement.  Add 1 if the number is 
+negative.  
+-->
+</p>
+
+<p>
+In this notation, twelve would be represented as 00001100, and -12
+as 11110100.  To verify this, let's subtract 1 from 11110100, to get
+11110011.  If we flip the bits, we get 00001100, or 12 in decimal.
+</p>
+
+
+
+<h3><a name="excess">Excess 2<sup>(m-1)</sup></a></h3>
+
+<p>
+In excess 2<sup>(m-1)</sup>, "m" indicates the total number of bits.  For us (working with 8 bits), it would be excess 2<sup>7</sup>.  To represent a number (positive or negative) in excess 2<sup>7</sup>, begin by taking the number in unsigned binary representation.  Then add 2<sup>7</sup> (=128) to that number.   For example, 7 would be 128 + 7=135, or 2<sup>7</sup>+2<sup>2</sup>+2<sup>1</sup>+2<sup>0</sup>, and, in binary,10000111.  We would represent -7 as 128-7=121, and, in binary, 01111001. 
+</p>
+
+
+
+<h3><a name="notes">Notes</a></h3>
+
+<ul>
+<li> Unless you know which representation has been used, you cannot figure out the value of a sequence of bits.
+</li><li> A number in excess 2<sup>(m-1)</sup> is the same as that number in two's complement with the leftmost bit flipped.
+</li></ul>
+
+<p>
+To see the advantages and disadvantages of each method, let's try working with them.
+</p>
+
+<p>
+<a name="alladd-q">Using the standard algorithm for binary addition, add
+(5+12), (-5+12), (-12+-5), and (12+-12) in each system. Then convert
+back to decimal numbers.</a>
+</p>
+
+<p>
+<a href="#alladd-a">Click here to see the answers.</a>
+</p>
+
+
+
+
+
+<h2><a name="integers-in-java">Representing Integers in C, Java, and
+    Various Other Languages</a></h2>
+
+<p>
+C and Java use two's complement to represent the various forms of integers,
+with different numbers of bits for the different forms.
+A <code>byte</code> has eight bits, a <code>short</code> sixteen,
+an <code>int</code> thirty-two, and a <code>long</code> sixty-four.  Why do
+many languages use two's complement?  Because it provides the advantage
+that addition is simple (you can use the standard algorithm for positive
+and negative numbers), subtraction is simple (subtraction can be
+implemented as <q>negate and add</q>), and because you can easily tell the
+sign of a number (if the leftmost bit is 0, the number is non-negative; if
+the leftmost bit is 1, the number is negative).
+</p>
+
+<p>
+Now, why do we get a negative number when we add to the largest value
+in each?  Let's consider the largest 32-bit integer,
+<code>01111111111111111111111111111111</code>.  All addition is done
+using the simple additional algorithm.  Let's consider what happens
+when we add 2.
+</p>
+
+<pre> <i>111111111111111111111111111111  </i> (carry)
+ 01111111111111111111111111111111
++                              10
+---------------------------------
+ 10000000000000000000000000000001
+</pre>
+
+<p>
+What number is that?  Well, we know it's negative because it starts
+with a 1.  Hence, we flip all the bits and then add 1 to find the
+corresponding positive number.
+</p>
+
+<pre> 01111111111111111111111111111110
++                               1
+---------------------------------
+ 01111111111111111111111111111111
+</pre>
+
+<p>
+So, in this notation, 2<sup>31</sup> + 2 = -2<sup>31</sup>
+</p>
+
+<h2><a name="bitwise">Bitwise Operations</a></h2>
+
+<p>
+Since some programmers use the underlying bits in different ways,
+C provides a wide variety of infix binary operations that manipulate 
+those bits, including 
+</p>
+<ul>
+<li> shift the bits left <i>n</i> places: <code><i>i</i> &lt;&lt; <i>n</i></code>
+</li><li> shift the bits right <i>n</i> places: <code><i>i</i> &gt;&gt; <i>n</i></code>
+</li><li> "<em>and</em>" the individual bits in <i>x</i> and <i>y</i>:
+  &nbsp;&nbsp;<code><i>x</i> &amp; <i>y</i></code>.  The "<em>and</em>" of
+  1 and 1 is 1, and the "<em>and</em>" of any other combination is 0.
+</li><li> "<em>inclusive or</em>" the individual bits in <i>x</i> and <i>y</i>:
+  &nbsp;&nbsp;<code><i>x</i> | <i>y</i></code>.  The "<em>inclusive
+  or</em>" of 0 and 0 is 0, and the "<em>inclusive or</em>" of any other
+  combination is 1. 
+</li><li> "<em>exclusive or</em>" the individual bits in <i>x</i> and <i>y</i>:
+  &nbsp;&nbsp;<code><i>x</i> | <i>y</i></code>.  The "<em>exclusive
+  or</em>" of two different bits is 1 and the "<em>exclusive or</em>" of
+  two identical bits is 0, and the inclusive or of any other combination is 1.
+</li></ul>
+
+
+
+<hr>
+
+<h2><a name="answers">Answers</a></h2>
+
+<p>
+<a name="1011-a"><strong>What would the binary number 1011 be in decimal notation?</strong></a>
+</p>
+
+<table>
+<tr>
+  <td align=right>1011=
+  <td>(1*2<sup>3</sup>)+(0*2<sup>2</sup>)+(1*2<sup>1</sup>)+(1*2<sup>0</sup>)
+</tr>
+<tr>
+  <td align=right>= 
+  <td>(1*8) + (0*4) + (1*2) + (1*1)
+</tr>
+<tr>
+  <td align=right>= 
+  <td>11 (in decimal notation)
+</tr>
+</table>
+
+<p>
+<a href="#1011-q">Go back to the question</a>
+</p>
+
+<p>
+<a name="b2d-a">Try converting these numbers from binary to decimal.</a>
+</p>
+
+<table>
+<tr>
+   <td align=right>10 =
+   <td>(1*2<sup>1</sup>) + (0*2<sup>0</sup>) = 2+0 = 2
+</tr>
+<tr>
+<td align=right>111 = 
+   <td>(1*2<sup>2</sup>) + (1*2<sup>1</sup>) + (1*2<sup>0</sup>) = 4+2+1=7
+</tr>
+<tr>
+<td align=right>10101= 
+   <td>(1*2<sup>4</sup>) + (0*2<sup>3</sup>) + (1*2<sup>2</sup>) + (0*2<sup>1</sup>) + (1*2<sup>0</sup>)=16+0+4+0+1=21
+</tr>
+<tr>
+<td align=right>11110= 
+   <td>(1*2<sup>4</sup>) + (1*2<sup>3</sup>) + (1*2<sup>2</sup>) + (1*2<sup>1</sup>) + (0*2<sup>0</sup>)=16+8+4+2+0=30
+</tr>
+</table>
+
+<p>
+<a href="#b2d-q">Go back to the question</a>
+</p>
+
+<p>
+<a name="binadd-a">
+<strong>Try a few examples of binary addition:</strong></a>
+</p>
+
+<pre>        step 1         step 2         step 3
+                         1             1
+          111            111            111
+         +110           +110           +110
+        ______         ______         _____
+            1             01           1101
+
+           1             1             1   
+          101            101            101
+         +111           +111           +111
+         _____          _____         ______
+            0             00           1100
+
+           1             1             1
+          111            111            111
+         +111           +111           +111
+        _____          _____           _____
+            0             10           1110
+</pre>
+
+<p>
+<a href="#binadd-q">Click here to return to the question</a>
+</p>
+
+<p>
+<a name="alladd-a"><strong>Using the regular algorithm for binary
+addition, add (5+12), (-5+12), (-12+-5), and (12+-12) in each system.
+Then convert back to decimal numbers.</strong></a>
+</p>
+
+<pre>Sign-Magnitude:
+
+    5+12         -5+12         -12+-5            12+-12 
+
+ 00000101       10000101       10001100        00001100
+ 00001100       00001100       10000101        10001100
+__________      ________       ________        _________
+ 00010001       10010001       00010000        10011000
+
+    17             -17            16              -24
+
+One' Complement:
+
+ 00000101       11111010       11110011        00001100
+ 00001100       00001100       11111010        11110011
+_________       ________       ________        ________
+ 00010001       00000110       11101101        11111111
+
+    17             6              -18             0
+
+Two's Complement:
+
+ 00000101       11111011       11110100        00001100
+ 00001100       00001100       11111011        11110100
+ ________       ________       ________        ________
+ 00010001       00000111       11101111        00000000
+
+     17            7              -17               0
+<!--
+Sign-Magnitude:
+
+ 10000101       01111011       01110100        00001100
+ 10001100       10001100       01111011        01110100
+ ________       ________       ________        ________
+ 00010001       00000111       11101111        01111100 
+
+    109           119             111             124   
+-->
+</pre>
+
+<p>
+<a href="#alladd-q">Click here to return to the question</a>
+</p>
+
+
+
+<hr>
+
+<h2><a name="history">History</a></h2>
+
+<p>
+Circa 1995 [Christine R. Wright]
+</p>
+<ul>
+<li> Original version, entitled
+  <q>The Binary System: A pretty damn
+clear guide to a quite confusing concept by Christine R. Wright with
+some help from Samuel A. Rebelsky.</q>
+</li></ul>
+
+<p>
+Monday, 6 February 2006 [Samuel A. Rebelsky]
+</p>
+<ul>
+<li> Reformatted.
+</li><li> Added sections on Java.
+</li><li> Minor editing changes.
+</li></ul>
+
+<p>
+Thursday, 31 August 2006 [Marge M. Coahran]
+</p>
+<ul>
+<li> Minor typographical corrections.
+</li></ul>
+
+<p>
+Thursday, 15 February 2010 [Henry M. Walker]
+</p>
+<ul>
+<li> Generalized sections on Java to C, Java, and other languages.
+</li>
+<li> Minor typographical corrections.
+</li></ul>
+
+</div>
+
+<p>
+<table width="100%">
+<tr><td>
+      For more information, please contact
+   <a href="http://www.cs.grinnell.edu/%7Ewalker/">Henry M. Walker</a> at
+   <a href="mailto:walker@cs.grinnell.edu">walker@cs.grinnell.edu</a>.
+   </td>
+   <td rowspan="2" align="right">
+   <a href="http://validator.w3.org/check/referer"><img border="0" 
+      src="/~walker/valid-html401-blue.png" alt="Valid HTML 4.01!" height="31"
+      width="88"></a>
+   <a href="http://jigsaw.w3.org/css-validator/"><img border="0"
+       src="/~walker/vcss-blue.png" 
+       alt="Valid CSS!" height="31"
+       width="88"></a>
+   </td>
+</tr>
+
+</table>
+</body></html>

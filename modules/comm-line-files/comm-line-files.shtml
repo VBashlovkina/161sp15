@@ -1,0 +1,310 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>CSC 161 Module on Integrated Robotics</title>  
+    <link rev="made" href="mailto:walker@cs.grinnell.edu">
+</head>
+<body>
+<div class="body">
+<!--#include file="header.inc"-->
+
+<div class="labcontent">
+
+<h1>CSC 161 Module on Integrated Robotics</h1>
+
+<h2>Summary and Main Topics</h2>
+<p>
+The purpose of this module is to smoothly integrate and review material
+that has been presented through the semester, with a particular emphasis on
+C programming concepts and full usage of the Scribbler robot.   
+</p>
+
+<ol>
+<li>  Command-Line Arguments
+<li>  Files
+<li>  Logging Commands
+</ol>
+
+<h2>Day-by-day Details</h2>
+
+<table border>
+
+<tr>
+  <th>Day
+  <th>Topic
+  <th>Preparation
+  <th>In-class
+  <th>Due Date
+  <th>Availability<br>for<br>Extra<br>Credit
+</tr>
+
+<tr>
+  <td valign=top>Tuesday, December&nbsp;2
+  <td valign=top>Introduction<br>
+  <td valign=top>&nbsp;
+  <td valign=top>
+<ul class="index">
+<li>
+<a href="command-line.c">command-line.c</a>
+<li>
+Examples: Walker, <a href="/~walker/c/index.html">An Introduction to C Through
+Annotated Examples</a>
+<ul class="index">
+<li>
+Program 19 (<tt>genfile.c</tt>),  pages 31-32.
+<li>
+Program 20 (<tt>readfiles.c</tt>),  pages 33-34.
+<li>
+Program 21 (<tt>fileletters-1.c</tt>),  pages 35-38.
+
+<li>
+Program 22 (<tt>fileletters-2.c</tt>),  pages 39-40.
+<li>
+Program 23 (<tt>fileletters-3.c</tt>),  pages 41-43.
+</ul>
+</ul>
+  <td valign=top>&nbsp;
+  <td valign=top>&nbsp;
+</tr>
+
+<tr>
+  <td valign=top>Wednesday, December&nbsp;3
+  <td valign=top>Command-Line Arguments
+  <td valign=top><ul class="index">
+      <li>King, Section 13.7
+      <li>K&amp;R 5.10
+      <li><a href="../../string-processing.shtml">Working with strings</a>
+        </ul>
+  <td valign=top> <a href="lab-command-line.shtml">lab exercise</a>
+  <td valign=top>&nbsp;
+  <td valign=top>&nbsp;
+</tr>
+
+<tr>
+  <td valign=top>Friday, December&nbsp;5
+  <td valign=top>Files
+  <td valign=top>
+    <ul class="index">
+      <li>
+        King, Sections 22.1-22.3
+      <li>
+        K&amp;R 7.5 - 7.8
+    </ul>
+  <td valign=top><a href="lab-files-1.shtml">lab exercise</a>
+  <td valign=top>&nbsp;
+  <td valign=top>&nbsp;
+</tr>
+  
+<tr>
+  <td valign=top>Monday, December8&nbsp;8
+  <td valign=top>Files Continued
+  <td valign=top>
+    <ul class="index">
+      <li>
+        King, Sections 22.1-22.5
+       <li>
+         K&amp;R 8.1 - 8.5
+       <li>
+         <a href="state-year.c">state-year.c</a>
+    </ul>
+  <td valign=top><a href="lab-files-2.shtml">lab exercise</a>
+  <td valign=top>&nbsp;
+  <td valign=top>extra credit if submitted by Friday, December&nbsp;12
+</tr>
+
+<tr>
+  <td valign=top>Tuesday, December&nbsp;9
+  <td valign=top>
+  <a href="../../suppl-prob.shtml#5"><b>Supplemental
+  Problem&nbsp;5</b></a>  
+  <td valign=top>&nbsp;
+  <td valign=top><a href="../../suppl-prob.shtml#5">Supplemental
+  Problem&nbsp;5</a> (done individually) 
+  <td valign=top>Tuesday, December&nbsp;9
+  <td valign=top>&nbsp;
+</tr>
+
+<tr>
+  <td valign=top>Tuesday, December&nbsp;9
+  <td valign=top>Project Day&nbsp;1
+  <td valign=top>&nbsp;
+  <td valign=top><a href="#project7">project</a>
+  <td valign=top>Friday, December&nbsp;12
+  <td valign=top>&nbsp;
+</tr>
+
+<tr>
+  <td valign=top>Wednesday, December&nbsp;10
+  <td valign=top>Project Day&nbsp;2
+  <td valign=top>&nbsp;
+  <td valign=top><a href="#project7">project</a>
+  <td valign=top>Friday, December&nbsp;12
+  <td valign=top>&nbsp;
+</tr>
+
+</table>
+
+<a name="project7"></a>
+<h2>Project: Robot Logging Suite</h2>
+<p>
+Write a "robot logger" program which can log actions to a file, and
+also read actions from a file and performs them. 
+</p>
+
+<ul>
+<li>
+You should use command-line input flags to specify whether the robot is in
+"read" mode (reading actions from  a file), "write" mode (logging actions
+onto a file), or both "read" and "write" mode.  In particular:
+<ul>
+<li>
+<p>
+if the use specifies a command-line directive <tt>-w</tt>, then
+</p>
+<ul>
+<li>
+if the command line also has a file name, subsequent processing should use
+this file for writing.  However, if no file name is given, the program
+should ask the user for a file name.
+<li>
+the program should perform the commands, and
+<li>
+the program should log the commands in the specified file.
+</ul>
+
+<li>
+<p>
+if the use specifies a command-line directive <tt>-r</tt>, then 
+</p>
+<ul>
+<li>
+if the command line also has a file name, subsequent processing should use
+this file for reading.  However, if no file name is given, the program
+should ask the user for a file name.
+<li> 
+the program should read commands from the specified file, and
+<li>
+the program should perform the commands.
+</ul>
+<li>
+<p>
+if no command-line arguments are given, the program should remind the user
+that the program requires <tt>-w</tt> or <tt>-r</tt>.
+</p>
+<li>
+<p>
+it should be possible for a user to utilize both <tt>-w</tt>
+and <tt>-r</tt> mode.
+</ul>
+
+<li>
+<p>
+This program should support at least 10 different actions (following
+the <a href="../chars-io/chars-io.shtml#project3">module 011 project</a>
+command requirements).  As with the Module 011 project, each action
+(except, perhaps, quit) must be implemented as a separate procedure.
+</p>
+</ul>
+
+<h4>Notes</h4>
+<ul>
+<li>
+<p>
+Global variables may not be used in this project.  Use parameters to
+communication data into procedures.
+</p>
+<li>
+<p>
+You are encouraged to use either your module 011 project or
+your <tt>command-robot.c</tt> program as the basis for the command input.
+</p>
+<li>
+<p>
+One approach would involve two variables <tt>readMode</tt>
+and <tt>writeMode</tt>.  
+</p>
+
+<ul>
+<li>
+Both <tt>readMode</tt> and <tt>writeMode</tt> are set at the beginning of
+the program by processing the command line.
+<li>
+If <tt>readMode</tt> is set, all input should come from a file; if it is
+not set, all input should come from the keyboard.  (This impacts where data
+will be read from, but the basic approach to reading could be the same in
+both cases.)
+<li>
+If <tt>writeMode</tt> is set, commands should be written to a file;  if
+not, commands might or might not be echoed to the terminal (your choice).
+</ul>  
+
+</ul>
+
+<h4>Grading</h4>
+
+<ul>
+<li>
+<a href="grading-form.pdf">General Grading Form</a>
+<li>
+<a href="command-line-grading-form.shtml">Project-specific Grading Form</a>
+</ul>
+
+</div> <!-- labcontent-->
+
+<div class="footer">
+ <hr><p>
+
+This document is available on the World Wide Web as
+
+<BLOCKQUOTE>
+<PRE>
+    http://www.cs.grinnell.edu/~walker/courses/161.fa13/modules/module-comm-line-files/module-comm-line-files.shtml
+</PRE>
+</BLOCKQUOTE>
+
+<hr>
+
+<p>
+<table width="100%">
+<tr><td>
+
+   <em>created 19 July 2011 by Erik Opavsky</em><br>
+   <em>revised 16 August 2011 by Erik Opavsky</em><br>
+   <em>revised 14 May 2011 by Dilan Ustek, Erik Opavsky, and
+   Henry M. Walker</em><br>
+   <em>revised 14 February 2012 by Henry M. Walker</em><br>
+   <em>revised 30 April 2012 by Henry M. Walker</em><br>
+   <em>revised 8 May 2012 by Henry M. Walker</em><br>
+   <em>minot editing 24 August 2012 by Henry M. Walker</em><br>
+   <em>updated 1 September 2012, 1 January 2013, 30 April 2013, 14
+   August 2013, 26 October 2013, 1 November 2013, 12 June 2014 by Henry M. Walker</em>
+   
+   </td>
+   <td rowspan="2" align="right">
+   <a href="http://validator.w3.org/check/referer"><img border="0" 
+      src="/~walker/valid-html401-blue.png" alt="Valid HTML 4.01!" height="31"
+      width="88"></a>
+   <a href="http://jigsaw.w3.org/css-validator/"><img border="0"
+       src="/~walker/vcss-blue.png" 
+       alt="Valid CSS!" height="31"
+       width="88"></a>
+   </td>
+</tr>
+
+<tr><td>
+   For more information, please contact
+   <a class="footer-a" href="http://www.cs.grinnell.edu/%7Ewalker/">Henry M. Walker</a> at
+   <a class="footer-a" href="mailto:walker@cs.grinnell.edu">walker@cs.grinnell.edu</a>.
+   </td></tr>
+</table>
+
+<hr>
+<!--#include file="copyright-notice.inc"-->
+
+</div> <!-- footer -->
+</div> <!-- body -->
+</body>
+</html>
+

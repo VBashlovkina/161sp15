@@ -1,0 +1,268 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>Laboratory Exercise on Elementary C Programming</title>
+    <link rev="made" href="mailto:walker@cs.grinnell.edu">
+</head>
+
+<body>
+<div class="body">
+
+<!--#include file="header.inc"-->
+
+<div class="labcontent">
+
+<H1>Laboratory Exercise on Elementary C Programming</H1>
+
+<h2>Introduction</h2>  
+
+<p>
+This laboratory exercise provides practice with basic
+elements of writing, editing, compiling, and running
+programs written in the C programming language. This will use the 
+ <a href="quarts-annotated.shtml">quarts.c program</a>,
+complete with annotations.
+</p>
+
+<h2>Class Preparation before Class</h2>
+<ul class="index">
+  <li>Reading from Text
+    <ul class="index">
+      <li>King:  Chapters 1-2, pages 1-32, OR
+      <li>K&amp;R:  Intro., 1.1-1.2, 2.1-2.3
+    </ul>
+  <li>Walker, <a href="quarts-annotated.shtml"><code>quarts.c</code>:  A
+      first program in C</a>
+  <li>Temperature conversion
+    <ul class="index">
+      <li>Walker, <a href="temperature.c"><code>temperature.c</code>:
+          C program example for in class</a>
+      <li>Similar Scheme programs
+        <ul class="index">
+          <li><a href="temperature-conversion-1.scm">Version&nbsp;1</a>
+          <li><a href="temperature-conversion-2.scm">Version&nbsp;2</a>
+        </ul>
+    </ul>
+</ul>
+
+<h2>Work Started in Class</h2>
+
+<h3>Introduction to the Emacs Editor</h3>
+
+<p>Open a terminal window and move to your <tt>labs</tt> subdirectory
+  within your <tt>csc161</tt> subdirectory:
+</p>
+
+<pre>
+cd csc161
+cd labs
+</pre>
+
+<ol>
+<li>
+<p>
+Working within a terminal window, start <em>emacs</em>.  
+<br>
+Starting at your home directory, use these commands:
+</p>
+
+<pre>
+   cd csc161
+   cd labs
+   emacs quarts.c &
+</pre>
+
+<li>
+<p>
+Use the links for the reading  (the <a href="quarts-annotated.shtml">quarts.c
+    program</a>) to open the program <tt>quarts.c</tt> in your
+browser.  Then copy and paste it into the <tt>emacs</tt> window.
+</p>
+
+</ol>
+
+<h3>Compiling and Running</h3>
+
+<ol start=3>
+<li>
+<p>Compile and run the program in your terminal window by typing:
+</p>
+
+<pre>
+   gcc -o quarts  quarts.c
+   ./quarts
+</pre>
+
+<li>
+<p>
+Run the program several more times by typing just <tt>./quarts</tt>.
+(You need not compile the program each time &mdash; unless you have changed
+<tt>quarts.c</tt>.)
+</p>
+</ol>
+
+<h3>Experimenting with Compiling</h3>
+<ol start=5>
+<li>
+<p>Make the following typographical errors in <tt>quarts.c</tt>, recompile, and 
+observe what, if anything, happens.  
+<br>
+In each case, check whether the program compiles, and whether the program
+runs.  If the program does not compile, what happens if you try to
+run <tt>quarts</tt>?
+</p>
+<ul>
+  <li><p>Type a few characters into your program BEFORE any of the code.</p>
+  <li><p>Type a few characters into your program AFTER the code.</p>
+  <li><p>Type some extra words inside of your main method.</p>
+  <li><p>Misspell your variables.</p>
+  <li><p>Misspell your printed output.</p>
+  <li><p>Misspell the name of your <tt>main()</tt> method.</p>
+  <li><p>Misspell the name of the included library.</p>
+</ul>
+</ol>
+
+<h2>Homework</h2>
+
+<h3>Writing Your Own Program</h3>
+<ol start=6>
+<li>
+<p>
+Write a C program that uses values for pints, quarts, and gallons
+and determines the corresponding number of liters.   For example, your
+program might compute the number of liters corresponding to 3 gallons, 2
+quarts, and 1 pint (i.e., 14.5 quarts total).
+</p>
+
+<p>
+To organize this program, begin by declaring <tt>pints</tt>
+and <tt>gallons</tt> as variables in addition to <tt>quarts</tt>
+and <tt>liters</tt> in the existing program.  Next, assign values to these
+variables, such as:
+</p>
+
+<pre>
+   gallons = 3;
+   quarts = 2;
+   pints = 1;
+</pre>
+
+<p>
+In computing the total value of liters, one approach would be to compute
+the total number of quarts from <tt>pints, quarts,</tt>
+and <tt>gallons</tt> (possibly using another variable, such
+as <tt>total_quarts</tt>).  From this <tt>total_quarts</tt>, you could
+compute the total number of liters.
+</p>
+
+<p>
+In computing the total number of quarts, you should use 4 quarts per gallon
+and 2 pints per quart.  (Be sure that 3 gallons (given in the example
+above) translates to 12 quarts, not 3/4 or 0.75 quarts.)
+</p>
+
+<p>
+You should reference the annotations on <tt>quarts.c</tt> to properly print
+  out your output.
+</p>
+
+<li>
+<p>
+Although you can name this new program whatever you like, you should end
+the file name with <tt>.c</tt> for two reasons:
+</p>
+
+<ul>
+<li>
+<p>
+You can identify the C programs quickly when you list files in your
+directory with the <tt>ls</tt> command.
+</p>
+
+<li>
+<p>
+<em>emacs</em> recognizes the <tt>.c</tt> extension as indicating a C
+program, and <em>emacs</em> adjusts its setting to aid your editing for
+that type of file.
+</p>
+</ul>
+</ol>
+
+<h3>Writing More C</h3>
+<ol start=8>
+<li>
+<p>Write a C program that uses a value for the radius of a circle
+and computes the circle's area and circumference. 
+</p>
+</ol>
+
+
+<h2>Optional Activity: Experimenting with emacs</h2>
+<ol start=9>
+<li>
+<p>Experiment with the <em>emacs</em> editor, following the <a
+href="/~walker/courses/coahranm/emacs.shtml">lab on the Emacs Text
+Editor</a> by Marge Coahran.
+</p>
+
+</ol>
+
+<!--#include file="body-footer.inc" -->
+
+</div> <!--labcontent-->
+
+<div class="footer">
+<hr>
+
+<p>
+This document is available on the World Wide Web as
+</p>
+
+<div class="address">
+<PRE>
+     http://www.cs.grinnell.edu/~walker/courses/161.fa14/modules/getting-started/lab-intro-c.html
+</PRE>
+</div> <!--address-->
+
+<hr>
+<table width="100%">
+<tr><td>
+   <em>created 7 April 2008 by Henry M. Walker</em><br>
+   <em>last full revision 18 July 2011 by Dilan Ustek and April
+   O'Neill</em><br>
+   <em>minor editing 24 August 2011 by Henry M. Walker</em><br>
+   <em>edited 18 September 2011 by Erik Opavsky</em><br>
+   <em>minor editing 25 September 2011 by Henry M. Walker</em><br>
+   <em>steps 6, 9 revised 7 September 2012 by Henry M. Walker</em><br>
+   <em>restructured 14-16 January 2014 by Henry M. Walker</em><br>
+   <em>readings added 1 September 2014 by Henry M. Walker</em>
+   </td>
+
+   <td rowspan="2" align="right">
+   <a href="http://validator.w3.org/check/referer"><img border="0"
+      src="/~walker/valid-html401-blue.png" alt="Valid HTML 4.01!" height="31"
+      width="88"></a>
+   <a href="http://jigsaw.w3.org/css-validator/"><img border="0"
+       src="/~walker/vcss-blue.png"
+       alt="Valid CSS!" height="31"
+       width="88"></a>
+   </td>
+</tr>
+
+<tr><td>
+   For more information, please contact
+   <a class="footer-a" href="/~walker/">Henry M. Walker</a> at
+   <a class="footer-a" href="mailto:walker@cs.grinnell.edu">walker@cs.grinnell.edu</a>.
+   </tr>
+</table>
+
+<hr>
+<!--#include file="copyright-notice.inc"-->
+
+</div> <!--footer-->
+</div> <!--body-->
+</body>
+</html>

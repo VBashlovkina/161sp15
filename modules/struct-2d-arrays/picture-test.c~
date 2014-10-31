@@ -1,0 +1,20 @@
+#include "MyroC.h"
+int
+main ()
+{
+  rConnect ("/dev/rfcomm0");
+  
+  Picture * pic = rTakePicture();
+
+  rDisplayPicture (pic, "start");
+  int i, j;
+  for (i = 0; i < 100; i++)
+    for (j = 0; j < 100; j++)
+      rGetPicturePixel(pic, i, j).R = rGetPicturePixel(pic, i, j).G = rGetPicturePixel(pic, i, j).B = 0;
+
+    rDisplayPicture (pic, "start");
+
+    rDisconnect();
+
+    return 0;
+}

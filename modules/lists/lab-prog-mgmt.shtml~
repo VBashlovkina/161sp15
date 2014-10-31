@@ -1,0 +1,504 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>CSC 161 Lab. Exercise on Building Multi-File Programs in C</title>
+    <link rev="made" href="mailto:walker@cs.grinnell.edu">
+</head>
+<body>
+<div class="body">
+
+<!--#include file="header.inc"-->
+
+<div class="labcontent">
+
+<h1>Program Management: Header Files and <tt>make</tt></h1>
+
+<h2>Goals:</h2>
+
+<p>
+This lab provides practice dividing a program into pieces,
+compiling those pieces separately, linking components together to form an
+executable, and automating this process using the Unix utilities
+<code>make</code> and <code>Makefile</code>. 
+</p>
+
+<h2>Preparation</h2>
+
+<p>
+In preparation for this lab:
+</p>
+
+<ul>
+<li>
+Review previous readings and labs on structs and typedefs in C
+<li>
+Be sure you understand the  
+<a href="reading-prog-mgmt.shtml">reading on headers and
+<tt>Makefiles</tt></a> for this lab.
+</ul>
+
+<h2>Acknowledgment</h2>
+
+<p>
+Many ideas that follow come from exercises by Marge Coahran.
+</p>
+
+<h2>Work Started in Class</h2>
+
+<p>
+Activities for this laboratory exercise are organized into two parts:
+</p>
+
+<ol class="withupperalpha">
+  <li>
+    <a href="#makefiles-A">Header and Implementation Files</a>
+  <li>
+    <a href="#makefiles-B">Makefiles</a>
+</ol>
+
+<h3><a name="makefiles-A">Part A: Header and Implementation Files</a></h3>
+
+<p>
+  The work that follows utilizes the <a href="scheme-lists.c"> scheme-like
+  lists program</a> from the recent lab.
+</p>
+
+<ol>
+  <li>
+    <p>
+      For safety, make a new directory for multi-file scheme-lists and copy your
+      scheme-lists program to it.
+    </p>
+
+    <li>
+      <p>
+        Separate the code in your <tt>scheme-lists</tt> program into three
+        files as follows:
+      </p>
+      <ul>
+        <li>
+          <tt>scheme-lists.h</tt>&mdash; containing the definition of
+          the <tt>listType</tt> and <tt>listNode</tt> types and all of the
+          function prototypes.
+        <li>
+          <tt>scheme-lists.c</tt>&mdash; containing the implementation of
+          all of your <tt>scheme-lists</tt> functions,
+          except <tt>main</tt>.
+        <li>
+          <tt>scheme-lists-test.c</tt>&mdash; containing your <tt>main</tt>
+          function.
+      </ul>
+      
+      <p>
+        In order to get these source files to compile,
+        both <tt>scheme-lists.c</tt> and <tt>scheme-lists-test.c</tt>
+        should contain the following line at the top of the file:
+      </p>
+
+<pre>
+   #include "scheme-lists.h"
+</pre>   
+
+<p>
+  You should <em>not</em> <tt>#include</tt> your source file
+  <tt>scheme-lists.c</tt> anywhere. (It is good practice to only include
+  header files, and not implementation files, in other source files.)
+</p>
+
+<p>
+  As discussed in the reading, your header file should contain the
+  following lines, and they should surround all type definitions in the
+  file.
+</p>
+
+<pre><tt>
+   #ifndef _LISTINFO_H
+   #define _LISTINFO_H
+
+     ...
+
+   #endif
+</tt></pre>
+
+<li>
+<p>
+  Try building your program with the following command, typed at the shell
+  prompt. Do you understand why it gives the error it does?
+</p>
+
+<pre><tt>
+ gcc scheme-lists-test.c
+</tt></pre>
+
+<p>
+  Compile each of your source files (to create object files, but still not
+  an executable program) with the following commands, typed at the shell
+  prompt:
+</p>
+
+<pre>
+  gcc -Wall -c scheme-lists.c
+  gcc -Wall -c scheme-lists-test.c
+</pre>
+
+<p>
+  Use the shell command <tt>"ls"</tt> to check that the object files were
+  produced.
+</p>
+
+<p>
+  Now create an executable file with the following command:
+</p>
+
+<pre>
+  gcc -o scheme-lists-test scheme-lists-test.o scheme-lists.o
+</pre>
+
+<p>
+  Check that the file <tt>scheme-lists-test</tt> exists with 
+  <tt>"ls -l"</tt>, and the run the program
+  with: <tt>"./scheme-lists-test"</tt> 
+</p>
+
+<p>
+  Finally, compile both source files and link the resulting object files
+  together with the following single command.
+</p>
+
+<pre>
+   gcc -o scheme-lists-test scheme-lists-test.c scheme-lists.c
+</pre>
+
+<p>
+  Note, however, that building large programs this way quickly becomes
+  tedious since every source file must be recompiled from scratch.
+</p>
+
+</ol>
+
+<p>
+  As you finish this part of the lab, note that you have converted your
+  <tt>scheme-lists</tt> code into an <em>abstract data type</em>. By listing
+  the function prototypes, the header file tells other programmers
+  <em>what</em> operations are supported by the data type. It does not
+  specify <em>how</em> they are implemented; that is done in the
+  implementation file.
+</p>
+
+<p>
+  Your data type may now be used in client programs, such as
+  <tt>scheme-lists-test.c</tt>. Doing so requires only the following simple
+  steps:
+</p>
+
+<ul>
+  <li><tt>#include</tt> the ADT's header file in the client source file, and
+  </li><li>include the object file associated with the ADT in the link
+  command when building the client program.
+</li></ul>
+
+<!-- The previous sections are heavily based on the following sections
+     by Marge Coahran
+
+<hr>
+
+<p>
+The work that follows utilizes the <a href="queues.shtml">array
+implementation of queues</a> from a recent lab.
+</p>
+
+<ol start=2>
+<li>
+<p>
+For safety, make a new directory for multi-file queues and copy your
+queue-array program to it.
+</p>
+
+<li>
+<p>
+Separate the code in your queue-array program into three files as
+follows:
+</p>
+
+<ul>
+<li>
+<tt>queue.h</tt> &mdash; containing the definition of
+the <tt>stringQueue</tt> type and the function prototypes for queues.
+<li>
+<tt>queue-proc.c</tt> &mdash; containing the implementation
+of all queue functions, except <tt>main</tt>.
+<li>
+<tt>queue-test</tt> &mdash; containing your <tt>main</tt> function.
+</ul>
+
+<p>
+In order to get these source files to compile, both <tt>queue-proc.c</tt>
+and <tt>queue-test.c</tt> should contain the following line at the top of
+the file: 
+</p>
+
+<pre>
+   #include "queue.h"
+</pre>
+
+<p>
+You should <em>not</em> <tt>#include</tt> your source file
+<tt>queue-proc.c</tt> anywhere. (It is good practice to only include header
+files, and not implementation files, in other source files.)
+</p>
+
+<p>
+As discussed in the reading, your header file should contain the following
+lines, and they should surround all other code in the file (i.e., all other
+code goes where the ellipses are shown).
+</p>
+
+<pre><tt>   #ifndef _QUEUEINFO_H
+   #define _QUEUEINFO_H
+
+     ...
+
+   #endif
+</tt></pre>
+
+<li>
+<p>
+Try building your program with the following command, typed at the shell
+prompt. Do you understand why it gives the error it does?
+<pre><tt>   gcc -ansi queue-test.c
+</tt></pre>
+
+<p>
+Compile each of your source files (to create object files, but still not an
+executable program) with the following commands, typed at the shell prompt:
+</p>
+
+<pre>   
+   gcc -Wall -ansi -c queue-proc.c
+   gcc -Wall -ansi -c queue-test.c
+</pre>
+
+<p>
+Use the shell command <tt>"ls -l"</tt> to check that the object files were
+produced. 
+</p>
+
+<p>
+Now create an executable file with the following command:
+</p>
+
+<pre>
+   gcc -o queue-test queue-test.o queue-proc.o
+</pre>
+
+<p>
+Check that the file <tt>queue-test</tt> exists with <tt>"ls -l"</tt>, and the
+run the program with: <tt>"./queue-test"</tt>
+</p>
+
+<p>
+Finally, compile both source files and link the resulting object files
+together with the following single command. 
+</p>
+
+<pre>
+   gcc -o queue-test queue-test.c queue-proc.c
+</pre>
+
+<p>
+Note, however, that building large programs this way quickly becomes
+tedious since every source file must be recompiled from scratch.
+</p>
+
+</ol>
+
+
+<p>
+As you finish this part of the lab, note that you have converted your
+<tt>queueString</tt> code into an <em>abstract data type</em>. By listing
+the function prototypes, the header file tells other programmers
+<em>what</em> operations are supported by the data type. It does not
+specify <em>how</em> they are implemented; that is done in the
+implementation file.
+
+<p>
+Your data type may now be used in client programs, such as
+<tt>queue-test.c</tt>. Doing so requires only the following simple steps:
+
+<ul>
+  <li><tt>#include</tt> the ADT's header file in the client source file, and
+  </li><li>include the object file associated with the ADT in the link
+  command when building the client program.
+</li></ul>
+-->
+
+<h3><a name="makefiles-B">Part B: Makefiles</a></h3>
+
+<p>
+  The <a href="reading-prog-mgmt.shtml">reading for this lab</a> describes a
+  <a href="prog-mgmt/Makefile">detailed Makefile</a> with directions for
+  compiling, linking, and cleaning files related to a
+  <a href="namelist.c">namelist.c</a> program.  This part considers a
+  simplied <tt>Makefile</tt>.
+</p>
+
+<ol start=4>
+<li>
+<p>
+Copy a <a href="Makefile">simplified Makefile</a> to your account and
+review it. Do you understand what is accomplished by each line in the file?
+</p>
+
+<li>
+<p>
+  Adapt the <tt>Makefile</tt> so that it can be used to build your
+  <tt>scheme-lists-test</tt> program. (You will, of course, want to change
+  the "Author" comment at the top of the file when you do this.)
+</p>
+
+</ol>
+
+<h2>Homework</h2>
+
+<ol start=6>
+<li>
+<p>
+In the terminal window, type these commands:
+</p>
+
+<ul>
+  <li><tt>"ls"</tt> -- to see a listing of your files
+  </li>
+  <li><tt>"make clean"</tt> -- to prepare for a fresh build
+  </li>
+  <li><tt>"ls"</tt> -- to view the result
+  </li>
+  <li><tt>"make"</tt> -- to compile and link all source files
+  </li>
+  <li><tt>"ls"</tt> -- to view the result
+  </li>
+</ul>
+
+<li>
+<p>
+  Make a change in the source file <tt>scheme-lists.c</tt>. For example, you
+  could add or modify a <tt>printf</tt> statement in some function.
+  Which rules in the makefile do you expect will be run, the next time you
+  invoke <tt>make</tt>, as a result of this change?
+</p>
+
+<p>
+  Run <tt>make</tt> again, to verify your prediction experimentally.
+</p>
+
+<li>
+<p>
+  Make a change in the header file <tt>scheme-lists.h</tt>. For example,
+  you could add a comment to the top of the file.  Which rules in the
+  makefile do you expect will be run, the next time you invoke 
+  <tt>make</tt>, as a result of this change?
+</p>
+
+<p>
+  Run <tt>make</tt> again, to verify your prediction experimentally.
+</p>
+
+</ol>
+
+<h2>If You Have Time</h2>
+
+<ol start=9>
+
+<li>
+  <p>
+    Take a look at GNU's documentation regarding make and makefiles here:
+    <tt><a href="http://www.gnu.org/software/make/manual/make.html">
+        Makefiles and the GNU make utility</a></tt>.
+  </p>
+
+<p>
+Note that this documentation is very lengthy, and it is <em>not</em>
+necessary for you to read or understand all of it in order to begin using
+makefiles. Reading through Section 3.2 or so provides a good introduction
+to the topic.
+</p>
+
+</ol>
+
+
+<!--- CITATION -------------------------------- -->
+<!--
+<hr>
+<small><i>
+Written: March 29, 2007 [Marge Coahran]<br>
+Revised: April 6, 2008  [Marge Coahran]<br>
+</i></small>
+
+- HISTORY -------------------------------- 
+
+3/29/2007: created
+
+4/6/2008: Added link to GNU's documentation and an "if you have time"
+exercise to take a look at it.
+-->
+<!--#include file="body-footer.inc" -->
+
+</div> <!--labcontent-->
+
+<div class="footer">
+
+<p>
+<hr>
+
+<p>
+This document is available on the World Wide Web as
+</p>
+
+<div class="address">
+<pre>
+http://www.cs.grinnell.edu/~walker/courses/161.sp14/modules/module-pointers-stacks-queues/lab-prog-mgmt.shtml
+</pre>
+</div> <!--address-->
+
+<hr>
+
+<table width="100%">
+<tr><td>
+   <em>created 29 March 2007</em> by Marge Coahran<br>
+   <em>revised 6 April 2008</em> by Marge Coahran<br>
+   <em>revised 14 April 2008</em> by Henry M. Walker<br>
+   <em>revised 25 January 2009</em> by Henry M. Walker<br>
+   <em>revised 4 April 2010</em> by Henry M. Walker<br>
+   <em>revised 16-18 November 2011</em> by Henry M. Walker<br>
+   <em>revised 11 December 2011</em> by Erik Opavsky<br>
+   <em>revised 12 December 2011</em> by Henry M. Walker<br>
+   <em>modest reformatting 8-9 February 2014</em> by Henry M. Walker
+   </td>
+   <td rowspan="2" align="right">
+   <a href="http://validator.w3.org/check/referer"><img border="0" 
+      src="/~walker/valid-html401-blue.png" alt="Valid HTML 4.01!" height="31"
+      width="88"></a>
+   <a href="http://jigsaw.w3.org/css-validator/"><img border="0"
+       src="/~walker/vcss-blue.png" 
+       alt="Valid CSS!" height="31"
+       width="88"></a>
+   </td>
+</tr>
+
+<tr><td>
+   For more information, please contact
+   <a class="footer-a"href="http://www.cs.grinnell.edu/%7Ewalker/">Henry M. Walker</a> at
+   <a class="footer-a"href="mailto:walker@cs.grinnell.edu">walker@cs.grinnell.edu</a>.
+   </td></tr>
+</table>
+
+<hr>
+<!--#include file="copyright-notice.inc"-->
+
+</div> <!--footer-->
+</div> <!--body-->
+
+</body>
+</html>

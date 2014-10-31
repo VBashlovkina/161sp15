@@ -1,0 +1,437 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>Reading on Function Pointers</title>
+    <link rev="made" href="mailto:walker@cs.grinnell.edu">
+</head>
+
+<body>
+<div class="body">
+
+<!--#include file="header.inc"-->
+
+<div class="labcontent">
+
+<h1>Function Pointers</h1>
+
+<p>
+As with Scheme, C allows variables to refer to functions, and functions can
+be passed as parameters.  However, since C requires the type of each
+variable or parameter be declared, variables that may refer to functions
+must indicate the function's signature (number and type of parameters,
+return type).
+</p>
+
+<p>
+The remainder of this reading presents an extended example that illustrates:
+</p>
+
+<ul>
+<li>
+<a href="#parm">the use of functions as array parameters</a>
+<li>
+<a href="#arrays">the declaration and use of arrays of functions</a>
+</ul>
+
+<h2>Initial Example</h2>
+
+<p>
+Suppose you are asked to write a program to compute a circle's
+circumference and area for radii between 0 and 9.  The desired output might
+be:
+</p>
+
+<pre>
+      radius   circumference   area
+      0.0000      0.0000      0.0000
+      1.0000      6.2832      3.1416
+      2.0000     12.5664     12.5664
+      3.0000     18.8496     28.2743
+      4.0000     25.1327     50.2655
+      5.0000     31.4159     78.5398
+      6.0000     37.6991    113.0973
+      7.0000     43.9823    153.9380
+      8.0000     50.2655    201.0619
+      9.0000     56.5487    254.4690
+</pre>
+
+<p>
+One simple approach for writing this type of program might utilize these
+features:
+</p>
+<ul>
+<li>
+Separate functions are defined for the circumference and the area of a
+circle.
+<li>
+The first line of the <tt>main</tt> program prints a header.
+<li>
+A main loop iterates through the desired <tt>radius</tt> values.
+<li>
+The loop itself contains three <tt>printf</tt> states, one for each value
+to be printed on a given line.
+</ul>
+
+<p>
+The resulting C program follows:
+</p>
+
+<pre>
+/* program to compute a circle's circumference and area
+ */
+
+# include &lt;stdio.h&gt;
+
+const double pi = 3.1415926535;
+
+/* circumference function */
+double circum (double radius)
+{
+  return 2 * pi * radius;
+}
+
+/* area function */
+double area (double radius)
+{
+  return pi * radius * radius;
+}
+
+int main ()
+{
+  printf ("      radius   circumference   area\n");
+  double radius;
+  for (radius = 0; radius &lt; 10; radius++)
+    {
+      printf ("%12.4lf", radius);
+      printf ("%12.4lf", circum(radius));
+      printf ("%12.4lf", area(radius));
+      printf ("\n");
+    }
+  return 0;
+}
+</pre>
+
+<a name="parm"></a><h2>Function Parameters</h2>
+
+<p>
+The above C program works fine and likely is completely satisfactory for
+the simple problem given.  However, several elements in the program contain
+some common elements.  For example,
+</p>
+
+<ul>
+<li>
+The first three <tt>printf</tt> statements all use the same format string, and
+they each print just one value.
+<li>
+The second and third <tt>printf</tt> statements call a function, the
+function requires one parameter, and <tt>radius</tt> is used in the
+function call.  
+<li>
+Arguably, the first <tt>printf</tt> statement also has this format, where
+the function called is the identify function <tt>x = iden(x)</tt>
+</ul>
+
+<p>
+Although these common elements are hardly earth shaking, it can be helpful
+to take advantage of such common elements in more complicated programs.
+</p>
+
+<h3>Printing Function</h3>
+<p>
+In exploiting the similarities in the <tt>printf</tt> statements,
+we might write a function that takes a radius and a function as parameters
+and then performs the required printing.  The following code is an example:
+</p>
+
+<pre>
+/* printing function */
+double myPrint (double x, double f (double))
+{
+  printf ("%12.4lf", f(x));
+}
+</pre>
+
+<p>
+This function has two formal parameters, the number <tt>x</tt> and a
+function <tt>f</tt>.  Further, <tt>f</tt> is identified as a function that
+will utilize one <tt>double</tt> value as an input parameter,
+and <tt>f</tt> will return a <tt>double</tt> when it completes execution.
+</p>
+
+<p>
+The function <tt>myPrint</tt> utilizes the function <tt>f</tt> when it
+performs its printing.
+</p>
+
+<h3>Full Program</h3>
+<p>
+The following program replaces the <tt>printf</tt> statements in
+the <tt>main</tt> loop by calls to <tt>myPrint</tt>.  
+</p>
+
+<p>
+Note that <tt>myPrint</tt> is also used for printing the value
+of <tt>radius</tt> by using an identify function.  The code observes,
+however, that a simple <tt>printf</tt> for <tt>radius</tt> could be used as
+a reasonable alternative.
+</p>
+
+<pre>
+/* program to compute a circle's circumference and area
+
+   example using function with a function parameter
+ */
+
+# include &lt;stdio.h&gt;
+
+const double pi = 3.1415926535;
+
+/* identity function */
+double iden (double radius)
+{
+  return radius;
+}
+
+/* circumference function */
+double circum (double radius)
+{
+  return 2 * pi * radius;
+}
+
+/* area function */
+double area (double radius)
+{
+  return pi * radius * radius;
+}
+
+/* printing function */
+void myPrint (double x, double f (double))
+{
+  printf ("%12.4lf", f(x));
+}
+
+int main ()
+{
+  printf ("      radius   circumference   area\n");
+  double radius;
+  for (radius = 0; radius &lt; 10; radius++)
+    {
+      myPrint (radius, iden); 
+      /* could also be
+         printf ("%12.4lf", radius);
+      */
+      myPrint (radius, circum);
+      myPrint (radius, area);
+      printf ("\n");
+    }
+  return 0;
+}
+</pre>
+
+<a name="arrays"></a><h2>Arrays of Functions</h2>
+
+<p>
+As noted earlier in this lab, functions as parameters provide one mechanism
+to take advantage of common elements within an algorithm.  A second
+approach involves utilizing an array of functions.
+</p>
+
+<h3>Declaration</h3>
+
+<p>
+Already, we have observed that the <tt>main</tt> loop in our example
+utilizes the same <tt>printf</tt> statement &mdash; with different
+functions being called.  This suggests that we might declare an array of
+the relevant functions:
+</p>
+
+<pre>
+  double (*funcarr[3]) (double)= {iden, circum, area};
+</pre>
+
+<p>
+Let's unpack this syntax:
+</p>
+
+<ul>
+<li>
+<p>
+We can declare a simple variable as a pointer to a function with the
+statement:
+</p>
+<pre>
+   double (*f) (double)
+</pre>
+<p>
+This states that f will refer to a function that has one parameter
+(a <tt>double</tt>) and it will return a <tt>double</tt>.  (The * means
+that <tt>f</tt> will be a function pointer &mdash; a reference to a
+function.)
+</p>
+
+<li>
+<p>
+With this declaration, <tt>f</tt> can be assigned a function:
+</p>
+<pre>
+f = area;
+</pre>
+<p>
+so the statement
+</p>
+<pre> 
+printf ("%5.2", f(3.5));
+</pre>
+<p>
+will cause the <tt>area</tt> function to be called, executed with the value
+3.5, and used as the value to be printed.
+</p>
+<li>
+<p>
+As with many C declarations, a variable can be defined and initialized in a
+single statement. The following declaration initializes <tt>f</tt> as a
+reference to the <tt>area</tt> function.
+</p>
+<pre>
+   double (*f) (double) = area;
+</pre>
+<li>
+<p>
+Arrays are declared by placing [] within the declaration:
+</p>
+<pre>
+  double (*funcarr[3]) (double);
+</pre>
+
+<p>
+Here <tt>funcarr</tt> is declared as an array of 3 function pointers.
+</p>
+
+<li>
+Arrays can be initialized by placing desired values within braces 
+<tt>{ }</tt>:
+<pre>
+  double (*funcarr[3]) (double)= {iden, circum, area};
+</pre>
+<li>
+<p>
+With this declaration, we can refer to the <tt>circum</tt> function as
+</p>
+<pre>
+funcarr[1]
+</pre>
+<p>
+and we can call this function with the parameter 3.5 by writing
+</p>
+<pre>
+funcarr[1] (3.5)
+</pre>
+
+</ul>
+
+<h3>Full Program</h3>
+
+<p>
+The following program uses this declaration of <tt>funcarr</tt> in
+the <tt>main</tt> loop by iterating through the three functions of interest
+for printing.
+</p>
+
+<pre>
+/* program to compute a circle's circumference and area
+
+   example using an array of functions
+ */
+
+# include &lt;stdio.h&gt;
+
+const double pi = 3.1415926535;
+
+/* identity function */
+double iden (double radius)
+{
+  return radius;
+}
+
+/* circumference function */
+double circum (double radius)
+{
+  return 2 * pi * radius;
+}
+
+/* area function */
+double area (double radius)
+{
+  return pi * radius * radius;
+}
+
+int main ()
+{
+  double (*funcarr[3]) (double) = {iden, circum, area};
+  printf ("      radius   circumference   area\n");
+  double radius;
+  for (radius = 0; radius &lt; 10; radius++)
+    {
+      int i;
+      for (i = 0; i &lt; 3; i++)
+        {
+          printf ("%12.4lf", funcarr[i](radius));
+        }
+      printf ("\n");
+    }
+  return 0;
+}
+</pre>
+
+<!--#include file="body-footer.inc" -->
+
+</div> <!--labcontent-->
+
+<div class="footer">
+<hr>
+
+<p>
+This document is available on the World Wide Web as
+</p>
+
+<div class="address">
+<PRE>
+   http://www.cs.grinnell.edu/~walker/courses/161.fa13/modules/arrays-functions/
+reading-func-pointers.shtml
+</PRE>
+</div> <!--address-->
+
+<hr>
+<table width="100%">
+<tr><td>
+   <em>created 21 July 2012 by Henry M. Walker</em><br>
+   <em>revised 22 July 2012 by Henry M. Walker</em><br>
+   <em>URL udated 22 September 2013 by Henry M. Walker</em>
+   </td>
+
+   <td rowspan="2" align="right">
+   <a href="http://validator.w3.org/check/referer"><img border="0"
+      src="/~walker/valid-html401-blue.png" alt="Valid HTML 4.01!" height="31"
+      width="88"></a>
+   <a href="http://jigsaw.w3.org/css-validator/"><img border="0"
+       src="/~walker/vcss-blue.png"
+       alt="Valid CSS!" height="31"
+       width="88"></a>
+   </td>
+</tr>
+
+<tr><td>
+   For more information, please contact
+   <a class="footer-a" href="/~walker/">Henry M. Walker</a> at
+   <a class="footer-a" href="mailto:walker@cs.grinnell.edu">walker@cs.grinnell.edu</a>.
+   </tr>
+</table>
+
+</div> <!--footer-->
+</div> <!--body-->
+</body>
+</html>

@@ -1,0 +1,535 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>CSC 161 Lab. Exercise on Function Parameters, Testing, and More
+    Value and Reference Parameters</title>  
+    <link rev="made" href="mailto:walker@cs.grinnell.edu">
+  </head>
+
+  <body>
+    <div class="body">
+    <!--#include virtual="header.inc" -->
+
+<div class="labcontent">
+
+ <h1>Laboratory Exercise on Function Parameters, Testing, and More
+    Value and Reference Parameters</h1>
+
+<p>
+This lab covers three main topics:
+</p>
+
+<ul>
+<li>
+<a href="#function-parameters">Function parameters</a>
+<li>
+<a href="#testing">Testing</a>
+<li>
+<a href="#parameters">More value and reference parameters</a>
+</ul>
+
+<h2>Preparation before Class</h2>
+
+<ul>
+<li>Reading from Text
+    <ul>
+    <li>King: Sections 9.3, 11.1-11.2, pages 191-200, 241-245
+    <li>K&amp;R: 1.7, 4.1-4.3, 5.1, 5.2 
+    </ul>
+<li>Reading:  <a href="reading-func-pointers.shtml">Function pointers</a>
+<li>Reading:  <a href="reading-testing.shtml">Correctness and Testing</a> 
+</ul>
+
+<h2>Work Started in Class</h2>
+
+<a name="function-parameters"></a>
+<h3>Function Parameters</h3>
+
+<p>
+As in Scheme, a function can be a parameter for another function.  In
+Scheme, of course, all parameters are un-typed &mdash; the parameter may
+have one type (e.g., a number) at one time, then another type (e.g, a
+string) for another call, and yet another type (e.g., a function) for a
+third call.  In C, each variable and parameter has a designated type.
+However, as we shall see, the designated type can indicate a function.  For
+example, a function might have the following signature:
+</p>
+
+<div class="block">
+<pre>
+  void printTable (double func (double, double))
+</pre>
+</div>
+
+<ol start=1>
+<li>
+<p>
+Program <a href="func-parm.c">func-parm.c</a> uses a
+function <tt>printTable</tt> with the signature above to print a table of
+metric equivalents.
+</p>
+
+<ol class="withloweralpha">
+<li>
+<p>
+Save, compile, and run the program, and describe what is printed.  Also,
+explain the roles of the functions <tt>toLiters</tt> and <tt>toCenti</tt>,
+and how these functions are utilized to obtain the output.
+</p>
+<li>
+<p>
+Function <tt>printTable</tt> prints a table, with rows always going from
+0.0 to 10.0 and the columns going from 0.0 to 10.0, based on local
+variables <tt>rowStart</tt>, <tt>rowEnd</tt>, <tt>colStart</tt>,
+and <tt>colEnd</tt>.  In this example, however, it would make more sense
+for the number of pints to go from 0.0 to 7.0 (number of pints less than a
+gallon), and the number of inches to go from 0.0 to 11.0 (number of inches
+less than a foot).
+</p>
+
+<p>
+Replace these local variables with parameters, so
+that function <tt>printTable</tt> has the new signature:
+</p>
+
+<div class="block">
+<pre>
+  void printTable (double rowStart, double rowEnd,
+                   double colStart, double colEnd,
+                   double func (double, double))
+</pre>
+</div>
+
+<p>
+Then change the calls to <tt>printTable</tt> in the main program to more
+appropriate limits for each type of table.
+</p>
+
+</ol>
+
+<li>
+<p>
+Within a program to control a Scribbler 2 robot, write a function with the
+following signature:
+</p>
+
+<div class="block">
+<pre>
+void boxMove (void movement (double, double))
+</pre>
+</div>
+
+<p>
+The function should move the Scribbler 2 robot 5 times using the following
+sequence: 
+</p>
+
+<ul>
+<li>
+move forward for 1 second
+<li>
+call the <tt>movement</tt> function with values 0.6, 1.0.
+</ul>
+
+<p>
+The main part of the program should call <tt>boxMove</tt> using the
+MyroC <tt>rTurnLeft</tt> function as parameter and then
+call <tt>boxMove</tt> again using <tt>rTurnRight</tt>.
+</p>
+
+<p>
+Why do you think the name <tt>boxMove</tt> was chosen?  Is there a better
+name?
+</p>
+</ol>
+
+<h3>Arrays of Functions</h3>
+
+<p>
+As noted earlier in this lab, functions as parameters provide one mechanism
+to take advantage of common elements within an algorithm. A second approach
+involves utilizing an array of functions. 
+</p>
+
+<p>
+Program <a href="func-parm-arrays.c">func-parm-arrays.c</a> produces
+exactly the same output as program <a href="func-parm.c">func-parm.c</a>
+from Step 1.
+</p>
+
+<ol start=3>
+<li>
+<p>
+Copy this program to your account, compile it, and run it to check that the
+output matches the output from Step 1.
+</p>
+
+<ol class="withloweralpha">
+<li>
+<p>
+Check that the functions <tt>toLiters</tt>, <tt>toCenti</tt>,
+and <tt>printTable</tt> are unchanged from Step 1.
+</p>
+<li>
+<p>
+In the main program, note how variable <tt>titles</tt> is declared and
+initialized as an array of two strings.  (In this context, <tt>char *</tt>
+indicates <tt>titles</tt> will refer to the start of strings,
+and <tt>[2]</tt> indicates the array will refer to the start of 2 strings.)
+</p>
+<li>
+<p>
+In the main program, note how the variable <tt>f</tt> refers to an array,
+each containing the address of a function of two <tt>double</tt> parameters.
+</p>
+
+</ol>
+
+<li>
+<p>
+Write 3 functions that cause the Scribbler 2 robot to react in different
+ways (e.g., move/turn, beep, spin).  
+</p>
+
+<p>
+Write a program that uses these three functions as follows.
+</p>
+
+<ul>
+<li>
+Within <tt>main</tt>, make an array that references each of these functions.
+<li>
+Use a loop to execute these functions in order, and then use a second loop
+to execute the functions in reverse order.
+</ul>
+</ol>
+
+<a name="testing"></a>
+<h2>Testing</h2>
+
+<h3>Pre- and Post-Conditions </h3> 
+
+<ol start=5>
+<li>
+<p>
+Review the <a href="../../MyroCDev.h">MyroCDev.h</a> header file.  
+</p>
+
+<ol class="withloweralpha">
+<li>
+<p>
+In the documentation, find at least two functions that have stated a
+"pre-condition" and at least two functions that have stated a
+"post-condition".  
+</p>
+
+<li>
+<p>
+Using these functions as examples, write a careful definition of what is
+meant by the terms ,"pre-condition" and "post-condition".
+</p>
+
+<li>
+<p>
+In anticipation of later work in this lab, review the documentation for the
+function <tt>rMotors</tt>.  The documentation does not explicitly state
+pre-conditions for this function, but one might infer such conditions.
+Write a careful statement of the implied pre-condition(s) for <tt>rMotors</tt>.
+</ol>
+
+<li>
+<p>
+The program <a href="motors-test.c">motors-test.c</a> sets the motor speeds
+of the Scribbler to the given <tt>leftspeed</tt> and
+<tt>rightspeed</tt>.
+</p>
+
+<ol class="withloweralpha">
+  <li>
+    <p>Initialize the variables <tt>leftspeed</tt >
+      and <tt>rightspeed</tt> to 1.
+    </p>
+  <li>
+    <p>Initialize the variables <tt>leftspeed</tt>
+      and <tt>rightspeed</tt> to 1 and -1 respectively.
+    </p>
+  <li>
+    <p>Initialize the variables <tt>leftspeed</tt>
+      and <tt>rightspeed</tt> to 2 and -1.  respectively.
+    </p>
+  <li>
+    <p>Now try 6 and 5 respectively.
+    </p>
+  <li>
+    <p>Try other numbers that you might need to figure out what works and
+      what doesn't.
+    </p>
+  <li>
+    <p>How do these experimental results compare with the pre-conditions
+      that you inferred in Step 5c?
+    </p>
+</ol>
+</ol>
+
+
+<h3>The <tt>assert</tt> Function in C</h3>
+
+<ol start=7>
+
+<li>
+<p>
+Modify the same code, <code>motors-test.c</code>, to
+    use <code>assert</code>&nbsp; so that it will test the precondition(s)
+    you wrote for <code>rMotors</code> in <code>motors-test.c</code>.
+</p>
+
+<p>
+<i>Note:</i>  You can read about C's <tt>assert</tt> function in
+the <a href="reading-testing.shtml">reading for this lab</a> and/or using
+the command <tt>man&nbsp;assert</tt> in a terminal window.  Better yet, read
+about <tt>assert</tt> in both places!
+</p>
+</ol>
+
+
+<h3>Choosing Test Cases </h3>
+<ol start=8>
+<li>
+<p>
+Copy the program <a href="object-avoid.c">object-avoid.c</a> to your
+working directory.  This program attempts to control the robot in avoiding
+obstacles.  Run the program a few times and observe what it does.
+</p>
+ 
+<ol class="withloweralpha">
+  <li>
+    <p>
+      Develop two test plans
+      for <a href="object-avoid.c">object-avoid.c</a> to figure out if the
+      program works correctly. That is, apply both black-box and white box
+      testing by identifying test cases that will cover a full range of
+      situations that might be encountered in executing the
+      program <code>object-avoid.c</code>&nbsp;. Remember that:
+    </p>
+    <ul>
+      <li>
+        <p>
+          Black-box testing is when the problem is examined to determine
+          the logical cases that might arise. Test cases are developed
+          without reference to details of code.
+        </p>
+      <li>
+        <p>
+          White-box testing is when the code is examined to determine each
+          of the possible conditions that may arise, and tests are
+          developed to exercise each part of the code.
+        </p>
+    </ul>
+
+  <li>
+    <p>
+      You should have found that the program is not working properly.  Now
+      fix the program so that it performs in the intended way and the robot
+      avoids obstacles.
+    </p>
+</ol>
+
+</ol>
+
+<h2>Homework</h2>
+
+<h3>Debugging</h3>
+<ol start=9>
+<li>
+<p>
+Program <a href="follower-test.c">follower-test.c</a> is supposed to
+control the robot in following a sheet of paper which is
+    held in front of the robot. 
+</p>
+
+<ol class="withloweralpha">
+<li>
+<p>
+Develop two test plans for this program, using both black-box and white-box
+testing strategies.
+Apply both black-box and white box testing to identify tests cases that
+will cover a full range of situations that might be encountered.
+</p>
+<li>
+<p>
+Run <code>follower-test.c</code>&nbsp; with all the cases from your
+    test plan to determine if the program works correctly.
+</p>
+<li>
+<p>
+Fix the errors you found in the program.
+</p>
+<li>
+<p>
+Run the program again with all the cases from your
+    test plan to be sure that it now works correctly.
+</p>
+
+</ol>
+</ol>
+
+<a name="parameters"></a>
+<h2>More Value and Reference Parameters</h2>
+
+<h3><tt>int</tt>s by Reference</h3>
+
+<ol start=10>
+  <li>
+    <p>
+      Consider the program <a href="rand-beep.c">rand-beep.c</a>.
+      </p>
+    <ol class="withloweralpha">
+      <li>
+        <p>
+          Copy this program to your account, review the code, and run it a
+          few times to see what it does.
+        </p>
+      <li>
+        <p>
+          Write a few sentences explaining what the program is doing,
+          making sure include the following points:</p>
+        <ul>
+          <li>
+            <p>
+              Point out every time an <tt>int</tt> is passed in by
+              reference to a function.
+            </p>
+          <li>
+            <p>
+              Note how values passed in by reference are called within the
+              function.
+            </p>
+          <li>
+            <p>
+              What durations are possible for the robot to beep for?
+            </p>
+          <li>
+            <p>
+              What frequencies are possible for the robot to beep for?
+            </p>
+          <li>
+            <p>
+              When will the loop end?
+            </p>
+        </ul>
+    </ol>
+</ol>
+
+<h3>Indicating Function Success</h3>
+<ol start=11>
+<li>
+  <p>
+    Write a simple function which finds the square root of a number.  It will
+    have the following signature: <tt>int safe_sqrt (double * num)</tt>.
+  </p>
+    <ul>
+      <li>
+        <p>
+          It will use the <tt>double sqrt(double num)</tt> function from
+      the <tt>math.h</tt> library to find the square root of <tt>num</tt>. Make
+      sure you compile with the -lm flag when using <tt>sqrt()</tt>.
+        </p>
+
+<li>
+  <p>
+    If <tt>num</tt> is zero or positive, your function will modify num to be its
+    square root and return 1 to indicate success.
+  </p>
+          <li>
+            <p>
+              If <tt>num</tt> is negative, your function will not modify <tt>num</tt>
+          and return 0 to indicate failure.
+            </p>
+              <li>
+                <p>
+                  You will have to use the & operator when calling your
+              function so that <tt>num</tt> is passed in by reference.
+                </p>
+</ul>
+</ol>
+
+
+<h3>Addresses (If you have time &mdash; Optional)</h3>
+<ol start=12>
+  <li>
+    <p>
+      Copy <a href="get-ir.c">get-ir.c</a> into your directory for this
+      lab and write a few sentences explaining what the program is doing.
+    </p>
+
+    <p>
+      Complete the parts of the program which say "code here!". It should
+      only require one line of code at each spot, and there are three
+      locations where you must add code.
+    </p>
+    
+    <p>
+      Hint: If you are getting the warning "assignment makes pointer from
+      integer without a cast", try putting * (an asterisk) in front of the
+      integer you are assigning to.
+    </p>
+</ol>
+
+</div> <!--labcontent-->
+
+<div class="footer">
+
+<hr>
+
+<p>
+This document is available on the World Wide Web as
+</p>
+
+<div class="address">
+<PRE>
+http://www.cs.grinnell.edu/~walker/courses/161.sp14/modules/lab-testing.shtml
+</PRE>
+</div> <!--address-->
+
+<hr>
+
+<p>
+<table width="100%">
+<tr><td>
+
+   <em>created 20 July 2011 by Erik Opavsky and Dilan Ustek</em><br>
+   <em>revised 29 July 2011 by Erik Opavsky and Dilan Ustek</em><br>
+   <em>revised 12 October 2011 by Erik Opavsky</em><br>
+   <em>revised 31 October 2011 by Erik Opavsky</em><br>
+   <em>revised (shortening lab (removal of old steps 1, 6, 7)) 21 July 2012
+   by Henry M. Walker</em><br>
+   <em>reorganized within module 27-28 January 2014</em><br>
+   <em>readings added 19 September 2014 by Henry M. Walker</em> 
+   </td>
+   <td rowspan="2" align="right">
+   <a href="http://validator.w3.org/check/referer"><img border="0" 
+      src="/~walker/valid-html401-blue.png" alt="Valid HTML 4.01!" height="31"
+      width="88"></a>
+   <a href="http://jigsaw.w3.org/css-validator/"><img border="0"
+       src="/~walker/vcss-blue.png" 
+       alt="Valid CSS!" height="31"
+       width="88"></a>
+   </td>
+</tr>
+
+<tr><td>
+   For more information, please contact
+   <a class="footer-a" href="/~walker/">Henry M. Walker</a> at
+   <a class="footer-a" href="mailto:walker@cs.grinnell.edu">walker@cs.grinnell.edu</a>.
+   </td></tr>
+</table>
+
+<hr>
+<!--#include file="copyright-notice.inc"-->
+
+</div> <!--footer-->
+</div> <!--body-->
+</body>
+</html>

@@ -1,0 +1,156 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>Lab on FILEs</title>
+    <link rev="made" href="mailto:walker@cs.grinnell.edu">
+</head>
+
+<body>
+<div class="body">
+<!--#include file="header.inc"-->
+<div class="content">
+
+
+<h1>Laboratory Exercise on FILEs</h1>
+
+<h2>Goals:</h2>  
+<p>
+  The goal of this lab is to introduce basic character, and string, input and
+  output using files.
+</p>
+
+<h2>Part A: Revisiting Methods of Character and String Input</h2>
+
+<h3><tt>gets</tt> vs <tt>getc</tt></h3>
+<ol>
+<li>Using <tt>getc</tt> write a simple program that gets the specified character of the terminal input "I love C!".
+<li>Modify the program above to loop through and print the whole input that you enter.
+<li>Now modify the program to print the whole input using <tt>gets</tt> and does not have loops.
+</ol>
+
+<h3>What is printf?</h3>
+<ol start=4>
+<li>
+Explain the difference between <tt>printf</tt> and <tt>fprintf</tt>. 
+<li>Which one would you use to write to a file?
+<li>How would you use <tt>fprintf</tt> to write to standard output?
+<li>Which is the easiest way to write to standard output?
+</p>
+</ol>
+
+<h2>Part B: What You Can Do With Files</h2>
+
+<h3>Some useful common utilities</h3>
+<ol start=8>
+<li><p>Write a small program that counts all the characters in a file. Your output should
+give you how many letters, spaces, newlines, and other characters there are.</p>
+
+<li><p>Write a program that will count how many words there are in your file.</p>
+</ol>
+
+<h3>Bioinformatics</h3>
+<ol start=10>
+<li><p>Bioinformatics solves problems in biology with the use of computer science. </p>
+<p>The file <a href=mouse_gene.txt>mouse_gene</a> has genetic data from a mouse. However the data is in a format that is not useful.</p>
+<p> Write a C program that will take in this file as an input and will produce 4 files as an output. Each of the output files should contain a tag such as <tt>>AB000913 1</tt> that indicates different smaller genetic regions, and the genetic regions to which the tag corresponds.</p>
+</ol>
+
+<h3>A familiar Shell Program: <tt>cat</tt> </h3>
+<ol start=11>
+<li>
+<p>
+Write a small C program called <tt>mycat.c</tt> that reads a text file 
+and prints its contents to <tt>stdout</tt>. You will likely find the C
+library functions <tt>fgets</tt> and <tt>fputs</tt> (or <tt>puts</tt>)
+useful. Recall that, in contrast with <tt>scanf</tt>, <tt>fgets</tt>
+returns <tt>NULL</tt> when it encounters the end of the file.
+For this initial exercise, you may hard code the name
+of some file that already exists in your account as the input file. You may
+assume that no line in the input file will contain more than 256
+characters. Don't forget to close the file when you are done!
+</p>
+
+<p>
+The output from your program should be similar to what you would get by
+typing <tt>"cat infile"</tt> at the shell prompt, assuming a file named
+<tt>infile</tt> exists in your directory. 
+</p>
+
+<li>
+<p>
+Modify your program so that it reads the name of the file from the
+keyboard.  The program should give a useful error message if the specified
+file does not exist.  
+</p>
+
+<p>
+<i>Hint:</i>  Use the online manual to determine how <tt>fopen</tt> works
+if the specified file is not present.  Recall that you can type <tt>man
+  fopen</tt> to reference the online manual for this function.
+</p>
+
+</ol>
+
+
+
+
+<h2>Reminder:  Complete Evaluation Form</h2>
+
+<p>
+When you have finished this lab, be sure to fill out its evaluation form
+in the "Lab Evaluation" section for CSC 161
+on <a href="http://pioneerweb.grinnell.edu">Pioneer Web</a>.
+</p>
+
+</div>
+
+<div class="footer">
+<p>
+<hr><p>
+
+This document is available on the World Wide Web as
+
+<PRE>
+    http://www.cs.grinnell.edu/~walker/courses/161.fa11/modules/module-comm-line-files/lab-files-1.shtml
+</PRE>
+
+<hr>
+<table width="100%">
+<tr><td>
+    <em>Part A:  written 19 March 2007</em> by Marge Coahran<br>
+
+   <em>Part A:  revised 18 March 2010</em> by Henry M. Walker<br>
+   
+   <em>Part B:  created and revised 27 September 2001 - 2 May 2005</em> by
+   Henry M. Walker<br>
+   <em>Integrated Lab:  revised 19 March 2007</em> by Marge Coahran<br>
+   <em>Integrated Lab:  revised 24 January 2009</em> by Henry M. Walker<br>
+
+   <em>Integrated Lab:  last revised 16 August 2011 by David Cowden</em><br>
+   <em>1-10 rewritten on 10 December 2011 by Dilan Ustek (q 11-12 kept from David Cowden)</em><br>
+   </td>
+   <td rowspan="2" align="right">
+   <a href="http://validator.w3.org/check/referer"><img border="0"
+      src="/~walker/valid-html401-blue.png" alt="Valid HTML 4.01!" height="31"
+      width="88"></a>
+   <a href="http://jigsaw.w3.org/css-validator/"><img border="0"
+       src="/~walker/vcss-blue.png"
+       alt="Valid CSS!" height="31"
+       width="88"></a>
+   </td>
+</tr>
+<tr><td>
+   For more information, please contact
+   <a href="/~walker/">Henry M. Walker</a> at
+   <a href="mailto:walker@cs.grinnell.edu">walker@cs.grinnell.edu</a>.
+   </tr>
+</table>
+
+</div>
+</div>
+</body>
+</html>
+

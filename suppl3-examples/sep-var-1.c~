@@ -1,0 +1,18 @@
+/* program to read characters until # found,
+   count letters,
+   and print histogram of counts
+*/
+
+/* this approach uses a separate variable for the count of each letter */
+
+/* processing updating of variable counter
+   precondition:  none
+   postcondition:  counter incremented by 1
+                   if counter exceeds max_count, max_count updated
+*/
+void inc_count (int * counter, int * max_count)
+{
+
+
+
+}

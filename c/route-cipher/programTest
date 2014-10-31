@@ -1,0 +1,12 @@
+# script to compile route cipher program
+# and run test, based on problem description
+# script expects approach number (1, ..., 8) as parameter
+
+echo compiling route-cipher-$1
+gcc -std=c99 -o route-cipher-$1 route-cipher-$1.c
+
+./route-cipher-$1 << !
+3
+4
+this extended example shows the full algorithm
+!

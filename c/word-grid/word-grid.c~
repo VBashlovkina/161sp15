@@ -1,0 +1,40 @@
+/* Program to read an m by n word grid and count adjacent letters
+ */
+
+#include <stdio.h>
+
+int main ()
+{
+  int m, n;
+  printf ("program to count adjacent letters in a word grid\n");
+  printf ("enter number of rows and number of columns for grid");
+  scanf ("%d %d", &m, &n);
+
+  char wordGrid [m][n];
+  int countGrid [m][n];
+
+  int i, j;
+  char ch;
+  
+  /* read grid */
+  for (i = 0; i < m; i++)
+    {
+      /* discard remainder of previous line */
+      while (getchar() != '\n');
+
+      /* read line of charactgers */
+       for (j = 0; j < n; j++)
+        wordGrid [i][j] = getchar ();
+    }
+
+
+  /* echo grid for checking */
+  printf ("\nThe grid read is\n");
+  for (i = 0; i < m; i++)
+    {
+       for (j = 0; j < n; j++)
+         printf ("%c", wordGrid[i][j]);
+       printf {"\n");
+
+  return 0;
+}

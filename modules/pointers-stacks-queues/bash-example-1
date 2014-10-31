@@ -1,0 +1,71 @@
+#!/bin/bash
+
+# bash shell to illustrate numeric comparisons
+a=$1
+
+###############################################################
+# example 1:  testing number:  a > 0
+# Bourne shell style
+if [ $a -gt 0 ]; then
+   echo positive
+fi 
+
+# Korn shell style
+if (( $a > 0 )); then
+   echo positive
+fi 
+
+
+###############################################################
+# example 2:  testing if a <= 0
+# Bourne shell style
+if [ $a -le 0 ]; then
+   echo non-positive
+else 
+   echo positive
+fi 
+
+# Korn shell style
+if (( $a <= 0 )); then
+   echo non-positive
+else 
+   echo positive
+fi 
+
+
+###############################################################
+# example 3:  testing number: a < 0 and if a = 0
+# Bourne shell style
+if [ $a -lt 0 ]; then
+   echo negative
+elif [ $a -eq 0 ]; then
+   echo zero
+else 
+   echo positive
+fi 
+
+# Korn shell style
+if (( $a <= 0 )); then
+   echo non-positive
+elif (( $a == 0 )); then
+   echo zero
+else 
+   echo positive
+fi 
+
+
+###############################################################
+# example 4: testing if number a between 0 and 10, inclusive
+if [ 0 -le $a  -a $a -le 10 ]; then
+   echo between 0 and 10
+else
+   echo not between 0 and 10
+fi
+
+# Korn shell style
+if (( (0 <= $a) && ($a <= 10) )); then
+   echo between 0 and 10
+else
+   echo not between 0 and 10
+fi
+

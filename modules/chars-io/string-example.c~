@@ -1,0 +1,14 @@
+#include <stdio.h>
+
+int main ()
+{
+  char a[4] = "CSC";
+  char b[4];
+  char c[4] = {'w', 'x', 'y', 'z'};
+
+  printf (a = "%s\n", a);
+  printf (b = "%s\n", b);
+  printf (c = "%s\n", c);
+
+  return 0;
+}

@@ -1,0 +1,92 @@
+Converting CSC 161 Fall HTML Pages to Spring HTML Pages
+
+1.  Header
+
+    a.  Check the style sheet refers to style.css
+    b.  Check that the title reflects an appropriate title, likely similar
+    to the h1 heading at the beginning of the document
+
+2.  Main Body
+ 
+    a.  The body should begin with
+
+<body>
+<div class="body">
+<!--#include file="header.inc"-->
+
+<div class="labcontent">
+
+    b.  Close the "labcontent" class just before the <hr> tag near the bottom
+    of the page.
+
+</div> <!-- labcontent-->
+
+3.  Fix the URL section by putting it in the footer class and address
+class (substituting the correct page URL:
+
+<div class="footer">
+<hr>
+
+<p>
+This document is available on the World Wide Web as
+</p>
+
+<div class="address">
+<PRE>
+     http://www.cs.grinnell.edu/~walker/courses/161.sp12/index.shtml
+</PRE>
+</div> <!-- address -->
+
+    Note that <PRE> is adequate; no need for <BLOCKQUOTE>, etc.
+
+4.  Footer/Updating Information
+
+    a.  Add lines for the revision.  For example:
+
+   <em>created created 4 January 1998 by Henry M. Walker</em><br>
+   <em>last revised 18 August 2009 by Henry M. Walker</em>
+
+    might become
+
+
+   <em>created created 4 January 1998 by Henry M. Walker</em><br>
+   <em>full revision 18 August 2009 by Henry M. Walker</em><br>
+   <em>last revised 7 September 2011 by Henry M. Walker</em>
+
+   b.  The contact information should be:
+
+<tr><td>
+   For more information, please contact 
+   <a class="footer-a" href="/~walker/">Henry M. Walker</a> at
+   <a  class="footer-a" href="mailto:walker@cs.grinnell.edu">walker@cs.grinnell.edu</a>.
+   </tr>
+
+    Note that "class="footer-a" is added to two href tags.
+
+   c. Close the footer with two lines just before </body>
+
+</div> <!-- footer -->
+</div> <!-- body -->
+</body>
+</html>
+
+
+5.  General style/format
+
+    Main titles (after the page title) will use <h2> headers
+
+    Subtitles (within h2) headers) will use <h3> headers
+
+    Subsubtitles (within h3 headers) will use <h4> headers
+
+    Steps for the lab will be within sections (with <h2>, <h3>, or <h4>
+    headers).  The headers should identify the main topic under
+    consideration for the steps.
+
+    Main steps for lab work will be numbered 1, 2, 3, ... consecutively
+    throughout the entire lab --- with numbering continuing to increase
+    from section to section.
+
+6.  Final Checking
+    Each page should be checked for spelling
+    Each page should be validated against the W3C HTML standards

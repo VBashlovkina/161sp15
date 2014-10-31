@@ -1,0 +1,395 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>CSC 161 Reading on Queues</title>  
+    <link rev="made" href="mailto:walker@cs.grinnell.edu">
+</head>
+<body>
+<div class="body">
+<!--#include file="header.inc"-->
+<div class="labcontent">
+
+<h1>Queues</h1>
+
+<h2>Abstract</h2>
+
+<p>
+This reading introduces the concept of the queue abstract data
+type and provides experience with an array implementation and a stack
+implementation of this ADT.
+<p>
+
+<h2>Acknowledgement</h2>
+
+<p>
+Most of this reading is an edited version of Henry M. Walker,
+<i>Introduction to Computing and Computer Science with Pascal</i>, Little,
+Brown, and Company, 1986, Sections 17.1, 17.5-17.6, with programming
+examples translated from Pascal to C.  This material is used with
+permission from the copyright holder.
+</p>
+
+<h2>The Queue Abstract Data Type</h2>
+
+<p>
+The stack abstract data type, described in <a
+href="reading-stacks.shtml">the reading on stacks</a>, introduced the
+concept of an <i>abstract data type (ADT)</i> and
+discussed the <i>stack</i> as an example that stored and retrieved data in
+a <i>first-in, last-out (FILO)</i> manner.  This lab describes a <i>queue
+abstract data type</i> that stores and retrieves data in a <i>first-in,
+first-out (FIFO)</i> manner.
+</p>
+
+<p>
+This queue ADT models the checkout counter of a store.  A
+clerk works with one customer at a time, until the customer's bill has
+been computed and paid.  Then the clerk goes on to the next customer.  In
+this situation, while the customer is being served by the clerk, other
+customers may get into the checkout line to wait for their turn.  Normally,
+customers do not get into line until they have selected all items they wish
+to buy, and once a customer gets into line, the customer waits until the
+clerk finishes with those ahead.  When we consider this processing at the
+cash register, we can identify these characteristics.
+</p>
+
+<ol class="withupperalpha">
+<li>
+Customers wait in a line to be served.
+<li>
+Customers leave the line at one end (<i>the front</i>), when they have been
+served by the clerk. 
+<li>
+Customers enter the line at the other end (<i>the rear</i>).
+<li>
+Occasionally, a line may be empty.
+</ol>
+
+<p>
+In addition, if a line becomes too long, customers may decide to purchase
+their items at another time rather than wait in line.  In this situation, we
+might want to specify a maximum size for the queue, and we might want to
+test if the queue is full.
+</p>
+
+<p>
+Unlike stacks where the operational names <i>Push</i> and <i>Pop</i> are
+standard, the operations for queues are commonly called by several names.
+For example, the addition of a customer to a queue may be called 
+<i>Enter</i>, <i>Insert</i>, or <i>Enqueue</i>; the leaving of a customer
+after being served may be called <i>Delete</i>, <i>Remove</i>, or
+<i>Dequeue</i>.  For parallelism in terminology, we use <i>Enqueue</i> and
+<i>Dequeue</i> here.
+</p>
+
+<p>
+More formally, a <i>queue</i> is defined as the abstract data type that has
+data of a specified type, and operations described as follows:
+</p>
+
+<ul>
+<li><p>
+<b>create</b><br>
+Create a new, empty queue object.
+</p></li>
+
+<li><p>
+<b>empty</b><br>
+Determine whether the queue is empty; return <b>true</b> if it is and
+<b>false</b> if it is not.
+</p></li>
+
+<li><p>
+<b>enqueue</b><br>
+Add a new element at the rear of a queue.
+</p></li>
+
+<li><p>
+<b>dequeue</b><br>
+Remove an element from the front of the queue and return it.  (This
+operation cannot be performed if the queue is empty.)
+</p></li>
+
+<li><p>
+<b>front</b><br>
+Return the element at the front of the queue (without removing it from the
+queue).  (Again, this operation cannot be performed if the queue is empty.)
+</p></li>
+</ul>
+
+<p>
+Normally, queue operations do not allow access to the last or middle items on
+the queue, only the first.  Thus, queues have no equivalent to
+the <i>Top</i> operation for stacks.
+</p>
+
+<p>
+With these operations, queues provide a rather different pattern of data
+storage and retrieval than we find with stacks.  In particular, once an
+item is placed on a queue, the item is not retrieved until all items ahead
+of it have already been removed.  Here, the first item placed into a queue
+is the first one processed, and subsequent items must wait for their
+turn.  We say queues provide <i>First-in, First-out (FIFO)</i> storage or
+<i>Last-in, Last-out (LILO)</i> storage, in contrast to the FILO storage of
+stacks.
+
+<a name="queues-with-arrays"></a>
+<h2>Implementation of Queues by Arrays</h2>
+
+<p>
+As with stacks, one common implementation of a queue involves the use of an
+array.  Although this implementation is reasonably straightforward, a few
+details require some care.
+</p>
+
+<p>
+Our basic approach is fairly simple.  We think of an array as extending to
+the right indefinitely, and we store our data items in order in this
+array.  We use variables <i>first</i> and <i>last</i> to mark where our
+first element was added and where the last or most recent element was
+added.  The following figure shows this setup, where we have placed four
+items on the queue.  In the figure, <i>item 0</i> was inserted first,
+followed by <i>item 1</i>, <i>item 2</i>, and <i>item 3</i> in that order.
+The first item is marked by the variable <i>first</i> and the final item
+added is marked by last.
+</p>
+
+<center>
+<img src="queue-array-concept.gif" alt="Conceptual Implementation of a Queue">
+</center>
+
+<p>
+From this figure, we can trace what happens in our enqueue and dequeue
+operations.  For the <i>enqueue</i> operation, we must add 1 to <i>last</i>
+to mark a new end for the queue, and insert the specified item at this new
+location.  Similarly, to <i>dequeue</i>, we must return the first item
+specified, and add 1 to <i>first</i> to to mark the new head of the queue.
+With this basic picture, we can tell if a queue is empty by checking if
+<i>first &gt; last</i>.  Further, in this figure, the queue has enough
+space, so it is never full.
+</p>
+
+<p>
+In practice, this basic algorithm is complication by the limitation that an
+array has a finite size; the array does not extend indefinitely to the
+right.  With this limitation, we have two choices.  
+</p>
+
+<ul>
+<li>
+<p>
+When we delete an item from the queue, we could move all of the other items
+to the left to fill in the extra space.  In this way, data in our queue
+would always start at the left end of our array, and we could keep
+inserting new items until the array was full.  No space would be wasted.
+</p>
+<li>
+<p>
+We could think of the element at position 0 of the array as following the
+last element.  When <i>last</i> gets to the end of the array, we reuse the
+space that has been left at the beginning of the array when items have been
+removed.  This approach is shown in the figure below.  Here items 0 through
+n-1 are waiting in an array, and some room is available at the start of the
+array.  When a new item is added, there is no room at the right end of the
+array, so we reset <i>last</i> to 0 and add the new item in the vacant
+space at the start.
+</p>
+</ul>
+
+
+<center>
+<img src="queue-array-wrap.gif" alt="Adding an element to a Queue a the end
+of the Array">
+</center>
+
+<p>
+Of these two alternatives, the first approach involves much shifting of
+data and thus is rather inefficient.  The second approach allows our code
+to run much more quickly; however, we do need to be sure that we do not
+store new items on top of old ones, before the old ones are deleted from the
+queue.  This check can be handled in several ways.  One of the easiest is to
+keep a count of the number of items waiting in the queue.  When this number
+reaches the maximum size of the array, the array is full, and further
+insertions are impossible.  This count also allows us to check if the queue
+is empty.
+</p>
+
+
+<h3>Queues in C</h3>
+
+<p>
+As with the implementation of stacks, our implementation of queues in C
+uses a <tt>struct</tt> to package together the various variables needed:
+</p>
+
+<div class="block">
+<pre>
+#define MaxQueue 50  /* size of all queue arrays */
+
+typedef struct {
+   int first;
+   int last;
+   int count;
+   char * queueArray [MaxQueue];
+} stringQueue;
+</pre>
+</div>
+
+<p>
+Also, in this code, we need to be able to increment <i>first</i> and
+<i>last</i> by 1 easily, with the first element of the array following the
+last array element.  Using <i>MaxQueue</i> as the size of the array, then
+this incrementing can be done using modular arithmetic.  For example, if
+<tt>myQueue</tt> has type <tt>stringQueue</tt>, then incrementing
+<i>first</i> would use the statement:
+</p>
+
+<div class="block">
+<pre>
+   myQueue.first = (myQueue.first + 1) % MaxQueue;
+</pre>
+</div>
+
+<p>Here is an example of the array implementation of queues from one of Sam
+Rebelsky's labs: <a href="rebelsky.c">rebelsky.c</a>. You can reach the
+directory with the header file and more examples through the following
+link: <a href="http://www.cs.grinnell.edu/~rebelsky/Courses/CSC161/2011S/Examples/Linear/">http://www.cs.grinnell.edu/~rebelsky/Courses/CSC161/2011S/Examples/Linear/</a>.
+
+<a name="queues-with-lists"></a>
+<h2>Implementation of Queues with Linked Lists</h2> 
+
+<p>
+The second approach for implementing queues resolves some of these queue
+size problems by using the dynamic storage allocation that is available
+through the use of pointers. As with the discussion of stacks, we want to
+retain the same operations and calling formats defined earlier when queues
+were implemented by arrays.  In particular, the queue operations should
+include the following functions:
+</p>
+
+<div class="block">
+<pre>
+   void initializeQueue (stringQueue * queue)
+   int empty (stringQueue queue)
+   int full (stringQueue queue)
+   int enqueue (stringQueue * queue, char* item)
+      (returns length of string added or -1 if queue is full)
+   char * dequeue (stringQueue * queue)
+      (returns string removed from queue)
+</pre>
+</div>
+
+<p>
+In this structure, we must work with both ends of the queue, inserting
+items at the tail and deleting them from the head. Here, we view the queue
+as ordering items from the head to the tail; the head is the first item we
+will remove, and the tail is the last item. The following figure shows how
+this might work.
+</p>
+
+<center>
+<img src="queue-lists-1.gif" alt="A List/Pointer Implementation of a Queue">
+</center>
+
+<p>
+In this picture, the queue consists of a list of records, where each record
+contains an item of data and each record points to the record that comes
+after it. In addition, for the overall queue, the items at the front and
+back of the queue must be specified. The appropriate declarations are
+</p>
+
+<div class="block">
+<pre>
+   /* Maximum length of names */
+   #define strMax 20
+
+   typedef struct node
+   { char data [strMax];
+     struct node * next;
+   } queueNode;
+
+   typedef struct {
+      queueNode * head;
+      queueNode * tail;
+   } stringQueue;
+   
+   stringQueue queue;
+</pre>
+</div>
+
+<p>
+With these declarations, initialization sets <tt>head</tt> and
+<tt>tail</tt> to <tt>Null</tt> at the start of the program, and the Boolean
+expression
+</p>
+
+<div class="block">
+<pre>
+   queue.head == NULL;
+</pre>
+</div>
+
+<p>
+tests whether the queue is empty. The <tt>enqueue</tt> operation then
+proceeds by adding an element at the <tt>tail</tt> end of the list. Also,
+the <tt>dequeue</tt> operation proceeds by returning the data at the
+<tt>head</tt> of the list, moving the <tt>head</tt> pointer to the
+<tt>next</tt> element, and disposing of the old record. Each of these
+operations also requires some care for processing the special cases when
+the queue is empty and when it contains only one item. 
+</p>
+</div>
+
+<div class="footer">
+<p>
+<hr>
+
+<p>
+This document is available on the World Wide Web as
+</p>
+
+<blockquote>
+<pre>
+http://www.cs.grinnell.edu/~walker/courses/161.sp12/modules/module-pointers-stacks-queues/queues-reading.shtml
+
+</pre>
+</blockquote>
+
+<hr>
+
+<table width="100%">
+<tr><td>
+   <em>created 28 April 1997 by Henry Walker</em><br>
+   <em>revised 4 April 2010 by Henry Walker</em><br>
+   <em>last revised 17 August 2011 by April O'Neill</em>
+   </td>
+   <td rowspan="2" align="right">
+   <a href="http://validator.w3.org/check/referer"><img border="0" 
+      src="/~walker/valid-html401-blue.png" alt="Valid rHTML 4.01!" height="31"
+      width="88"></a>
+   <a href="http://jigsaw.w3.org/css-validator/"><img border="0"
+       src="/~walker/vcss-blue.png" 
+       alt="Valid CSS!" height="31"
+       width="88"></a>
+   </td>
+</tr>
+
+<tr><td>
+   For more information, please contact
+   <a class="footer-a" href="http://www.cs.grinnell.edu/%7Ewalker/">Henry M. Walker</a> at
+   <a class="footer-a" href="mailto:walker@cs.grinnell.edu">walker@cs.grinnell.edu</a>.
+   </td></tr>
+</table>
+
+<hr>
+<!--#include file="copyright-notice.inc"-->
+
+</div>
+</div>
+</body>
+</html>
+
+
+

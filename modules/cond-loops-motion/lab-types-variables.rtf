@@ -1,0 +1,471 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1038\cocoasubrtf360
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+\margl1440\margr1440\vieww9000\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\ql\qnatural\pardirnatural
+
+\f0\fs24 \cf0 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" >\
+<html>\
+  <head>\
+    <meta http-equiv="Content-Type" \
+          content="text/html; charset=ISO-8859-1" >\
+    <link rel="stylesheet" type="text/css" href="style-cowdenda.css" >\
+\
+    <title>CSC 161 Lab. Types and Variables</title>  \
+    <link rev="made" href="mailto:walker@cs.grinnell.edu" >\
+  </head>\
+  <body>\
+    <div class="body">\
+\
+      <!--#include virtual="header-cowdenda.inc"-->\
+      \
+      <div class="labcontent">\
+\
+        <h1>Laboratory Exercise: Types and Variables</h1>\
+\
+        <h2>Goals</h2>\
+\
+        <p>\
+          The purpose of this lab is to learn about types and variables in C.\
+        </p>\
+\
+        <h2>Introduction</h2>\
+\
+        <p>\
+          To program in C, you must be familiar with the few primitive\
+          types of variables provided to manage data with.  Further, C allows\
+          for many implicit and explicit type conversions between these\
+          storage classes.  In this lab you will perform different legal,\
+          illegal, and unusual operations, and examine the results.\
+        </p>\
+        \
+\
+        <!--...........................................................-->\
+\
+        <h2>Primitive Types</h2>\
+\
+        <p>\
+          In C there are 4 primitive types:\
+        </p>\
+        <div class="block">\
+          <code>\
+            char  <br >\
+            int   <br >\
+            float <br >\
+            double<br >\
+          </code>\
+        </div>\
+        <p>\
+          Each of these primitive types is represented by a number of\
+          bytes. Each byte contains 8 bits.  A bit is a single 1 or 0 at\
+          the machine level.  Since each type represents different data,\
+          each type has a different size (in bytes) that it needs to be in\
+          order to properly contain its data.  Standard values for the size\
+          of each type can be found in \
+          the <tt>&lt;limits.h&gt;</tt> header.\
+          </p>\
+     <h3>Exploring <tt>limits.h</tt></h3>\
+<ol>\
+<li>\
+<p>\
+To view this header type the following command into a terminal window:\
+        </p>\
+        <div class="block">\
+        <code>\
+          less /usr/include/limits.h<br >\
+        </code>\
+        </div>\
+<li>\
+        <p>\
+          You can scroll through the header like you would a man page.\
+          Type:\
+        </p>\
+          <div class="block">\
+            <code>\
+              /char<br >\
+            </code>\
+          </div>\
+        <p>\
+          into the buffer and press return.  It should then\
+          jump to \
+          where the size of a <tt>char</tt> is defined. \
+          </p>\
+        <ol class="withloweralpha">\
+          <li>What is the size of a <tt>char</tt>? \
+        </ol>\
+\
+        <p>\
+          As you scroll down you will notice more constants defined\
+          for <tt>ints</tt>.  You will also notice constants defined for\
+          the varying types of chars and ints.  In C you can specify\
+          a <tt>short</tt> or <tt>long</tt> (or even a <tt>long\
+            long</tt>) integer and whether you want it <tt>signed</tt>\
+          or <tt>unsigned</tt>.  There are further modifiers but they are\
+          not relevant at the moment. \
+        </p>\
+        <ol start="2" class="withloweralpha">\
+          <li>What is the integer type that allows you to store the largest\
+          number?\
+          <li>What number is that? \
+        </ol>\
+        \
+        <li>\
+        <p>\
+          Write a simple C program that declares a <code>char</code>, \
+          an <code>int</code>, and a <code>double</code> .\
+          See what happens when you try to assign the value of each\
+          one to one of the other types.\
+        </p>\
+          <ol  class="withloweralpha">\
+            <li>Assign an <code>int</code>  to a <code>char</code>.\
+            <li>Assign a <code>char</code> (ex. 7) to an <code>int</code>.\
+            <li>Assign <code>double</code>(ex. 7.12) to an <code>int</code>.\
+            <li>Assign <code>char</code> (ex. 58) to a <code>double</code>.\
+          </ol>\
+       </ol>\
+        <p>\
+          You may recall there is a fourth type, <tt>float</tt>, that you\
+          didn't use in the last few steps.  <tt>double</tt>s are almost\
+          always preferred to <tt>float</tt>s.  A <tt>double</tt> is, in\
+          fact, just a <tt>long float</tt>.  Since space is not really a\
+          consideration for programs doing floating point arithmetic,\
+          doubles are the more common type.  In fact, compilers today\
+          rarely even do single precision floating point arithmetic.  Most\
+          just convert all floating point numbers in math operations to\
+          double precision values before performing operations on them for\
+          simplicity. \
+        </p>\
+\
+        <!--.............................................................-->\
+        <h3>Conversion Errors</h3>\
+<ol start=3>\
+    <li>    <p>\
+          Download the program \
+          <a href="conversion-errors.c">\
+            conversion-errors.c</a>.\
+          Compile it and run it. It declares\
+          one of each of the primitive types of variables and displays their\
+          contents before and after initialization. How did not initializing effect the values?\
+        </p>\
+</ol>\
+        <h2>Unexpected Results</h2>\
+        \
+        <h3>Adding <tt>ints</tt> to <tt>chars</tt></h3>\
+        \
+        <p>\
+          In C, it is possible to add an integer value to a char value. \
+        </p>\
+        <ol>\
+          <li>Add the following lines of code after the <tt>/* Add code\
+          here */</tt> comment:\
+      \
+        <div class="block">\
+          <code>\
+            c = c + 7;<br>\
+            printf("c + 7  = %c\\n", c);<br>\
+          </code>\
+        </div>\
+     \
+          <li>Save, compile, and run the program again.  What is the value\
+          of <tt>c</tt>? \
+        \
+        <li><p>Add 7 to <tt>c</tt> again (you can just copy the two lines again)\
+          and a print out the value.\
+        </p>\
+        \
+          <li>What is printed?  \
+          <li>Is that what you expected?\
+      \
+      <li>  <p>\
+          Set <tt>c</tt> back equal to zero and print out the result:  \
+        </p>\
+        <div class="block">\
+          <code>\
+            c = 0;<br>\
+            printf("char c = %c\\n", c);<br>\
+          </code>\
+        </div>\
+        <p>\
+          You may notice the print statement doesn't print out <tt>c</tt>\
+          as being zero. \
+        </p>\
+        \
+          <li>Why is it blank to the right of the equals sign?\
+       \
+        <p>\
+          Behind the scenes, a <tt>char</tt> is really just a\
+          one byte integer.  This is why an expression such as: <tt>c +\
+            7;</tt> is legal. The only difference is how <tt>printf</tt>\
+          interprets the value stored in the <tt>char</tt> variable c.\
+        </p>\
+        \
+      \
+          <li>Set <tt>c</tt> equal to 48 and print it again.  \
+        </ol>\
+        <p>\
+          You will notice\
+          it is now a zero again. \
+        </p>\
+            \
+        <h2>Overflow Errors</h2>\
+        \
+\
+        <p>Now that you know chars are really just ints behind the scenes,\
+          look at what happens when we assign bigger values to <tt>chars</tt> and\
+          <tt>unsigned chars</tt>. </p>\
+<h3>Limiting <tt>Char</tt>s</h3>\
+<ol>\
+         <li> <p>Add an <tt>unsigned char</tt> called uc to your program and initialize\
+          it to the tilde  \
+          character. Also set <tt>c</tt> equal to the tilde character and\
+          add print statements to display the values as integers rather than\
+          characters: \
+        </p>\
+        <div class="block">\
+          <code>\
+            unsigned char uc = c = '~';<br >\
+            printf("char c           = %d\\n", c);<br >\
+            printf("unsigned char uc = %d\\n", uc);<br >\
+          </code>\
+        </div>\
+     <li>   <p>\
+          Now add one to <tt>c</tt> and <tt>uc</tt>.  Print the\
+          results:\
+        </p>\
+        <div class="block">\
+          <code>\
+            c += 1;<br >\
+            uc += 1;<br >\
+            printf("char c           = %d\\n", c);<br >\
+            printf("unsigned char uc = %d\\n", uc);<br >\
+          </code>\
+        </div>\
+     <li>   <p>\
+          Again, add one to both variables and print the results again (just\
+          copy and paste the four lines again).  Why is <tt>c</tt> different\
+          from <tt>uc</tt>? \
+        </p>\
+     <li>   <p>\
+          Now, set both <tt>c</tt> and <tt>uc</tt> equal to 255.  Print\
+          out the values by copying the same two printf lines you have been\
+          using. Again, add one to each variable and print out the result\
+          What do you notice?\
+        </p>\
+    <li>    <p>\
+          Experiment with different values for <tt>c</tt>\
+          and <tt>uc</tt>:\
+        </p>\
+          <ol class="withloweralpha">\
+            <li>Try values greater than 256.  \
+            <li>Try floating point values. \
+            <li>Try putting a negative number in <tt>uc</tt>.  \
+          </ol>\
+        <p>\
+          You will notice many unexpected results.  In general, <tt>c</tt>\
+          will only behave as expected for values between -128 and +127\
+          inclusive.  <tt>uc</tt> will only behave as expected for values\
+          ranging from 0 to 255.  Think back to the value in\
+          the <code>limits.h</code> header for the size of\
+          a <code>char</code>.  Do you have any idea why 128 and 255 would\
+          be the limits for <code>char</code> and <code>unsigned\
+          char</code> variables respectively?\
+        </p>\
+</ol>\
+        \
+        <h2>Casting</h2>\
+        \
+        <p>\
+          As you may have encountered in the previous exercise, c is pretty\
+          forgiving as to what types can be assigned to each other.  Whether\
+          you realized it or not, the assignment operator, <tt>=</tt>,\
+          converts between certain types silently because they are easily\
+          compatible -- such as <tt>char</tt>s and <tt>int</tt>s. \
+          Even in the case of types that are less compatible such\
+          as <tt>int</tt>s and <tt>double</tt>s, if you try to assign\
+          a <tt>double</tt> value to an <tt>int</tt> variable, the compiler\
+          does not complain.  It simply drops the floating point (the\
+          decimal).\
+        </p>\
+<ol>\
+	<li> <p>If you didn't try that above, try it now.</p>\
+        <div class="block">\
+          <code>\
+            i = 2.7;<br >\
+            printf("int i = %lf", i);<br >\
+          </code>\
+        </div>\
+        \
+        <p>\
+          The process of converting between variable types is called\
+          <em>casting</em>. If you don't have to say anything for the process\
+          to take place, it is called <em>implicit</em> casting.  This is the\
+          case with all the math operations in c.  The <tt>+, -, *, /, and\
+            =</tt> operators all implicitly cast across primitive types.  The\
+          rules for implicit casting can be found in <em>K&amp;R appendix\
+            A6</em> (specifically section 5).\
+        </p>\
+    <li>    <p>\
+          Now try <em>explicit</em> casting.  This is where\
+          you tell c exactly what you want to happen.  The line:\
+        </p>\
+        <div class="block">\
+          <code>\
+            int x = (int) 3.14;<br>\
+          </code>\
+        </div>\
+        <p>\
+          tells the compiler (but more importantly anyone reading the code)\
+          that it is explicitly intended to convert the double (3.14) to an\
+          integer and store it in the space x which is available for\
+          integer data.\
+          <br >\
+          <em>* Note the <tt>f</tt> after 3.14 in the code above.  You can\
+            postfix numeric values to explicitly state what type you would\
+            like the compiler to interpret them as.  For\
+            example, <tt>100f</tt> results in 100.000000 and <tt>32l</tt>\
+            means 32 should be read as a <tt>long</tt>.</em> \
+        </p>\
+     <li>       <p>\
+         Why do you think explicit casting is necessary if the compiler\
+          already does it implicitly?  </p>\
+	<p>As hinted at, it is usually an\
+          effective  way of informing anyone reading your code that you\
+          mean to do something that may be questionable such as dropping\
+          the decimal from a number.  The second reason is that casting is\
+          necessary when  dealing with more complicated data such as\
+          pointers and structs. The compiler will not let you convert\
+          between certain types unless you explicitly tell it  that is what\
+          you want to do.  \
+        </p>\
+        <p>\
+          Finally, there is a danger in casting.  As you experienced when\
+          playing with signed and unsigned characters, types have sizes.  If\
+          you try to put a number that is bigger than the size of the type\
+          you are casting it to, you will get undesired results.  Also, if\
+          you cast signed numbers to unsigned types, you can encounter odd\
+          results. Remember, a signed type has one less bit (to make room\
+          for the sign bit) to represent data with.   \
+        </p>\
+ </ol>       \
+        <h2>Experimenting with Casting</h2>\
+\
+        <ol>\
+          <li>Declare a <tt>signed int</tt> and initialize it to a negative\
+          number greater than <tt>INT_MIN</tt> from the limits header (so\
+          between <tt>INT_MIN</tt> and 0).  \
+          <li>Then, declare an <tt>unsigned\
+          int</tt>.\
+          <li>Cast your signed integer to an unsigned integer and assign its\
+          value to your <tt>unsigned int</tt> variable.  \
+          <li>Finally, print the\
+          two values and examine the results.  \
+       \
+        <p>If you called your signed\
+          integer <tt>s</tt>, your explicit cast and print statements would\
+          look something like this: \
+        </p>\
+        <div class="block">\
+          <code>\
+            unsigned int u = (unsigned int) s;<br >\
+            <br >\
+            printf("signed int s   = %d\\n", s);<br >\
+            printf("unsigned int s = %u\\n", u);<br >\
+          </code>\
+        </div>\
+        <p>\
+          <em>* Note the use of <tt>%u</tt> to specify an <tt>unsigned\
+              int</tt> in the last <tt>printf</tt> statement.</em>\
+        </p>\
+\
+          <li>Explain why the values print out as they do. <i>Hint: Refer to the <tt>limits.h</tt> header file.</i>\
+        </ol>\
+\
+        <h2>ASCII Table -- If time permits..</h2>\
+        \
+        <p>\
+          Recall earlier that setting a <tt>char</tt> equal to <tt>0</tt> is\
+          not the same as setting it equal to <tt>'0'</tt>.  As you may know,\
+          this is because the zero in single quotes is actually interpreted\
+          as the character zero.  The character zero has the integral value\
+          48. That means setting a char equal to <tt>48</tt> is the same as\
+          setting it equal to <tt>'0'</tt>.\
+        </p>\
+        <p>\
+          Write a simple program that prints out all the\
+          ASCII characters.  If you know how to use a <tt>for</tt> loop,\
+          this would be an ideal time to do so -- lest you insert upwards\
+          of 95 print statements into your code. <em>*&nbsp;Note that\
+            while <tt>char</tt>s can range from 0 to 127, the printable\
+            characters start at 32.</em> \
+        </p>\
+	<h2>More for those with extra time</h2>\
+	<p>Using what you have learned about overflow and chars as integers, write a program that takes an integer n as input, takes 		2 to the power of that integer n, and loops until 0, and adds all the results from taking the power. Finally it should print 		out the <tt>char</tt> that the resulting number corresponds to.</p>\
+	<p>For example, say the input was 3 \
+         <div class="block">\
+          <code>\
+            n is now 3.<br>\
+	    2^3 + 2^2 + 2^1 + 2^0 = 15 <br>\
+	    The char that corresponds to 15 in the ASCII table is SI (shift in).<br>\
+          </code>\
+<h2>Reminder:  Complete Evaluation Form</h2>\
+\
+<p>\
+When you have finished this lab, be sure to fill out its evaluation form\
+in the "Lab Evaluation" section for CSC 161\
+on <a href="http://pioneerweb.grinnell.edu">Pioneer Web</a>\
+</p>\
+ \
+      </div> <!-- labcontent -->\
+\
+      <!-- . . . . . . . -->\
+\
+        <div class="footer">\
+          <p>\
+            <hr >\
+          This document is available on the World Wide Web as\
+\
+          <div class="address">\
+            <BLOCKQUOTE>\
+              <code>\
+                http://www.cs.grinnell.edu/~walker/courses/161.fa11/modules/module-cond-loops-testing/lab-types-variables.shtml<br >\
+              </code>\
+            </BLOCKQUOTE>\
+          </div>\
+          <p>\
+            <hr >\
+          <table width="100%">\
+            <tr><td>\
+\
+                <em>created 21 July 2011 by David Cowden</em><br>\
+                <em>last revised 21 July 2011 by David Cowden</em><BR>\
+                <em>minor editing 24 August 2011 by Henry M. Walker</em><br>\
+                <em>additional editing 3 September 2011 by Henry M. Walker</em>\
+\
+              </td>\
+              <td rowspan="2" align="right">\
+                <a href="http://validator.w3.org/check/referer">\
+                  <img border="0" src="/~walker/valid-html401-blue.png" \
+                       alt="Valid HTML 4.01!" height="31" width="88">\
+                </a>\
+                <a href="http://jigsaw.w3.org/css-validator/">\
+                  <img border="0" src="/~walker/vcss-blue.png" \
+                       alt="Valid CSS!" height="31" width="88"></a> \
+              </td>\
+            </tr>\
+\
+            <tr><td> \
+                For more information, please contact\
+                <a class="ftr"\
+                  href="http://www.cs.grinnell.edu/%7Ewalker/"> \
+                  Henry M. Walker\
+                </a> \
+                at\
+                <a class="ftr" href="mailto:walker@cs.grinnell.edu">\
+                  walker@cs.grinnell.edu\
+                </a>.\
+            </td></tr>\
+          </table>\
+      </div> <!-- footer -->\
+    </div>\
+  </body>\
+</html>}

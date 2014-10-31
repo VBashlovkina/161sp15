@@ -1,0 +1,154 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>CSC 161 Module Highlighting Music Composition with Dynamic Data
+    Structures</title>
+    <link rev="made" href="mailto:walker@cs.grinnell.edu">
+</head>
+
+<div class="body">
+<!--#include file="header.inc"-->
+
+<div class="labcontent">
+
+<h1>CSC 161 Module Project Highlighting Music Composition with Dynamic Data
+    Structures</h1>
+
+<table width="100%">
+<tr>
+  <th align=left width="50%">Grading Form
+  <th align=left width="50%">Name(s):
+</tr>
+</table>
+
+<p>
+This grading form expands the <a href="grading-form.pdf">Program
+    Style Summary and Checklist</a> that applies to all program development
+    in CSC 161.
+</p>
+
+<p>
+  This project will be worth 30 points, based on the following rubric:
+</p>
+
+<p>
+9 points: Complete the editing operations (outline steps 1c, 1d, and 1e).
+</p>
+<ul>
+  <li>
+    Organize list operations in a reasonable way within the
+    list-operation header file <tt>noteSeq.h</tt> and the list
+    implementation file <tt>noteSeq.c</tt>
+  <li>
+    Add menu options within the user's program <tt>composerMain.c</tt>
+    to utilize these operations
+</ul>
+<br><br><br><br><br>
+
+<p>
+3 points: Complete an operation to play a melody or phrase on the Scribbler
+  2 (outline step 2b).
+</p>
+
+<ul>
+<li>
+Define an appropriate operation within the header file <tt>noteSeq.h</tt>
+  <li>
+    Implement the operation within <tt>noteSeq.c</tt>
+  <li>
+    Add an appropriate menu option within <tt>composerMain.c</tt>
+</ul>
+<br><br><br><br><br>
+
+<p> 
+8 points: Complete the operations for transposing or inverting a
+melody or phrase (outline steps 3a, 3b).
+<ul>
+  <li>
+    Organize list operations in a reasonable way within the
+    list-operation header file <tt>noteSeq.h</tt> and the list
+    implementation file <tt>noteSeq.c</tt>
+  <li>
+    Add menu options within the user's program <tt>composerMain.c</tt>
+    to utilize these operations
+</ul>
+<br><br><br><br><br>
+
+<p>
+5 points: Complete an operation to insert the separate musical
+      phrase into the melody following a specified note(outline step 4).
+</p>
+
+<ul>
+  <li>
+  Define an appropriate operation within the header file <tt>noteSeq.h</tt>
+  <li>
+    Implement the operation within <tt>noteSeq.c</tt>
+  <li>
+    Add an appropriate menu option within <tt>composerMain.c</tt>
+</ul>
+<br><br><br><br><br>
+
+<p>
+2 points:  Definition of a <tt>Makefile</tt> for compiling and linking
+     your program.
+</p>
+<br><br><br><br><br>
+
+<p> 3 points:  Describe the steps you have taken to test this program; why
+  do you think the program is correct?
+</p>
+<br><br><br><br><br>
+
+<p>
+  <em>Extra Credit:</em> 
+</p>
+<ul>
+  <li> 8 points: Add up to two new operations to the composer program
+    functions.  An example might be creating a musical phrase by playing a
+    melody backward (called a <i>retrograde</i> phrase in musical jargon).
+    (Grading: up to 4 points possible per operation)
+</ul>
+<br><br><br><br><br>
+
+<p>
+Form updated:  26 October 2013
+</p>
+
+</div> <!-- labcontent-->
+
+<div class="footer">
+<hr>
+
+<table width="100%">
+<tr><td valign=top>
+   <em>created 26 October 2013</em> by Henry M. Walker<br>
+   <em>dates updated 26 October 2013</em> by Henry M. Walker
+   </td>
+   <td valign=top rowspan="2" align="right">
+   <a href="http://validator.w3.org/check/referer"><img border="0"
+      src="/~walker/valid-html401-blue.png" alt="Valid HTML 4.01!" height="31"
+      width="88"></a>
+   <a href="http://jigsaw.w3.org/css-validator/"><img border="0"
+       src="/~walker/vcss-blue.png"
+       alt="Valid CSS!" height="31"
+       width="88"></a>
+   </td>
+</tr>
+
+<tr><td valign=top>
+   For more information, please contact
+   <a class="footer-a" href="/~walker/">Henry M. Walker</a> at
+   <a class="footer-a" href="mailto:walker@cs.grinnell.edu">walker@cs.grinnell.edu</a>.
+   </tr>
+</table>
+
+<hr>
+<!--#include file="copyright-notice.inc"-->
+
+</div> <!-- footer -->
+</div> <!-- body --></body>
+</html>

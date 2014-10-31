@@ -1,0 +1,323 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>CSC 161 Lab on Stacks</title>  
+    <link rev="made" href="mailto:walker@cs.grinnell.edu">
+</head>
+<body>
+<div class="body">
+<!--#include file="header.inc"-->
+<div class="labcontent">
+
+
+<h1>Laboratory Exercise on Stacks</h1>
+
+<h2>Goals</h2>
+
+<p>
+The main goal of this lab is to gain facility with two common methods of
+implementing the data organization type called stacks.
+</p>
+
+<h2>Work Started in Class</h2>
+<p>Create a directory for this lab in your directory for this class, and
+  move to the lab directory.</p>
+
+<h3>Part A: Stacks with Arrays</h3>
+<p>The reading describes a stack as an object that can store data and
+  that has the following operations:
+</p>
+
+<ul>
+  <li>
+    <i>InitializeStack</i><br>
+    Sets <tt>topPosition</tt> to -1 to indicate an empty stack.
+
+  <li>
+    <i>Empty</i><br>
+    <i>Empty</i> returns true or false, depending upon whether the stack
+    contains any items or not.
+
+
+  <li>
+    <i>Full</i> (optional)<br>
+    <i>Full</i> returns true or false, depending upon whether the stack
+    contains as much data as it can hold.
+
+  <li>
+    <i>Push</i><br>
+    <i>Push</i> adds the specified item to the top of the stack.
+
+  <li>
+    <i>Pop</i><br>
+
+    If the stack is not empty, <i>Pop</i> removes the top item from the stack,
+    and this item is returned.<br>
+    If the stack is empty, nothing is returned, and an error is reported.
+
+  <li>
+    <i>Top</i><br>
+    If the stack is not empty, the top item is returned, but the contents of
+    the stack are not changed.<br>
+    If the stack is empty, nothing is returned, and an error is reported.
+
+</ul>
+
+<p>
+  Within C, there is no way to combine underlying data structures (e.g.,
+  arrays) and operations within a single structure.  (Such a combined ADT can
+  be done in C++ or Java, but we leave those languages for other courses!)
+  Instead, we will define variables for each stack needed.  For each
+  operation, we will pass the relevant variables as parameters, so we can use
+  the same functions for multiple stacks.  This approach requires that the
+  data items for the stack have the same type (e.g., a stack of doubles or a
+  stack of strings).
+</p>
+
+<p>
+  For this section of the lab, we will focus on arrays of strings, and this
+  leads to the following declarations for stacks of fruits, vegetables, and
+  pastries:
+</p>
+
+<div class="block">
+  <pre>
+    #define MaxStack  50  /* MaxStack stands for the size of all stack arrays */
+
+    typedef struct {
+    int topPosition;
+    char * stackArray [MaxStack];
+    } stringStack;      /* type for a stack of strings */
+  </pre>
+</div>
+
+<p>
+  With this framework, the <i>full</i> and <i>push</i> operations might be
+  defined as follows:
+</p>
+
+<div class="block">
+  <pre>
+    int full (stringStack stack) {
+    /* determine if there are more positions in a stackArray */
+    return (stack.topPosition == (MaxStack-1));
+    }
+
+    int push (stringStack *stack, char * item) {
+    /* return -1 if stack full */
+    if (full (*stack)) {
+    printf ("attempt to push item onto an already full stack\n");
+    return -1;
+    }
+
+    /* add item to stack */
+    (stack->topPosition) ++;
+    stack->stackArray[stack->topPosition] = item;
+    }
+</pre></div>
+<ol>
+  <li><p>
+      Consider the following stack functions:
+    </p>
+    <ul>
+      <li>
+        <p><tt>void initializeStack (stringStack * stack)</tt> (sets
+
+        <tt>topPosition</tt> of <tt>stack</tt> to -1)</p>
+      <li>
+        <p><tt>int empty (stringStack stack)</tt></p>
+      <li>
+        <p><tt>char * pop (stringStack *stack)</tt>
+        (returns 0 if stack is empty, otherwise removes the top string
+        from the stack and returns it)</p>
+      <li>
+        <p><tt>char * top (stringStack stack)</tt>
+        (returns 0 if stack is empty, otherwise returns the top string
+        on the stack)</p>
+    
+    </ul>
+
+    <ol class="withloweralpha">
+      <li>
+        <p>
+        Why is <tt>stringStack * stack</tt> used as the parameter for 
+        <tt>initializeStack</tt> and <tt>pop</tt>, while the parameter for
+        <tt>empty</tt> and <tt>top</tt> is <tt>stringStack</tt> (without
+        the <tt>*</tt>)?
+        </p>
+      <li>
+        <p>
+        Complete the implementation of a stack of strings by implementing the
+        these four stack operations.
+        </p>
+    </ol>
+
+  <li><p>
+      After writing functions, it is important to test your code to ensure that
+      it works as you expected and accounts for unusual cases. Declare and
+      initialize three stacks within your main program for fruit,
+      vegetables, and pastry. Test your code by executing the following
+      instructions:</p>
+    <ul>
+      <li><p>Push "apple" and "orange" onto the fruit stack.</p>
+      <li><p>Push "doughnut" onto the pastry stack.</p>
+      <li><p>Check if the three stacks are empty.</p>
+      <li><p>Push "corn", "beans", "squash", and "broccoli" onto the vegetable stack.</p>
+      <li><p>Print the top of each stack.</p>
+      <li><p>Pop one item off the pastry stack and print it.</p>
+      <li><p>Print the top of each stack.</p>
+       <p> <i>Hint: the pastry stack is empty. Be careful!</i></p>
+      <li><p>Pop three items off the vegetable stack and print.</p>
+      <li><p>Pop three items off the fruit stack and print.</p>
+        <p><i>Hint: how many items are on the fruit stack initially?</i><p>
+      <li><p>Push "cake" onto the pastry stack.</p>
+      <li>
+        <p>Check if any of the three stacks is empty.</p>
+    </ul>
+
+  <li><p>Add the following procedures to the code:</p>
+    <ul>
+      <li><p><code>int size (stringStack stack)</code><br>
+        (returns the number of items currently on the stack)</p>
+      <li><p><code>void print (stringStack stack)</code><br>
+        (prints all of the current elements on the stack)</p>
+      <li><p><code>char * get_nth (stringStack stack, int nth)</code><br>
+        (returns the string at the nth position from the top of the
+        stack)</p>
+<li><p><tt>void printFirstString (stringStack stack)</tt> <br>
+(scans all items on a
+    stack and prints the one that comes first in alphabetical order)</p>
+  </ul>
+
+</ol>
+
+<h2>Homework</h2>
+
+<h3>Part B: Stacks with Linked Lists</h3>
+<p>
+The earlier section on stacks described the following function prototypes:
+</p>
+
+<div class="block">
+<pre>
+  int empty (stringStack stack)
+  int full (stringStack stack)      
+  void initializeStack (stringStack * stack) 
+  char * pop (stringStack *stack) 
+  int push (stringStack *stack, char * item) 
+  char * top (stringStack stack)
+</pre></div>
+
+<p>
+The section of the reading regarding linked lists discusses these functions
+in the context of linked lists with these declarations:
+</p>
+
+<div class="block">
+<pre>
+   typedef struct node * stringStack;
+
+   struct node {
+      char str [MaxStack];
+      struct node * next;
+   } stackNode;     
+
+   stringStack stack;
+</pre></div>
+
+<ol start=4>
+<li>
+<p>
+Copy the program you wrote for the earlier section on stacks with arrays
+and modify it, so that the stacks are implemented by linked lists.  In
+this, you will need to change the bodies of the prototype functions, and
+you will need to change the declaration of the stack variables for the
+three stacks (fruits, vegetables, and pastries) used in testing.  However,
+you should not have to change any of the code used for testing, and the
+output of this new program should be identical in all respects to the
+output of the program from the previous section. 
+</p>
+
+<li><p>As with the previous lab on stacks with arrays, expand the code for
+    the stack ADT implementation to include these functions:</p>
+
+  <ul>
+    <li>
+      <p>a <tt>size</tt> function which will return the number of items
+      currently on the stack,</p></li>
+    <li>
+      <p>a <tt>print</tt> function which will print all of the current
+      elements on the stack, and</p></li>
+    <li>
+      <p>an <tt>nth</tt> function which takes one parameter (an index) and
+      returns the item at that position from the top in the current
+      stack.</p></li>
+
+
+    <li><p>Write a <tt>printReverse</tt> function that prints all items on a
+        stack, from the bottom of the stack to the top.  (Thus, the top item
+        will be printed last.)</p>
+      <p>
+        <i>Hint:</i>  Consider <tt>printReverse</tt> as a husk procedure that calls
+        a recursive kernel procedure to move along the stack's list and do the
+        printing.
+      </p>
+</ul>
+</ol>
+
+<!--#include file="body-footer.inc" -->
+</div>
+
+<div class="footer">
+<p>
+<hr>
+
+<p>
+This document is available on the World Wide Web as
+</p>
+
+<pre>
+http://www.cs.grinnell.edu/~walker/courses/161.sp14/modules/module-pointers-stacks-queues/stacks-lab.shtml
+</pre>
+
+<hr>
+
+<table width="100%">
+<tr><td>
+   <em>created 16 August 2011 by April O'Neill</em><br>
+   <em>Several exercises borrowed from/inspired by Henry Walker's spring
+   2010 CS161 labs on stacks</em><br>
+   <em>revised 16 August 2011 by April O'Neill</em><br>
+   <em>revised 5 December 2011 by Erik Opavsky</em><br>
+   <em>revised 7 December 2011 by Henry M. Walker</em><br>
+   <em>revised 26 April 2013 by Henry M. Walker</em><br>
+   <em>reformatted 3 February 2014 by Henry M. Walker</em>
+   </td>
+   <td rowspan="2" align="right">
+   <a href="http://validator.w3.org/check/referer"><img border="0" 
+      src="/~walker/valid-html401-blue.png" alt="Valid HTML 4.01!" height="31"
+      width="88"></a>
+   <a href="http://jigsaw.w3.org/css-validator/"><img border="0"
+       src="/~walker/vcss-blue.png" 
+       alt="Valid CSS!" height="31"
+       width="88"></a>
+   </td>
+</tr>
+
+<tr><td>
+   For more information, please contact
+   <a class="footer-a" href="http://www.cs.grinnell.edu/%7Ewalker/">Henry M. Walker</a> at
+   <a class="footer-a" href="mailto:walker@cs.grinnell.edu">walker@cs.grinnell.edu</a>.
+   </td></tr>
+</table>
+
+<hr>
+<!--#include file="copyright-notice.inc"-->
+
+</div>
+</div>
+</body>
+</html>
+

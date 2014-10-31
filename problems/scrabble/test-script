@@ -1,0 +1,15 @@
+gcc -o sup-prob4b sup-prob4b.c
+./sup-prob4b << !
+15 20
+SYSTEM H  3  0
+poetry V  3  0
+poets  V  0  3
+memory H  1  0
+string H  4  3
+noodle V  4  7
+ERROR  H 16  3
+ERROR  V  3 18
+Scheme  R
+Entrance R
+QUITQUIT
+!

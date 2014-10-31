@@ -1,0 +1,32 @@
+/* program to encrypt a message with a simple polyalphabetic cipher 
+
+   one basic cipher alphabet is used.  
+   a keyword is used to shift a plain text letter, before it is
+    replaced with a character from the cipher alphabet.
+
+*/
+
+#include <stdio.h>
+#include <ctype.h>
+
+
+int main ()
+{
+  char cipherAlpha [27] = "XDQTVBKRAUGMZHYWCJOSENILPF";
+  int i;
+
+  printf ("program to encode via a keyword-based polyalphabetic cipher\n");
+  printf ("   all characters are converted to upper case for simplicity\n");
+
+  printf ("       plain alphabet:  ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+  printf ("enter cipher alphabet:  ");
+  fgets (cipherAlpha);
+  for (i = 0; i < 26; i++)
+    cipher[i] = toupper (cipher[i]);
+
+  printf ("enter keyword:  ");
+
+
+
+  return 0;
+}

@@ -1,0 +1,505 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>CSC 161 Reading on Scheme-like Lists in C</title> 
+    <link rev="made" href="mailto:walker@cs.grinnell.edu">
+</head>
+<body>
+<div class="body">
+<!--#include virtual="header.inc"-->
+
+<div class="labcontent">
+
+
+<h1>Scheme-like Lists in C</h1>
+
+<h2>Summary</h2>
+
+<p>
+Our experience with Scheme through the first part of this course indicates
+that lists can be a particularly helpful structure for the storage and
+processing of a wide variety of data.  Lists provide a very flexible
+context for processing, and unlike arrays, we do not need to specify a
+maximum size of a list when we create it.  This reading discusses how
+lists might be implemented in C, following an approach analogous to the
+lists we studied previously in Scheme.
+</p>
+
+<p>
+Since Scheme incorporates lists as a built-in data structure, Scheme
+supplies several built-in operations (e.g., <tt>cons</tt>, <tt>car</tt>, and 
+<tt>cdr</tt>) for list processing, and we could program in Scheme using
+lists without considering mechanics of how lists were implemented.  To
+process lists in C, however, we first need to consider some internal
+details of Scheme lists.  We then can translate these details to C.
+</p>
+
+<h3>Background:  Lists in Scheme</h3>
+
+<p>
+Lists in Scheme are implemented based on a graphical model, called a
+<i>box-and-pointer representation</i>.  The basic idea is to use a
+rectangle &ndash; divided in half &ndash; to represent the result of the
+<tt>cons</tt>.  From the first half of the rectangle, we draw an arrow to
+the head of a list; from the second half of the rectangle, we draw an arrow
+to the rest of the list.  For example, <tt>(cons 'a '())</tt> would be
+represented as follows: <br>
+
+<img src="pairs-1.gif" alt="the list (a)">
+
+<br>
+Here, the line to <tt>a</tt> indicates that this is the head of the list.
+The diagonal line through the right half of the rectangle indicates that
+nothing comes later in this list.  Since <tt>(cons 'a '())</tt> gives
+the list <tt>(a)</tt>, this diagram represents <tt>(a)</tt> as well.
+
+<p>
+Now consider the list <tt>(cons 'b '(a))</tt> or <tt>(b a)</tt>.  Here, we
+draw another rectangle, where the head points to <tt>b</tt> and the tail
+points to the representation of <tt>(a)</tt> that we already have seen.
+The result is:
+<br>
+
+<img src="pairs-2.gif" alt="the list (b a)">
+
+<br>
+Similarly, the list <tt>(d c b a)</tt> is constructed as 
+<div class="block"><code>
+(cons 'd (cons 'c (cons 'b (cons 'a '())))) 
+</code></div>
+
+and would be drawn as follows:
+<br>
+
+<img src="pairs-3.gif" alt="the list (d c b a)">
+
+<br>
+A similar approach may be used for lists, which have components which
+are sublists.  For example, consider the list <tt>((a) b (c d) e)</tt>
+This is a list with four components, so at the top level we will need
+four rectangles, just as in the previous example for the list <tt>(d  c  b
+a)</tt>.  Here, however, the first component designates the list
+<tt>(a)</tt>, which itself involves the box-and-pointer diagram already
+discussed.  Similarly, the list <tt>(c d)</tt> has two boxes for its two
+components (just as we discussed for <tt>(b a)</tt> earlier).  The
+resulting diagram follows:
+<br>
+
+<img src="pairs-4.gif" alt="the list ((a) b (c d) e)">
+
+<br>
+Throughout these diagrams, the null list is represented by a null pointer
+or line.  Thus, the list containing the null list, <tt>( ( ) )</tt> - that
+is <tt>(cons '() '())</tt> - is represented by a rectangle with lines
+through both halves:
+
+<br>
+<img src="pairs-5.gif" alt="the list containing the null list">
+
+<h3>Representing a Box-and-Pointer in C</h3>
+
+<p>
+In computer science, this box-and-pointer representation is a primary
+mechanism used to describe lists &mdash; not just in Scheme, but in most
+contexts.  An implementation of lists in C typically utilizes this
+graphical perspective and involves three main elements:
+</p>
+
+<ul>
+<li>
+a  <tt>struct listNode</tt> which implements a box-and-pointer unit, 
+<li>
+a <tt>first</tt> pointer that indicates the location of the first node in
+a list, and
+<li>
+a collection of operations which aid in the processing of the
+box-and-pointer nodes. 
+</ul>
+
+<p>
+A typical <tt>listNode</tt> contains two elements &mdash; one for
+data and the other to identify the next <tt>node</tt> on a list.  Since C
+requires that we declare the type of data fields, we must tailor the data to
+the application at hand.  For the remainder of this lab, we assume the data
+will be a string.  The following declarations capture these elements.
+</p>
+
+<div class="block">
+<code>
+#define strMax 50 /*&nbsp;&nbsp;&nbsp;maximum size of an array */<br>
+<br>
+typedef struct Node * listType;<br>
+<br>
+typedef struct Node {<br>
+&nbsp;&nbsp;char data [strMax];<br>
+&nbsp;&nbsp;listType next;<br>
+} listNode;<br>
+</code>
+</div>
+
+<p>
+To clarify these lines, a <tt>Node</tt> is a structure with <tt>data</tt>
+and a <tt>next</tt> field, and <tt>listNode</tt> is a synonym for
+<tt>struct Node</tt>.  (It is simpler to write <tt>listNode</tt> than the
+two keywords <tt>struct Node</tt>, and conceptually it seems cumbersome to
+have to write <tt>struct</tt> for each declaration.)  Similarly,
+<tt>listType</tt> stands for <tt>struct Node *</tt> &mdash; a pointer to a
+<tt>Node</tt> structure.
+</p>
+
+
+<h3>Some Designs for Scheme-like List</h3>
+
+<p>
+While the <tt>struct Node</tt> or <tt>listNode</tt> provides appropriate
+support to build lists that implement box-and-pointer representations, the
+design of a list of <tt>listType</tt> may combine these <tt>listNode</tt>s
+in one of several ways.  For example, here are some basic issues:
+</p>
+
+<ul>
+<li>
+<p>
+In Scheme, list processing follows a functional perspective: procedures such
+as <tt>cons</tt>, <tt>car</tt>, <tt>cdr</tt>, <tt>null?</tt>, and
+<tt>length</tt> take lists as parameters and return new lists or data.  In
+C, two main choices are possible: 
+<ul>
+<li>
+should functions, such as <tt>cons</tt> and <tt>cdr</tt>, change an
+existing list, or 
+<li>
+should operations return new and updated lists?
+</ul>
+
+<li>
+<p>
+When modifying a list, perhaps with <tt>cons</tt> or <tt>cdr</tt>, should
+there be a connection between the old list and the new one; that is,
+<ul>
+<li>
+should an operation give rise to a completely new structure, or 
+<li>
+should an operation reuse nodes from an earlier structure when possible?
+</ul>
+
+</ul>
+
+<p>
+To clarify this second point, consider the Scheme statements:
+</p>
+
+<div class="block">
+<code>
+(define x '(b c))<br>
+(define y (cons 'a x))<br>
+</code>
+</div>
+
+<p>
+Thus, we can consider <tt>y</tt> to be the list <tt>(a b c)</tt>.
+The following figure shows two possible structures that could result:
+</p>
+
+<p>
+<img src="cons-choices.gif" alt="Two alternatives">
+</p>
+
+<p>
+In the first option, the nodes of the original list are copied, and thus
+are explicitly distinct from those in the new list.  In the second option,
+a new node is created for the <tt>cons</tt> node, a new value is added
+within that node, but the <tt>next</tt> part of that list refers to the 
+old list.
+</p>
+
+<p>
+For the example shown, both options may be reasonable.  However, suppose we 
+now change the second element of <tt>x</tt> from <tt>c</tt> to <tt>d</tt>,
+using Scheme's <tt>set-cdr!</tt> operation.  (That is, the new <tt>x</tt> is
+the list <tt>(b d)</tt>.)  In the first option, y is not affected, while in
+the new approach <tt>y</tt> becomes the list <tt>(a b d)</tt>.  Since
+<tt>y</tt> refers to <tt>x</tt> when nodes are reused, any change to
+<tt>x</tt> also affects <tt>y</tt>.  This may or may not be the desired
+result of changing <tt>x</tt>.
+</p>
+
+<p>
+Overall both approaches have some advantages in certain cases.  However,
+the first approach requires considerable overhead to duplicate nodes.
+Furthermore, in a purely functional context, lists are not altered during
+processing.  In such a context, we could reuse nodes without fear of
+altering other lists unexpectedly, as old lists are never changed.
+Both of these observations explain why Scheme uses the second approach &mdash;
+reusing nodes when possible.
+</p>
+
+<h3>Implementing Scheme List Operations in C</h3>
+
+<p>
+To illustrate how to implement Scheme-style list operations in C, 
+program <a href="scheme-lists.c">scheme-lists.c</a>
+shows implementations of the operations 
+<tt>cons</tt>, <tt>car</tt>, and <tt>cdr</tt>.  In addition, the program
+contains function <tt>listInit</tt> that initializes a list and
+<tt>listPrint</tt> that prints the elements of a list in Scheme format.
+Finally, as C requires programmers to handle all issues of memory
+allocation and deallocation, the program contains function
+<tt>listDelete</tt> that deallocates all nodes in a list and then sets the
+list variable to NULL.
+</p>
+
+<p>
+Before considering specific details of the C functions, we review some
+elements of C syntax, based on the box-and-pointer representation of the
+Scheme list <tt>(a b c)</tt>. 
+</p>
+
+<p>
+<img src="Scheme-abc-list-in-c.gif" alt="Modeling the list (a b c)">
+</p>
+
+<p>
+In this diagram, <tt>first</tt> is a variable that points to a
+<tt>listNode</tt>.  C notates this type by adding an asterisk <tt>*</tt> to
+the declaration:
+</p>
+
+<div class="block">
+<code>
+struct Node * first;
+</code>
+</div>
+
+<p>
+Alternatively, since we used a <tt>typedef</tt> statement to define
+<tt>listNode</tt> as <tt>struct Node</tt>, we could declare <tt>first</tt>
+as
+</p>
+
+<div class="block">
+<code>
+listNode * first;
+</code>
+</div>
+
+<p>
+And, since use used a <tt>typedef</tt> to define <tt>listNode *</tt> as a
+<tt>listType</tt>, we could define <tt>first</tt> as
+</p>
+
+<div class="block">
+<code>
+listType first;
+</code>
+</div>
+
+<p>
+With any of these declarations, <tt>first</tt> is a pointer to a
+<tt>listNode</tt>, and <tt>*first</tt> accesses the <tt>listNode</tt> itself.
+Within this <tt>listNode</tt>, <tt>(*first).data</tt> yields the
+<tt>data</tt> field within the <tt>Node</tt>, and <tt>(*first).next</tt>
+yields the <tt>next</tt> field.  Alternatively, an arrow notation
+accomplishes the same result in a slightly cleaner form:
+<tt>first-&gt;data</tt> and <tt>first-&gt;next</tt>.
+</p>
+
+<p>
+With this notation, we now review various details of the C functions.  Full
+details of these functions are in program <a
+href="scheme-lists.c">scheme-lists.c</a>.
+</p>
+
+
+
+<h4><tt>car</tt></h4>
+
+<p>
+Since a <tt>Node</tt> contains a string as data, the <tt>car</tt> function
+must return a pointer to a string (i.e., a <tt>char *</tt>) as its result.
+Altogether, we can access and return the <tt>car</tt> of a <tt>Node</tt>
+as:
+</p>
+
+<div class="block">
+<code>
+return list-&gt;data;
+</code>
+</div>
+
+<h4><tt>cdr</tt></h4>
+
+<p>
+The <tt>cdr</tt> operation returns the <tt>next</tt> &mdash; a pointer to a
+<tt>Node</tt> which has type <tt>listType</tt>.  Accessing and returning
+this field follows the same approach as <tt>car</tt>.
+
+<h4><tt>cons</tt></h4>
+
+<p>
+For the <tt>cons</tt>, C first requires that we allocate space explicitly.
+C's <tt>malloc</tt> function accomplishes this task when we give it the
+amount of space to allocate. After allocated, we must specify that this
+points to a node of type <tt>listType</tt>.  The relevant line is:
+</p>
+
+<div class="block">
+<code>
+listType newNode = (listType)malloc(sizeof(listNode));
+</code>
+</div>
+
+<p>
+Once the space is allocated, we need to fill the <tt>data</tt> and
+<tt>next</tt> fields.  Following the above discussion, the <tt>next</tt>
+field will point to the head of the next node.  For the <tt>data</tt>
+field, we copy the head string into the array.
+</p>
+
+<h4><tt>listPrint</tt></h4>
+
+<p>
+To print, we need a temporary variable <tt>listPtr</tt> that starts at the
+beginning of a list and then progresses node-by-node until the end.  By
+convention in C, a pointer that does not specify any node is called
+<tt>NULL</tt>.  Also, given one position in the list, the next node is
+obtained by looking in the <tt>next</tt> field.  Putting these details
+together, the main structure of a printing loop is:
+</p>
+
+<div class="block">
+<code>
+listType listPtr = list;<br>
+<br>
+while (listPtr != NULL) {<br>
+<br>
+&nbsp;&nbsp;/* printing details go here */<br>
+<br>
+&nbsp;&nbsp;listPtr = listPtr->next;<br>
+}<br>
+</code>
+</div>
+
+<p>
+If we are to print results in the format given by Scheme, we should enclose
+an entire list in parentheses and separate successive list elements by a
+space.  These details require a little care.
+</p>
+
+<h4><tt>listInit</tt></h4>
+
+<p>
+Initialization requires some thought and care.  One approach would be to
+assign
+</p>
+
+<div class="block">
+<code>
+first = NULL;
+</code>
+</div>
+
+<p>
+in the main program.
+</p>
+
+<p>
+Although this will work fine, we might want to accomplish initialization in
+a procedure.  In this case, passing <tt>first</tt> makes a copy of
+<tt>first</tt> within the <tt>listInit</tt> procedure.  Instead, we must
+pass the address of <tt>first</tt> and within the function we must place
+NULL at that address.
+</p>
+
+<ul>
+<li>
+call:  <tt>listInit (&amp; first)</tt>
+<li>
+function header:  <tt>void listInit (listType * list)</tt>
+<li>
+function body:  <tt>*list = NULL</tt>
+</ul>
+
+
+<h4><tt>listDelete</tt></h4>
+
+<p>
+Deletion requires that we explicitly deallocate space for each node and
+then set the <tt>first</tt> pointer to <tt>NULL</tt>.  Since the last step
+changes the <tt>first</tt> variable, we must pass the address of
+<tt>first</tt> to <tt>listDelete</tt> paralleling the approach used for
+<tt>listInit</tt>.  
+</p>
+
+<p>
+For completeness, we should first deallocate space for the rest of a list
+before deallocating the space for the first node.  (If we proceeded in the
+other order, once we deallocated the first node, we could not be confident
+that the <tt>next</tt> field had valid data, so working down the list would
+be unreliable.)  Proceeding recursively down the list handles subsequent
+nodes cleanly and easily.
+</p>
+
+<p>
+Finally, the deallocation of memory uses the standard C function
+<tt>free</tt>.
+</p>
+
+
+<h4>Full Program</h4>
+
+<p>
+These definitions and methods combine to give program <a
+href="scheme-lists.c">scheme-lists.c</a>.
+</p>
+</div>
+
+<div class="footer">
+<p>
+<hr>
+
+<p>
+This document is available on the World Wide Web as
+</p>
+
+<blockquote>
+<pre>
+http://www.cs.grinnell.edu/~walker/courses/161.fa11/modules/module-lists/reading-lists-c-1.shtml
+</pre>
+</blockquote>
+
+<hr>
+
+<table width="100%">
+<tr><td>
+   <em>created 4 May 2000 by Henry Walker</em><br>
+   <em>revised 4 August 2011 by David Cowden and Dilan Ustek</em><br>
+   <em>minor revision 21 November 2011 by Erik Opavsky</em>
+   </td>
+   <td rowspan="2" align="right">
+   <a href="http://validator.w3.org/check/referer"><img border="0" 
+      src="/~walker/valid-html401-blue.png" alt="Valid HTML 4.01!" height="31"
+      width="88"></a>
+   <a href="http://jigsaw.w3.org/css-validator/"><img border="0"
+       src="/~walker/vcss-blue.png" 
+       alt="Valid CSS!" height="31"
+       width="88"></a>
+   </td>
+</tr>
+
+<tr><td>
+   For more information, please contact
+   <a class="footer-a" href="http://www.cs.grinnell.edu/%7Ewalker/">Henry M. Walker</a> at
+   <a class="footer-a" href="mailto:walker@cs.grinnell.edu">walker@cs.grinnell.edu</a>.
+   </td></tr>
+</table>
+
+<hr>
+<!--#include file="copyright-notice-reading.inc"-->
+
+</div>
+</div>
+</BODY>
+</HTML>

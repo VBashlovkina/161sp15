@@ -1,0 +1,322 @@
+<html>
+<head>
+<title>IEEE floating-point representations of real numbers</title>
+<link rev="made" href="mailto:stone@math.grin.edu">
+</head>
+
+<body bgcolor=EAEAEA>
+<IMG SRC="IEEE-reals.gif" ALT="IEEE floating-point representations of real
+numbers"> <P>
+
+No human system of numeration can give a unique representation to every
+real number; there are just too many of them.  So it is conventional to use
+approximations.  For instance, the assertion that <b>pi</b> is
+<b>3.14159</b> is, strictly speaking, false, since <b>pi</b> is actually
+slightly larger than <b>3.14159</b>; but in practice we sometimes use
+<b>3.14159</b> in calculations involving <b>pi</b> because it is a good
+enough approximation of <b>pi</b>. <P>
+
+One approach to representing real numbers, then, is to specify some
+tolerance <code>epsilon</code> and to say that a real number <code>x</code>
+can be approximated by any number in the range from <code>x -
+epsilon</code> to <code>x + epsilon</code>.  Then, if a system of
+numeration can represent selected numbers that are never more than twice
+<code>epsilon</code> apart, every real number has a representable
+approximation.  For instance, in the United States, the prices of stocks
+are given in dollars and eighths of a dollar, and rounded to the nearest
+eighth of a dollar; this corresponds to a tolerance of one-sixteenth of a
+dollar.  In retail commerce, however, the conventional tolerance is half a
+cent; that is, prices are rounded to the nearest cent.  In this case, we
+can represent a sum of money as an whole number of cents, or equivalently
+as a number of dollars that is specified to two decimal places. <P>
+
+Such a representation, in which each real number is represented by a
+numeral for an approximation to some fixed number of decimal places, is
+called a <EM>fixed-point representation</EM>.  However, fixed-point
+representations are unsatisfactory for most applications involving real
+numbers, for two reasons: (1) Real numbers that are very small are not
+clearly distinguished.  For instance, in a fixed-point representation using
+two decimal places, 14/1000 and 6/1000 would both be represented as
+<code>0.01</code>, even though the former is more than twice as large as
+the latter.  Moreover, both 4/1000 and -7/10000 would be represented as
+<code>0.00</code>, and they don't even have the same sign!  If one is
+counting dollars, these differences are probably irrelevant, but there are
+a lot of scientific and technological applications (navigation systems, for
+instance) in which they are critical.  (2) In many cases, real numbers that
+are very large are not known accurately enough for a fixed-point
+representation to be selected.  For instance, the speed of light in a
+vacuum is roughly 299792458 meters per second, but no one knows whether it
+is best approximated by <b>299792458.63</b> or <b>299792458.16</b> or
+<b>299792457.88</b>, and there is no reason to prefer one of these
+fixed-point representations to the others. <P>
+
+These two considerations really have the same underlying cause:  When
+approximating some real number, what we usually know is some number of
+significant digits at the beginning of the number.  A fixed-point system of
+representation conceals some of what we know when the number is small,
+because some of these significant digits are too far to the right of the
+decimal point, and demands more than we know when the number is large,
+because the number of digits demanded by the representation system is
+greater than the number that we can provide. <P>
+
+Scientists and engineers long ago learned to cope with this problem by
+using <EM>scientific notation</EM>, in which a number is expressed as the
+product of a <EM>mantissa</EM> and some power of ten.  The mantissa is a
+signed number with an absolute value greater than or equal to one and less
+than ten.  So, for instance, the speed of light in vacuum is
+<code>2.99792458 x 10^8</code> meters per second, and one can specify only
+the digits about which one is completely confident. <P>
+
+Using scientific notation, one can easily see both that <code>1.4 x
+10^-2</code> is more than twice as large as <code>6 x 10^-3</code>, and
+that both are close to <code>1 x 10^-2</code>; and one can easily
+distinguish <code>4 x 10^-3</code> and <code>-7 x 10^-4</code> as small
+numbers of opposite sign.  The rules for calculating with
+scientific-notation numerals are a little more complicated, but the
+benefits are enormous. <P>
+
+The three things that vary in scientific notation are the sign and the
+absolute value of the mantissa and the exponent on the power of ten.  A
+system of numeration for real numbers that is adapted to computers will
+typically store the same three data -- a sign, a mantissa, and an exponent
+-- into an allocated region of storage.  By contrast with fixed-point
+representations, these computer analogues of scientific notation are
+described as <EM>floating-point</EM> representations. <P>
+
+The exponent does not always indicate a power of ten; sometimes powers of
+sixteen are used instead, or, most commonly of all, powers of two.  The
+numerals will be somewhat different depending how this choice is made.  For
+instance, the real number <b>-0.125</b> will be expressed as <code>-1.25 x
+10^-1</code> if powers of ten are used, or as <code>-2 x 16^-1</code> if
+powers of sixteen are used, or as <code>-1 x 2^-3</code> if powers of two
+are used.  The absolute value of the mantissa is, however, always greater
+than or equal to 1 and less than the base of numeration. <P>
+
+The particular system used on MathLAN computers was formulated and
+recommended as a standard by the Institute of Electrical and Electronics
+Engineers and is the most commonly used numeration system for computer
+representation of real numbers.  Actually, their standard includes several
+variants of the system, depending on how much storage is available for a
+real number.  We'll discuss two of these variants, both of which use binary
+numeration and powers of 2: the <EM>IEEE single-precision</EM>
+representation, which fits in thirty-two bits, and the <EM>IEEE
+double-precision</EM> representation, which occupies sixty-four bits.
+We'll begin with single-precision numbers, since it is this representation
+that is used in HP Pascal for values of the <CODE>Real</CODE> data
+type. <P>
+
+In the IEEE single-precision representation of a real number, one bit is
+reserved for the sign, and it is set to <CODE>0</CODE> for a positive
+number and to <CODE>1</CODE> for a negative one.  A representation of the
+exponent is stored in the next eight bits, and the remaining twenty-three
+bits are occupied by a representation of the mantissa of the number. <P>
+
+The exponent, which is a signed integer in the range from -126 to
+127, is represented neither as a signed magnitude nor as a
+twos-complement number, but as a <EM>biased value</EM>.  The idea here is
+that the integers in the desired range of exponents are first adjusted by
+adding a fixed ``bias'' to each one.  The bias is chosen to be large enough
+to convert every integer in the range into a positive integer, which is
+then stored as a binary numeral.  The IEEE single-precision representation
+uses a bias of 127. <P>
+
+For example, the exponent -5 is represented by the eight-bit pattern
+<CODE>01111010</CODE>, which is the binary numeral for 122, since -5 + 127
+= 122.  The least exponent, -126, is represented by <CODE>00000001</CODE>
+(since -126 + 127 = 1); the greatest exponent, 127, is represented by the
+binary numeral for 254, <CODE>11111110</CODE>. <P>
+
+Since the base of numeration is two, the mantissa is always a number
+greater than or equal to one and less than two.  Its fractional part is
+represented, using binary numeration, as a sum of the negative powers of
+two.  For instance, the binary numeral for 21/16 is 1.0101 -- one, plus no
+halves, plus one quarter, plus no eighths, plus one sixteenth.  (The
+``decimal point'' in this case is actually a ``binary point,'' separating
+the digit in the units place from the digits representing multiples of
+negative powers of two.) <P>
+
+Somewhat surprisingly, this means that approximations are used for many
+real numbers that can be represented exactly in decimal numeration.  For
+instance, 7/5 is 1.4 exactly in decimal numeration, but the .4 part cannot
+be expressed as a sum of powers of two; 7/5 has an infinite binary
+expansion 1.011001100110011001100..., just as in decimal numeration a
+fraction like 27/11 leads to an infinite decimal expansion 2.4545454545....
+In a single-precision representation, the expansion is rounded off at the
+twenty-third digit after the binary point.  Thus 7/5 is not actually stored
+as 7/5, but (in single precision) as the very close approximation
+11744051/8388608, which <EM>can</EM> be expressed as a sum of powers of
+two. <P>
+
+Only the part of the mantissa that comes after the binary point is actually
+stored, since the bit to the left of the binary point is completely
+predictable (it's always 1, since the mantissa is always greater than or
+equal to one and less than two).  This suppressed digit at the beginning of
+the mantissa is called the ``hidden bit.'' <P>
+
+Here's an example.  Consider the thirty-two-bit word <P>
+
+<PRE>
+11000011100101100000000000000000
+</PRE>
+
+The number represented by this sequence of bits is negative (because the
+sign bit is <CODE>1</CODE>).  It has an exponent of 8 (because the exponent
+bits, <CODE>10000111</CODE>, form the binary numeral for 135, and therefore
+represent the exponent 8 when the bias of 127 is removed).  Its mantissa is
+expressed by the binary numeral <CODE>1.00101100000000000000000</CODE>,
+where the initial <CODE>1</CODE> is the hidden bit and the remaining digits
+are taken from the right end of the word.  This last binary numeral
+expresses the number 75/64 (one, plus no halves, plus no quarters, plus one
+eighth, plus no sixteenths, plus one thirty-second, plus one sixty-fourth).
+So the complete number is -(75/64) x 2^8, which is <b>-300.0</b>. <P>
+
+Conversely, let us find the IEEE single-precision representation of, say,
+<b>5.75</b>.  The sign bit is <CODE>0</CODE>, since the number is positive.
+<b>5.75</b> is 23/4; to express this as the product of a power of two and a
+mantissa greater than or equal to one and less than two, one must factor
+out 2^2: 23/4 = (23/16) x 2^2, so the exponent is 2.  It will be stored,
+with a bias of 127, as <CODE>10000001</CODE> (the binary numeral for 129).
+The complete mantissa, extended to twenty-three digits after the binary
+point, is <CODE>1.01110000000000000000000</CODE>.  We line up the sign bit,
+the biased representation of the exponent, and the digits following the
+binary point in the mantissa and get <P>
+
+<PRE>
+01000000101110000000000000000000
+</PRE>
+
+The greatest number that has an exact IEEE single-precision representation
+is <b>340282346638528859811704183484516925440.0</b> (2^128 - 2^104), which
+is represented by <P>
+
+<PRE>
+01111111011111111111111111111111
+</PRE>
+
+and the least is the negative of this number, which has the same
+representation except that the sign bit is <CODE>1</CODE>. <P>
+
+The alert reader will have noticed that there is a serious gap in this
+scheme, as so far described: What about <b>0.0</b>?  It is not possible to
+represent <b>0.0</b> as the product of a power of two and a mantissa
+greater than or equal to one, so none of the representations described
+above will do.  However, not all the possible settings of thirty-two
+switches have been used for numbers.  Recall that the exponents permitted
+in IEEE single-precision reals range from -126 to +127, so that the binary
+numerals for the biased exponents range from <CODE>00000001</CODE> to
+<CODE>11111110</CODE>.  We haven't yet used any of the bit patterns in
+which the exponent bits are all zeroes or all ones. <P>
+
+In the IEEE system, the all-zero exponent is used for numbers that are
+<EM>very</EM> close to zero -- closer than 2^-126, which is the least of
+the positive reals that can be represented in the part of the system
+described above (it is <CODE>00000000100000000000000000000000</CODE>).
+Such numbers are expressed in a slightly different form of scientific
+notation: The exponent is held fixed at -126, and the mantissa is a number
+greater than or equal to <EM>zero</EM> and less than <EM>one</EM>.  So, for
+instance, the mantissa used for 3 x 2^-129 is <CODE>0.011</CODE> (3 x
+2^-129 is a quarter plus an eighth of 2^-126).  Once again, only the part
+of the mantissa that follows the binary point is stored explicitly, so the
+representation of 3 x 2^-129 is <P>
+
+<PRE>
+00000000001100000000000000000000
+</PRE>
+
+(sign positive, exponent -126, mantissa
+<CODE>0.01100000000000000000000</CODE>).  Mantissas less than one are said
+to be ``unnormalized'' (because the ``normal form'' is the one in which the
+mantissa is greater than or equal to one and less than the base of
+numeration), so an all-zero exponent indicates an unnormalized number.
+Unnormalized numbers are stored less accurately than normalized ones (since
+there are fewer significant digits in the mantissa), but without this
+special convention for the all-zero exponent it would not be possible to
+represent them at all, and the designers of the IEEE standard felt that a
+degraded approximation is better than none. <P>
+
+This convention allows zero to be represented in two different ways.  In
+one, the sign bit is <CODE>0</CODE>, the exponent bits are
+<CODE>00000000</CODE>, and the visible bits of the mantissa are
+<CODE>00000000000000000000000</CODE> -- yielding
++0.00000000000000000000000 x 2^-126, or 0.  The other representation is
+the same, except that the sign bit is <CODE>1</CODE>.  (So, as in
+signed-magnitude representations, there is a ``non-negative'' and a
+``non-positive'' zero.) <P>
+
+The least positive real number that can be represented exactly in this way
+is 2^-149, which is stored as <P>
+
+<PRE>
+00000000000000000000000000000001
+</PRE>
+
+When the exponent bits are all ones, the value represented is not a real
+number at all, but a conventional signal of a computation that has gone
+wrong, either by going above the greatest representable real or below the
+least, or by attempting some undefined arithmetic operation, such as
+dividing by zero or taking the logarithm of a negative number.  For
+instance, the thirty-two bits <P>
+
+<PRE>
+01111111100000000000000000000000
+</PRE>
+
+represent ``positive infinity'', a pseudo-number that indicates that some
+unrepresentably large quantity was generated by an arithmetic operation.
+Changing the sign bit to <CODE>1</CODE> yields a representation of negative
+infinity, an indication of a similar problem at the other end of the range.
+If some of the bits of the mantissa are <CODE>1</CODE>s, the pseudo-number
+is called a <EM>NaN</EM> (``Not a Number''); trying to compute 0/0, for
+instance, typically produces a NaN.  It should be clear that positive
+infinity, negative infinity, and NaN are <EM>not</EM> real numbers,
+although some implementations of Pascal will try to do something sensible
+if they appear in places that are normally occupied by real numbers.  The
+value of such attempts at recovery is questionable, however, since the
+appearance of a pseudo-number is supposed to be a danger signal to the
+programmer and usually results from a programming error. <P>
+
+<EM>IEEE double-precision representations</EM> are quite similar.  A
+double-precision real begins with a sign bit, with the same interpretation
+as in a single-precision representation.  The next eleven bits are used for
+the exponent, which is an integer in the range from -1022 to +1023; a bias
+of 1023 is added to the exponent, and the result is stored in a binary
+numeral (the smallest is <CODE>00000000001</CODE>, the largest
+<CODE>11111111110</CODE>).  The remaining fifty-two bits are used for the
+mantissa, and as above only the digits following the binary point of the
+mantissa are actually stored; the <CODE>1</CODE> that precedes the binary
+point is once again a ``hidden bit.''  As in single-precision
+representations, the all-zero exponent is used for unnormalized numbers and
+(with an all-zero mantissa) for 0, and the all-one exponent is used for the
+pseudo-numbers positive infinity, negative infinity, and NaN.  The greatest
+real number that can be represented exactly as a double-precision real is
+2^1024 - 2^971, and the least positive real that can be so represented is
+2^-1074. <P>
+
+HP Pascal provides IEEE double-precision representations by means of the
+non-standard <CODE>longreal</CODE> data type.  Literal constants of this
+data type use <CODE>L</CODE> rather than <CODE>E</CODE> as an
+exponent-marker; for instance, one could write Avogadro's number into a
+Pascal program as a <CODE>longreal</CODE> by typing <CODE>6.02L23</CODE>
+(rather than <CODE>6.02E23</CODE>, which would make it a single-precision
+<CODE>real</CODE>). <P>
+
+Programs demonstrating the IEEE single- and double-precision
+representations of real numbers can be found in
+<CODE>~stone/courses/fundamentals/examples</CODE>, under the names
+<CODE>display-single-real</CODE> and <CODE>display-double-real</CODE>. <P>
+
+<hr><p>
+
+This document is available on the World Wide Web as
+
+<BLOCKQUOTE>
+<PRE>
+http://www.math.grin.edu/~stone/courses/fundamentals/IEEE-reals.html
+</PRE>
+</BLOCKQUOTE>
+
+<hr>
+<em>created February 22, 1996</em><br>
+<em>last revised September 18, 1996</em><br>
+</body>
+</html>

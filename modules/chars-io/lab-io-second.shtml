@@ -1,0 +1,514 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">    
+	<link rel="stylesheet" type="text/css" href="style.css">
+ 	<title>Laboratory Exercise on Character-by-Character I/O</title>
+        <link rev="made" href="mailto:walker@cs.grinnell.edu">
+</head>
+
+<body>
+<div class="body">
+<!--#include file="header.inc"-->
+
+<div class="labcontent">
+
+<H1>Laboratory Exercise on Character-by-Character I/O</H1>
+
+<h2>Goals</h2>  
+
+<p>
+This lab provides practice with character-by-character input and output
+within the C programming language.  
+</p>
+
+<h2>Preparation before Class</h2>
+
+<ul>
+<li>Reading from Text
+    <ul>
+    <li>King: Section 3.1, pages 37-41 OR
+    <li>Kernighan &amp; Ritchie: 1.5, 7.1, 7.2, B.2 (reference) 
+    </ul>
+<li>Reading:  <a href="reading-strings-c.shtml">Strings and Characters in C</a>
+<li>Examples:
+    <ul>
+    <li><a href="get-3-char.c">get-3-char.c</a>
+    <li><a href="getchar-example.c">getchar-example.c</a>
+    <li><a href="getchar-example.c">getchar-example.c</a>
+    </ul>
+</ul>
+
+<h2>Work Started in Class</h2>
+
+<h3>Reading Individual Characters</h3>
+
+<ol>
+<li>
+<p>
+Program <a href="get-3-char.c">get-3-char.c</a> reads three characters from
+the keyboard and prints them.
+</p>
+
+<ol class="withloweralpha">
+<li>
+<p>
+Copy  <a href="get-3-char.c">get-3-char.c</a> to your account, and compile
+it, and descibe briefly what it does.
+</p>
+
+<li>
+<p>
+Run the program, entering <tt>abc</tt> on the same line (no spaces), and describe what
+happens.
+</p>
+
+<li>
+<p>
+Run the program, entering <tt>a b c</tt> on the same line (with spaces
+between the letters), and describe what happens.
+</p>
+
+<li>
+<p>
+Run the program, trying to  enter <tt>a</tt> on one line, <tt>b</tt> on a
+second line, and <tt>c</tt> on a third line.  What happens?  In the output,
+the first line appears as <tt>$a$</tt>, but the second and third lines
+contain a single dollar sign.  Why?
+</p>
+
+<li>
+<p>
+Run the program, trying to enter <tt>ab</tt> on one line, <tt>c</tt> on a
+second line.  Again, explain what happens and why.
+</p>
+
+<li>
+<p>
+In the program, replace
+</p>
+
+<div class="block">
+<pre>
+  ch1 = getchar();
+  ch2 = getchar();
+  ch3 = getchar();
+</pre>
+</div>
+<p>
+by
+</p>
+<div class="block">
+<pre>
+scanf ("%c", &amp;ch1);
+scanf ("%c", &amp;ch2);
+scanf ("%c", &amp;ch3);
+</pre>
+</div>
+
+<p>
+Does the program behave the same, or is something different?  Why or why
+not?
+</p>
+
+<li>
+<p>
+In the previous step, replace the three <tt>scanf</tt> statements by the
+single statement:
+</p>
+
+<div class="block">
+<pre>
+scanf ("%c%c%c", &amp;ch1, &amp;ch2, &amp;ch3);
+</pre>
+</div>
+
+<p>
+Again, determine if the program behaves as before or does something else,
+and explain what you observe.
+</p>
+
+</ol>
+</ol>
+
+<h3>Reading One Line, Character by Character with <tt>getchar</tt></h3>
+
+<ol start = 2>
+
+<li>
+<p>
+Program <a href="getchar-example.c"><tt>getchar-example.c</tt></a>
+reads and prints a line of characters from the keyboard.  As you observed
+in Step 1, the single-character printing function <tt>putchar</tt>,
+like <tt>getchar</tt>, deals with a single character per call.
+</p>
+
+<ol class="withloweralpha">
+<li>
+<p>
+Copy <a href="getchar-example.c">getchar-example.c</a> to your
+account, compile it, and descibe briefly what it does.
+</p>
+
+<li>
+  <p>
+    What happens when you enter more than one letter? Why?
+  </p>
+<li>
+  <p>
+    How about if you do not enter a letter, but simply press enter?
+  </p>
+  <p>
+    Recall that <tt>getchar</tt> gets a single character; blank space and
+    newline characters are considered viable characters.
+  </p>
+</li>
+<li>
+  <p>
+    Why do you think the line
+  </p>
+  <div class="block">
+    <pre>
+      putchar ('\n');
+    </pre>
+  </div>
+  <p>
+    is included?
+  </p>
+
+  <p>Like <tt>getchar</tt>, <tt>putchar</tt> takes a single
+    character. The function <tt>putchar</tt> prints a single character
+    to <tt>stdout</tt>.
+  </p>
+</ol>
+
+<li>
+<p>
+Although reading and printing one character at a time is sometimes useful
+by itself, a more common approach is to collect a line of characters in an
+array.  This is illustrated in the
+<a href="getchar-line-example.c">getchar-line-example.c</a> program.
+</p>
+
+<ol class="withloweralpha">
+<li>
+<p>
+Copy <a href="getchar-line-example.c">getchar-line-example.c</a> to your
+account, compile it, and descibe briefly what it does.
+</p>
+
+<li>
+<p>
+Examine the first loop.  Why does <tt>putchar(a)</tt> precede <tt>a =
+    getchar()</tt>?  Why does <tt>putchar('\n')</tt> appear after the loop?
+    What happens if you move <tt>putchar('\n')</tt> inside the loop?
+</p>
+
+<li>
+<p>
+Examine the second loop.  What is the purpose of the <tt>i</tt> variable?
+The loop condition involves both an assignment and a comparison.  Explain
+how that works and why it is used.  Why is the statement <tt>line[i]=0</tt>
+placed after the loop?
+</p>
+
+<li>
+<p>
+What happens in the output if the line <tt>line[i]=0</tt> is deleted from
+after the second loop?  Explain.
+</p>
+</ol>
+
+
+<li>
+<p>
+Write a program that does the following:
+</p>
+
+<ul>
+<li>
+Reads a number from the keyboard (likely using <tt>scanf</tt>).
+<li>
+Clears any whitespace after the number from the first line of input,
+perhaps using the line
+
+<div class="block">
+<pre>
+  while (getchar() != '\n');
+</pre>
+</div>
+
+<li>
+declares an array one larger than the size typed by the user on the first line
+<li>
+reads the specified number of characters from the keyboard
+<li>
+adds a null character at the end of the array
+<li>
+prints the resulting string.
+</ul>
+
+<li>
+<p>
+Modify the characters as they are entered in the previous Step, so that it
+  sets each letter to the opposite case when placing it 
+  in the string. Note that <tt>&lt;ctype.h&gt;</tt> has functions that
+  compare types and modify letter cases.
+</p>
+
+<p>Examples:</p>
+<ul>
+  <li> apple -&gt; APPLE</li>
+  <li> AlPhAbEt -&gt; aLpHaBeT</li>
+  <li> X-Ray -&gt; x-rAY</li>
+</ul>
+</ol>
+
+<h2>Homework</h2>
+
+<h3>Programming with <tt>getchar</tt></h3>
+
+<ol start=6>
+<li>
+  <p>
+    Write a program that prints a prompt for input and analyzes a line
+    entered by the user.
+  </p>
+  <ol class="withloweralpha">
+    <li>
+      <p>
+        Initially, the program should print the number of characters entered.
+      </p>
+    <li>
+      <p>
+        Modify your program to also print the number of uppercase and
+        lowercase letters in your input.
+      </p>
+
+      <p>
+        Hint: You might use the <tt>&lt;ctype.h&gt;</tt> library.
+      </p>
+
+    <li>
+      Modify your progrram further to print the number of whitespace
+      characters (e.g., tabs and spaces).
+  </ol>
+</ol>
+
+<h3>Practice with <tt>printf</tt></h3>
+<ol start=7>
+  <li>
+    <p>
+      As you have learned previously, it is important to pay close
+      attention to variable types, and you may have seen errors that occur
+      due to a type mismatch in a function. Look at the following code,
+      where each <tt>printf</tt> statement uses the wrong type for the
+      declared variable.
+<div class="block"><pre>
+#include &lt;stdio.h&gt;
+
+int
+main()
+{
+  int x = 9, y;
+  double s = 13.86;
+  char * word = "computer";
+  char ch = word[5];
+  
+  y = (int) s;
+
+  printf ("\tThe value of x is %lf.\n", x);
+  printf ("\tThe value of y is %f.\n", y);
+  printf ("\tThe value of s is %d.\n", s);
+  printf ("\tThe value of word is %c.\n", word);
+  printf ("\tThe value of ch is %s.\n", ch);
+  printf ("\tThe value of ch is %d.\n", ch);
+
+  return 0;
+}
+</pre>
+</div>
+
+<ol class="withloweralpha">
+  <li>
+    <p>
+      Will the code compile? Save the program to a file in your directory
+      and check. Run the program. Do any line(s) cause the program to
+      terminate with a segmentation fault error? Why? <i>Think about what
+      each of the types are and how to print those types.</i>
+    </p>
+  <li>
+    <p>
+      Fix the line(s) that prevents the code from completing, and run the
+      code. Explain why you get each incorrect value. How are integers,
+      doubles, and floats treated by each other? How is a character
+      different from a string?
+    </p>
+    <p>
+      Hint: consider how each variable type is stored and evaluated.
+    </p>
+  <li>
+    <p>
+      Change the <tt>printf</tt> statements so the correct values are
+    printed when the program is run, and check that your changes fixed the
+    code.
+    </p>
+  <li>
+    <p>
+      Look at the following two lines of code:
+    </p>
+    <div class="block">
+      <pre>
+        printf ("\tThe value of s is %lf.\n", s);
+        printf ("\tThe value of s is %f.\n", s);
+      </pre>
+    </div>
+    <p>
+      Will these two lines print the same or different output? Why?
+    </p>
+  <li>
+    <p>
+      Make sure both lines are in your code, compile, and run. Did the
+      output match your expectations? If not, why did the code behave this
+      way?
+    </p>
+</ol>
+
+  </li>
+  <li>
+    <p>
+      Look closely at the following code. Will this program run as the
+      programmer intended?
+    </p>
+<div class="block">
+<pre>
+/****
+ *
+ * Program to print the values of different types, with proper spacing.
+ * It should print a as "7", b as "15.2594", and c as "something".
+ *
+ ****/
+
+#include &lt;stdio.h&gt;
+
+int
+main()
+{
+  int a = 7;
+  double b = 15.2594;
+  char * c = "something";
+
+  printf ("The value of a is %d.\n", a);
+  printf ("The value of b is %.4lf.\n", b);
+  printf ("The value of c is %9s.\n", c);
+
+  return 0;
+}
+</pre>
+</div>
+
+<ol class="withloweralpha">
+  <li>
+    <p>
+      Compile and run the code. Is the output what you
+      expected?
+    </p>
+  <li>
+    <p>
+      In the statement that prints the value of b, edit
+      the <tt>%.4lf</tt> to be <tt>%.2lf</tt>. What do you think
+      the output will be? Compile and run the code to check.
+    </p>
+  <li>
+    <p>
+      Now edit the statement that prints the value of b
+      to <tt>%.6lf</tt>. What do you think will happen? Why? Run the
+      code to check.
+    </p>
+  <li>
+    <p>
+      Given your previous experience, what do you think will happen if
+      you edit the line for the value of c from <tt>%9s</tt>
+      to <tt>%6s</tt>. What about editing it to <tt>%12s</tt>? Run
+      the program. Did your results match your expectations?
+    </p>
+</ol>
+</ol>
+
+<h3>Practice with <tt>printf</tt> Spacing</h3>
+
+<p>
+As you may recall, when a number is placed between the '%' character and
+the variable type, the <tt>printf</tt> function allocates at least that
+many spaces for the information. If the information takes that much or more
+space, then the data are printed normally. However, if the information takes
+less space, the information is "right-aligned" with the allocated space,
+with the "extra" spaces left blank. In contrast, when a '.' character
+(followed by a number) is placed between the '%' and the variable
+type, <i>only</i> that much space is allocated after the decimal point. For
+example, if the number is 48.3557, and the print statement indicates that
+only one value after the decimal should be printed, the printed result will
+show 48.3 as the variable inserted.
+</p>
+ 
+<ol start=9>
+<li>
+  <p>
+    Modify your program from Steps 6abc so that the code prints both the
+    number and the percentage of uppercase letters, lowercase letters, and
+    whitespace characters.  Within the format string for
+    the <tt>printf</tt> statement, print all percentages to exactly two
+    decimal places.
+  </p>
+</ol>
+
+<!--#include file="body-footer.inc" -->
+</div>
+<div class="footer">
+
+<p>
+<hr><p>
+
+This document is available on the World Wide Web as
+
+<PRE>
+     http://www.cs.grinnell.edu/~walker/courses/161.fa14/modules/chars-io/lab-io-second.shtml
+</PRE>
+
+<hr>
+<table width="100%">
+<tr><td>
+   <em>created 1 August 2011 by April O'Neill</em><br>
+   <em>revised 10 August 2011 by April O'Neill</em><br>
+   <em>revised 28 October 2011 by Dilan Ustek</em><br>
+   <em>reference to integer-rep.c added 9 October 2013 by Henry M. Walker</em><br>
+   <em>reworked and reformatted 8-9 February 2014 by Henry M. Walker</em><br>
+   <em>readings added 19 September 2014 by Henry M. Walker</em> 
+   </td>
+   <td rowspan="2" align="right">
+   <a href="http://validator.w3.org/check/referer"><img border="0"
+      src="/~walker/valid-html401-blue.png" alt="Valid HTML 4.01!" height="31"
+      width="88"></a>
+   <a href="http://jigsaw.w3.org/css-validator/"><img border="0"
+       src="/~walker/vcss-blue.png"
+       alt="Valid CSS!" height="31"
+       width="88"></a>
+   </td>
+</tr>
+<tr><td>
+   For more information, please contact
+   <a class="footer-a" href="/~walker/">Henry M. Walker</a> at
+   <a class="footer-a" href="mailto:walker@cs.grinnell.edu">walker@cs.grinnell.edu</a>.
+   </tr>
+
+</table>
+
+<hr>
+<!--#include file="copyright-notice.inc"-->
+
+</div>
+</div>
+</body>
+</html>
+
+

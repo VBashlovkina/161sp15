@@ -1,0 +1,18 @@
+# this script meets some elements of a bash-scripts lab for CSC 161
+
+echo "Hello, `whoami`"
+echo ""
+echo "This program is running on workstation `hostname`"
+echo "Today is `date +'%I:%M %p on %A, %B %d, %Y'`"
+
+echo ""
+echo "Information in your account record includes"
+ypcat passwd | grep `whoami`
+echo "   (username:encrypted password:group number:user number:name:login directory:default shell)"
+
+echo ""
+echo "Users logged onto this workstation are"
+who
+
+echo ""
+echo "Have a nice day!"

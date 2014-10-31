@@ -1,0 +1,706 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>CSC 161 Lab. Exercise on Bash Scripts</title>
+    <link rev="made" href="mailto:walker@cs.grinnell.edu">
+</head>
+<body>
+<div class="body">
+<!--#include file="header.inc"-->
+<div class="labcontent">
+ 
+<h1>Bash Scripts</h1>
+
+<h2>Goals</h2> 
+
+<p>
+In this laboratory you will gain experience writing Bash scripts.
+</p>
+
+<h2>Preparation before Class</h2>
+<ul>
+<li>Review:   Basic Bash shell commands.  For example, see
+      <a href="../getting-started/lab-linux-basics.shtml">Linux lab</a>,
+      including the information on file permissions 
+<li>Reading: <a href="reading-bash-scripts.shtml">Bash Scripts</a>  
+</ul>
+
+<h2>Acknowledgement</h2>
+<p>
+Originally, this laboratory exercise was written by Marge Coahran.
+Subsequent editing by Henry M. Walker has involved reformatting to provide
+consistency with other CSC 161 labs and editing to fit into the time
+available.
+</p>
+
+<p>
+<strong>Index</strong>
+</p>
+
+<ol class=withupperalpha>
+   <li>
+      <a href="#bashscripts-A">Getting Started</a> 
+   </li>
+   <li>
+      <a href="#bashscripts-B">Control Structures: IF</a> 
+   </li>
+   <li>
+      <a href="#bashscripts-C">Control Structures: WHILE</a> 
+   </li>
+   <li>
+      <a href="#bashscripts-D">Getting User Input</a> 
+   </li>
+   <li>
+      <a href="#bashscripts-E">Control Structures: FOR</a> 
+   </li>
+   <li>
+      <a href="#bashscripts-F">Some Useful Scripts</a> 
+  </li>
+</ol>
+
+<h2>Work Started in Class</h2>
+
+<h3>Introduction</h3>
+
+<p>
+A bash script is a file containing bash commands. To make the file
+executable, we must first take the following two steps.
+</p>
+
+<ol class="withupperroman">
+<li>
+<p>
+The script file should contain the following code as its very first line.
+</p>
+<pre><code>#!/bin/bash</code></pre>
+
+<p>
+This specifies which program (bash) should be used to interpret the commands
+in the script.
+</p>
+
+<li>
+<p>
+The file permissions for the script should be set such that is it
+executable. Recall that this is typically done as follows.
+</p>
+
+<pre><code>chmod 755 scriptname</code></pre>
+</ol>
+
+<p>
+The script can then be run like any other executable file:
+</p>
+
+<pre><code> ./scriptname</code></pre>
+
+<p>
+Actually, we can also run a script as follows (even without making the
+script executable), but this is less frequently done.
+</p>
+
+<pre><code> bash scriptname</code></pre>
+
+<h3><a name="bashscripts-A">Part A: Getting Started</a></h3>
+
+<ol>
+<li>
+<p>
+Write a bash script called <tt>greeting</tt> that prints a greeting to the
+user.
+</p>
+
+<ol class="withloweralpha">
+<li>
+Start with the greeting "Good morning" or something similar.
+
+<p>
+<i>Reminders as you get started:</i>
+</p>
+
+<ul>
+<li>
+You will need to insert the proper incantation on the first line of the script.
+<li>
+File permissions must be set to allow execution.
+<li>
+Commands in the script file do not need to end with semi-colons. (They are
+bash commands, not C statements.)
+<li>
+If you want to use a Linux command within a bash script, enclose the command in
+backward quotes  (<tt>`</tt>).  For example, the command <tt>whoami</tt> would be
+written <tt>`whoami`</tt> when placed within a bash script. (The backward
+quotes help the terminal window to distinguish between a program that is to
+be run and other text.)
+</ul>
+
+<li>
+<p>
+Modify your script <tt>greeting</tt> so that it
+<ul>
+  <li>greets the user by (user)name,
+  </li><li>prints the current date, and
+  </li><li>prints a list of users currently logged onto the computer.
+</li></ul>
+
+<p>
+For example, your output might look similar to the following:
+<pre><code>Good morning, mcoahran.
+Date is Sun Apr 20 12:22:47 CDT 2008
+Users on Leah:
+mcoahran :0           2008-04-20 11:45
+mcoahran pts/0        2008-04-20 11:45 (:0.0)
+mcoahran pts/1        2008-04-20 11:49 (:0.0)
+</code></pre>
+
+<li>
+<p>
+Be sure to include comments to your script! Comments in bash scrpts begin with
+#, except on the very first line.
+</p>
+
+</ol>
+</ol>
+
+<h3><a name="bashscripts-B">Part B: Control Structures: IF</a></h3>
+
+
+<h4>Variables and Arithmetic Expressions</h4> 
+
+<p>
+As you work through the next parts of this laboratory exercise, you will
+probably need to use variables and arithmetic comparisons.
+</p>
+
+<p>
+Variables can be created and initialized as shown below. Note that there
+should NOT be a space between the variable name and the assignment
+operator. (If the variable name has a space after it, bash will recognize
+it as a token, but since the variable does not yet exist, bash will assume
+the token is command name. It will then complain about not finding such a
+command.) 
+<pre><code>  varname=12</code></pre>
+
+<p>
+To access the value in a variable, prepend a $ to the variable name. For
+example, 
+<pre><code>  echo Value in varname is $varname.</code></pre>
+
+<p>
+Note that variables in a bash script are by default interpreted as text. To
+get bash to interpret a value as a number, in order to do arithmetic
+operations including arithmetic comparisons, you must wrap the expression
+in double-parentheses. For example, to increment a variable <tt>i</tt> by
+one, use the expression<tt>((i++))</tt> .
+</p>
+
+<h4>Comparison</h4>
+<p>
+Comparison operators are available in both the Bourne and Korn
+environments, although the syntax is different:
+</p>
+
+<pre>
+Korn shell:      ==   !=    <   <=    >   >=   &&   ||
+Bourne shell:   -eq  -ne  -lt  -le  -gt  -ge   -a   -o
+</pre>
+
+<p>
+String comparison is possible with the symbols 
+<pre><code>  ==  !=  <  <=  >  >=  &&  ||</code></pre>
+
+<h4>If statements</h4>
+
+Bash scripts also provide for a variety of program control structures,
+including conditionals, loops, and functions.
+
+<p>
+The syntax for an if-statement follows. As you would probably expect, the
+<tt>elif</tt> and <tt>else</tt> clauses are optional, and the
+conditions and commands should be replaced with meaningful expressions. 
+Note that the spaces that separate the square brackets from the conditions
+ARE required.
+
+<pre><code>  if [ <em>condition</em> ]; then
+    <em>command(s)</em>
+  elif [ <em>condition</em> ]; then
+    <em>command(s)</em>
+  else
+    <em>command(s)</em>
+  fi
+</code></pre>
+
+<ol start=2>
+<li>
+<p>
+Modify your script <tt>greeting</tt> from Step 1 to present a different
+greeting based on the time of day.  For example, your greeting could be
+"good morning", "good afternoon", "good evening", or "YOU SHOULD BE
+SLEEPING!" based on the current hour.  Note that the following command can
+be used to return the (24-hour) hour of the current time:
+</p>
+
+<pre><code>  date +%k</code></pre>
+</ol>
+
+
+<h3><a name="bashscripts-C">Part C: Control Structures: WHILE</a></h3>
+
+The syntax for a while loop follows.
+<pre><code>  while <em>test</em>
+  do
+    <em>command(s)</em>
+  done
+</code></pre>
+
+<ol start=3>
+<li>
+<p>
+Write a script called <tt>countdown</tt> that prints output similar to the 
+following:
+</p>
+<pre><code>10
+9
+8
+7
+6
+5
+4
+3
+2
+1
+GO!
+</code></pre>
+
+<p>
+Don't forget that bash uses the same arithmetic operators as C, but
+arithmetic expressions need to be wrapped in double-parentheses.
+</p>
+</ol>
+
+<h3><a name="bashscripts-D">Part D: Getting User Input</a></h3>
+
+<h4>Getting Input From stdin</h4>
+
+<p>
+The command <tt>"read varname"</tt> will read a value from stdin and assign 
+it to a variable called <tt>varname</tt>. If the variable does not yet
+exist, it will be created. 
+</p>
+
+<p>
+Note that the option <tt>"-n"</tt> can be used with <tt>echo</tt> to
+cause it to not output a newline character. (This is nice when printing
+user prompts, so the user can enter a reponse on the same line as the prompt).
+
+<h4>Getting Input From Command-line Arguments</h4>
+
+The mechanism for accessing command-line arguments in a bash script differs
+substantially from C. In bash, there are several variables that are
+automatically defined and loaded with information from the
+command-line as shown below. 
+
+<p>
+<table border=1>
+<tr>
+ <td>variable</td><td>stores...</td>
+</tr><tr>
+ <td align=center><tt>$#</tt></td><td>number of arguments given</td>
+</tr><tr>
+ <td align=center><tt>$*</tt></td><td>list of all arguments given</td>
+</tr><tr>
+ <td align=center><tt>$1</tt></td><td>the first argument</td>
+</tr><tr>
+ <td align=center><tt>$2</tt></td><td>the second argument</td>
+</tr><tr>
+ <td align=center><tt>etc</tt></td><td></td>
+</tr></table>
+
+<p>
+For example, you might say: 
+<pre><code>  if [ $# == 3 ]</code></pre>
+
+<p>
+Note that, unlike in C, the script name itself is NOT counted or
+included in the list of arguments given.
+
+<ol start=4>
+<li>
+<p>
+Modify <tt>countdown</tt> from Step 3 such that it prompts user for a
+starting value, and counts down from there.
+</p>
+
+<li>
+<p>
+Write a script called <tt>countdown2</tt> that accepts the initial value as
+a command-line argument.
+</p>
+
+<ol class="withloweralpha">
+<li>
+<p>
+Initially, the command and its output might look like the following.
+</p>
+
+<pre><code>
+$ ./countdown2 12
+12
+11
+10
+9
+8
+7
+6
+5
+4
+3
+2
+1
+GO!
+</code></pre>
+
+<li>
+<p>
+Expand the script <tt>countdown2</tt> to check for correct usage. The script
+should print a usage message and exit if it does not receive exactly one
+argument. An example session might look like this:
+</p>
+
+<pre><code>$  ./countdown2
+  Usage: countdown2 initial-value
+</code></pre>
+
+Note that you can exit a bash script with:
+<pre><code>  exit <em>returnvalue</em></code></pre>
+</ol>
+</ol>
+
+<h3><a name="bashscripts-E">Part E: Control Structures: FOR</a></h3>
+
+The syntax for a for-loop follows.
+
+<pre><code>  for <em>varname</em> in <em>value1</em> <em>value2</em> ...
+  do
+    <em>command(s)</em>
+  done
+</code></pre>
+
+<p>
+The variable <tt>varname</tt> will take on each value in the list of values
+in turn, with one iteration of the loop occuring for each value.
+</p>
+
+<ol start=6>
+<li>
+<p>
+For example, consider the following script. Predict what it will do, and
+then copy it and run it to confirm your prediction.
+</p>
+
+<pre><code>#!/bin/bash
+
+for var in 1 2 3 4 5
+do
+  echo $var chimpanzee...
+done
+echo DONE!
+</code></pre>
+
+<li>
+<p>
+Recall that your bash script is run by the very same bash that responds to
+your commands in the terminal window. Thus, all functionality available in
+the terminal window is also available to your script.
+</p>
+
+<p>
+For example, we could write a for-loop that uses filename expansion
+(globbing) to print a list of all files in the current directory as
+follows:
+</p>
+
+<pre><code>  for file in *
+  do
+    echo $file
+  done
+</code></pre>
+
+<li>
+<p>
+Write a script that uses this idea to print output similar to the following:
+</p>
+
+<pre><code>  Files in this directory that match *~ :
+  bash-scripts.html~
+  chimpanzee~
+  countdown~
+  countdown2~
+  hello~
+  TODO~
+</code></pre>
+
+</ol>
+
+<h2>Homework</h2>
+
+<h3><a name="bashscripts-F">Part F: Some Useful Scripts</a></h3>
+
+<!--
+<p>
+!!! Needed: syntax of conditional tests for strings
+-->
+
+<h4>Conditionals Regarding Files and Directories</h4>
+
+Bash scripts are frequently written for tasks involving the creation and
+maintenance of files and directories because it can be much faster and
+easier to write a script for these tasks than to write the corresponding C
+programs. 
+
+<p>
+There are many operators that can be used for testing conditions that
+involve files:  
+whether they exist, what kind of file they are, etc. Here are a few. 
+Note that you could also place the NOT operator (<tt>!</tt>) before any of
+these tests to test whether the stated condition is false.
+
+<p>
+<table border=1>
+<tr>
+ <td>condition</td><td>checks whether...</td>
+</tr><tr>
+ <td align=center><tt>-f <em>file</em></tt></td><td>file exists and
+ is a regular file</td>
+</tr><tr>
+ <td align=center><tt>-d <em>dir</em></tt></td><td>dir exists and
+ is a directory</td>
+</tr><tr>
+ <td align=center><tt>-x <em>dir</em></tt></td><td>file exists and
+ is executable</td>
+</tr></table>
+
+<p>
+For example, you might write:
+
+<pre><code>  clist=classlist.txt
+  if [ -f $clist ]; then
+    echo File $clist exists.
+  else
+    echo File $clist does not exist.
+  fi
+</code></pre>
+
+<ol start=9>
+<li>
+<p>
+For this exercise I wanted to give you some real-world examples of
+useful bash scripts. Therefore, you will write a couple of scripts that
+I actually use in my teaching to automate clerical tasks. To begin, please
+copy this (ficitious)  
+<a href="classlist.txt">classlist.txt</a> 
+to your directory, and note that it contains a list of usernames.  
+</p>
+
+<p>
+Write a script called <tt>addnames</tt> that is to be called as follows,
+where <tt><em>classlist</em></tt> is the name of the classlist file, and
+<tt><em>username</em></tt> is a particular student's username.
+<pre><code>  ./addnames <em>classlist</em> <em>username</em></code></pre>
+
+<p>
+The script should
+</p>
+
+<ul>
+  <li>check that the correct number of arguments was received and print an
+      usage message if not,
+  </li><li>check whether the classlist file exists and print an error
+      message if not,
+  </li><li>check whether the username is already in the file, and then
+      either
+  <ul>
+     <li>print a message stating that the name already existed, or
+     </li><li>add the name to the end of the list.
+     </li></ul>
+</li></ul>
+
+<p>
+<em>Hint</em>: Use a for-loop to process each line in the file. To create
+a list of lines in the file, remember that you can use any bash construct
+inside a script that you can use in the terminal window. How would you list
+the lines of the file in the terminal window? Similarly, how would you
+append a particular item to the end of an existing file from the terminal
+window? 
+</p>
+
+<p>
+If you have not been doing so all along, you should now add some comments
+to your script and thoroughly test it!
+</p>
+
+<li>
+<p>
+Write a script called <tt>submit-dirs</tt> that is to be called as follows.
+</p>
+
+<pre><code>  ./submit-dirs <em>classlist</em></code></pre>
+
+<p>
+The script should:
+
+<ul>
+  <li>check whether the correct number of arguments was received and print a
+    usage message if not,
+  </li><li>check whether the classlist file exists and print an error
+    message if not,
+  </li><li>create a directory named <tt>submit</tt> within the current
+    directory (but only if one does not already exist),
+  </li><li>create a directory within the directory <tt>submit</tt> for each
+    student in the class (but only if one does not already exist). These
+    student directories should be named according to the students'
+    usernames.
+</li></ul>
+
+
+<li>
+<p>
+Write a script called <tt>trash</tt> that takes a single argument, which
+should be the name of an existing file. The script should move the given
+file, if it exists, to a directory named <tt>trash</tt> that is located
+within your home directory. If the <tt>trash</tt> directory does not
+exist, the script should create it. If the given file does not exist,
+an appropriate error message should be printed.
+</p>
+
+<p>
+<em>Hint</em>: There are several "environment" variables that automaticaly
+exist within a bash script. These include the following. You may want to
+explore what values these hold by echoing them to stdout.
+<ul>
+ <li>$HOME</li>
+ <li>$USER</li>
+ <li>$PWD</li>
+ <li>$PATH</li>
+</ul>
+</ol>
+
+<h2>Optional &mdash; If you have time</h2>
+
+<ol start=12>
+
+<li>
+<p>
+Once your <tt>trash</tt> script is working well, modify it so that it
+accepts a list of 
+files and moves all of them to the trash. The script should print an error
+message for each file that does not exist, and it should print a usage
+message if no file names are given.
+</p>
+
+<p>
+When testing your script, try invoking it with a command like the following: 
+<pre><code>  ./trash *.o</code></pre>
+
+<li>
+<p>
+If you would like to, you could begin a directory of bash scripts you would
+like to use regularly (such as <tt>trash</tt>). You can then add the name
+of that directory to your $PATH by following the instructions given
+below. Doing so 
+will allow the scripts therein to be available to you regardless of which
+directory you are currently working in.
+</p>
+
+<p>
+To add a directory to your path, look for a file named
+<tt>.bash_profile</tt> in your home directory. It is a bash script that is
+run automatically when you log in. It should contain a line that defines
+the variable PATH. Note that the value assigned to this variable is a list of 
+directories, delimited by colons. You can add your new script directory to
+your path by adding it to the <em>end</em> of this list. (That will cause
+bash to check your scripts directory after checking the others when search
+for programs to run.)
+
+<p>
+After modifying your <tt>.bash_profile</tt>, you should also run
+<tt>./bash_profile</tt> with the following command to update the contents
+of your current path variable.
+<pre><code>   source ~/.bash_profile</code></pre>
+
+</ol>
+
+<!-- CITATION -------------------------------- -->
+<!--
+<hr>
+<small><i>
+Written: Marge M. Coahran, April 2008. <br>
+</i></small>
+
+- HISTORY
+
+<h2><a name="history">History</a></h2>
+
+<p>
+April 20, 2008 [Marge M. Coahran]
+</p>
+<ul>
+<li> Created.
+</li></ul>
+
+-->
+
+<!--#include file="body-footer.inc" -->
+</div>
+
+<div class="footer">
+<p>
+<hr>
+
+<p>
+This document is available on the World Wide Web as
+</p>
+
+<PRE>
+     http://www.cs.grinnell.edu/~walker/courses/161.fa14/modules/module-pointers-stacks-queues/lab-bash-scripts.shtml
+</PRE>
+
+<hr>
+<table width="100%">
+<tr><td>
+   <em>created 20 April 2008</em> by Marge Coahran<br>
+   <em>revised 25 April 2008</em> by Henry M. Walker<br>
+   <em>revised 24 January 2009</em> by Henry M. Walker<br>
+   <em>revised 8 May 2009</em> by Henry M. Walker<br>
+   <em>revised 25 April 2012</em> by Henry M. Walker<br>
+   <em>references added 1 November 2013</em> by Henry M. Walker<br>
+   <em>revised 3 February 2014</em> by Henry M. Walker<br>
+   <em>readings added 19 September 2014</em> by Henry M. Walker
+
+   </td>
+   <td rowspan="2" align="right">
+   <a href="http://validator.w3.org/check/referer"><img border="0"
+      src="/~walker/valid-html401-blue.png" alt="Valid HTML 4.01!" height="31"
+      width="88"></a>
+   <a href="http://jigsaw.w3.org/css-validator/"><img border="0"
+       src="/~walker/vcss-blue.png"
+       alt="Valid CSS!" height="31"
+       width="88"></a>
+   </td>
+</tr>
+<tr><td>
+   For more information, please contact
+   <a class="footer-a" href="/~walker/">Henry M. Walker</a> at
+   <a class="footer-a" href="mailto:walker@cs.grinnell.edu">walker@cs.grinnell.edu</a>.
+   </tr>
+</table>
+
+<hr>
+<!--#include file="copyright-notice.inc"-->
+
+</div>
+</div>
+</body>
+</html>

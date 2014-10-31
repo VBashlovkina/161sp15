@@ -1,0 +1,245 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html;
+                                             charset=ISO-8859-1">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>CSC 161 Lab. Exercise on Doubly-Linked Lists</title> 
+    <link rev="made" href="mailto:walker@cs.grinnell.edu">
+</head>
+<body>
+  <div class="body">
+  <!--#include virtual="header.inc"-->
+<div class="content">
+
+<h1>Doubly-Linked Lists</h1>
+
+<h2>Abstract</h2> 
+
+<p>
+This reading provides you with some experience using doubly-linked
+lists and also highlights a process of incremental program
+development. 
+</p>
+
+<h2>Acknowledgement</h2>
+
+<p>
+Most of this reading is an edited version of Henry M. Walker,
+<i>Computer Science 2: Principles of Software Engineering, Data Types, and
+Algorithms</i>, Little, Brown, and Company, 1989, Section 5.6, with
+programming examples translated from Pascal to C.  This material is used
+with permission from the copyright holder.
+</p>
+
+<h2>Introduction</h2> 
+
+<p>
+Up to this point, all lists have been structured so that we can start at
+the front and move efficiently item by item to the end. However, in many
+applications, we need more flexibility than this. Consider, for example,
+the following problem.
+</p>
+
+<h3>Problem:  Recording and Retrieving Golf Scores</h3>
+
+<p>
+In recording scores for a golf tournament, we enter the name and score of
+the player as the player finishes. This information is to be retrieved in
+each of the following ways:
+</p>
+
+<ul>
+<li>
+Scores and names can be printed in order by ascending or by descending
+scores.
+<li>
+Given the name of a player, other players with the same score can be
+printed.
+</ul>
+
+<h3>Discussion</h3>
+
+<p>
+This problem requires the frequent updating of names and scores and the
+ordering of the information. Such requirements naturally suggest a linked
+list structure. However, here a simple linked list is difficult to use
+efficiently because all the pointers move in one logical direction from the
+start to the end. This structure makes it hard to move backward from a
+given name.
+</p>
+
+<p>
+To resolve this difficulty, we consider a new type of structure, called a
+<i>doubly linked list</i>, in which each item contains a pointer to the
+previous item as well as to the next one. The following figure shows a
+doubly linked list for this problem.
+</p>
+
+<center>
+<img src="lists-double-1.gif" alt="A doubly Linked List with Golf Data">
+</center>
+
+<p>
+This figure illustrates several important features of a doubly linked
+list. First, each item on the list contains two pointers as well as some
+data. For example, this doubly linked list might use the following
+declarations:
+</p>
+
+<div class="block">
+<code>
+ /* Maximum length of names */<br>
+ #define strMax 20<br>
+<br>
+struct dnode<br>
+{  int score;<br>
+&nbsp;&nbsp;char player [strMax];<br>
+&nbsp;&nbsp;struct dnode * prev;<br>
+&nbsp;&nbsp;struct dnode * next;<br>
+};<br>
+<br>
+struct dnode * first;&nbsp;&nbsp;/* pointer to the first list item */<br>
+struct dnode * last;&nbsp;&nbsp;&nbsp;/* pointer to the last list item
+*/<br> 
+</code>
+</div>
+
+<p> With these declarations, the data fields store appropriate scores and
+names, the <tt>prev</tt> field points to the previous item on the list, and
+the <tt>next</tt> field specifies the next item on the list. The
+<tt>first</tt> and <tt>last</tt> pointers give the ends of the list, and we
+use a <tt>NULL</tt> to specify an end of the list.
+</p>
+
+<p>
+With this structure, we can perform the same general operations discussed
+earlier for simple lists, namely:
+</p>
+
+<ul>
+<li>
+printing the data on the list,
+<li>
+inserting or deleting an item, and
+<li>
+finding and perhaps modifying an item.
+</ul>
+
+<p>
+Here, however, the pointers going backward as well as forward simplify some
+of these operations and expand processing capabilities.
+</p>
+
+<h3>Printing</h3>
+
+<p>
+In a doubly-linked list, printing the list in reverse order parallels
+printing in the normal order. To print from first item to last, we start
+with the item specified by the <tt>first</tt> pointer and then proceed item
+by item using the <tt>next</tt> field of each item. To print in reverse
+order, we start with the item specified by the <tt>last</tt> pointer and
+then proceed item by item using the <tt>prev</tt> fields of each item.
+</p>
+
+<h3>Insertion and Deletion</h3>
+
+<p>
+The insertion and deletion operations follow the same general steps
+discussed for simple lists, although processing must handle backward
+pointers as well as forward ones. The main steps for insertion into a
+doubly linked list follow:
+</p>
+
+<ol class="withupperalpha">
+<li>
+Determine where item will be inserted.
+<li>
+Create a new box or record. 
+<li>
+Place data in new record. 
+<li>
+Make <tt>prev</tt> and <tt>next</tt> pointers of new record specify the
+appropriate list elements.
+<li>
+Update the <tt>next</tt> pointer in the previous record to specify the
+newly created record. 
+<li>
+Update the <tt>prev</tt> pointer in the next record to specify the newly
+created record. 
+</ol>
+
+<p>
+With this outline, the programming details for doubly linked lists parallel
+the code for singly linked lists, although now we must modify the
+<tt>prev</tt> pointers as well as the <tt>next</tt> ones. The results of
+insertion are shown in the following figure:
+</p>
+
+<center>
+<img src="lists-double-2.gif" alt="Insertion into a Doubly Linked List">
+</center>
+
+<p>
+The deletion operation for doubly linked lists requires similar
+modifications.
+</p>
+
+<h3>Final Note Regarding Searching</h3>
+
+<p>
+Although we must maintain two sets of links for each node, the task of
+searching for a node sometimes is simplified for a doubly-linked list over
+a singly-linked list.  In particular, when locating a node for insertion or
+deletion within a singly-linked list, the search typically requires that we
+maintain a previous pointer as well as a pointer to the current node.  When
+performing the corresponding task for insertion or deletion in a
+doubly-linked list, of course, we need not include the previous pointer in
+the search process.  Once we find a relevant node, we can use the
+<tt>prev</tt> or <tt>next</tt> field of the identified node to locate the
+adjacent list elements, so our search does not have to maintain that
+information directly.
+</p>
+</div>
+
+
+<div class="footer">
+<p>
+<hr><p>
+
+This document is available on the World Wide Web as
+
+<BLOCKQUOTE>
+<PRE>
+   http://www.cs.grinnell.edu/~walker/courses/161.fa11/modules/module-lists/reading-lists-double.shtml
+</PRE>
+</BLOCKQUOTE>
+
+<hr>
+
+<table width="100%">
+<tr><td>
+   <em>created 2 August 2011 by David Cowden and Dilan Ustek</em><br>
+   <em>last revised 3 August 2011 by David Cowden and Dilan Ustek</em>
+   </td>
+   <td rowspan="2" align="right">
+   <a href="http://validator.w3.org/check/referer"><img border="0" 
+      src="/~walker/valid-html401-blue.png" alt="Valid HTML 4.01!" height="31"
+      width="88"></a>
+   <a href="http://jigsaw.w3.org/css-validator/"><img border="0"
+       src="/~walker/vcss-blue.png" 
+       alt="Valid CSS!" height="31"
+       width="88"></a>
+   </td>
+</tr>
+
+<tr><td>
+   For more information, please contact
+   <a href="http://www.cs.grinnell.edu/%7Ewalker/">Henry M. Walker</a> at
+   <a href="mailto:walker@cs.grinnell.edu">walker@cs.grinnell.edu</a>.
+   </td></tr>
+</table>
+</div>
+</div>
+</body>
+</html>

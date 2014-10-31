@@ -1,0 +1,487 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>Laboratory Exercise on the Representation of Floating-Point Numbers</title>
+    <link rev="made" href="mailto:walker@cs.grinnell.edu">
+</head>
+
+<body>
+<div class="body">
+<!--#include file="header.inc"-->
+
+<div class="labcontent">
+
+<h1>Laboratory Exercise on the Representation of Floating-Point Numbers and Its Consequences</h1>
+
+<h2>Goals</h2> 
+
+<p>
+This lab provides experience viewing the representation of floating-point
+real numbers on PC/Linux machines, and explores an application for which
+numerical round-off error has visible consequences.
+<p>
+
+<h2>Reading</h2>
+
+<p>
+You should read <a href="IEEE-reals.html">IEEE floating-point
+representations of real numbers</a> by John Stone.
+</p>
+
+<h2>Work Started in Class</h2>
+
+<h3>Binary Representation of Floating-Point Numbers:</h3>
+<p>
+The first part of this lab asks you to review the bit-level storage of
+floating point numbers on PC/Linux computers.
+</p>
+
+<ol>
+<li>
+<p>
+Write the real numbers &plusmn 1, &plusmn 2, &plusmn 3, &plusmn 6, &plusmn
+9 using the IEEE Standard for 32-bit Floating Point Numbers..
+</p>
+
+<li>
+<p>
+Copy the program <tt>~walker/c/data-rep.c</tt> to your account and compile
+it.  Then enter real numbers, and conduct experiments to determine:
+</p>
+
+<ul>
+
+<li> which bit is the sign bit,
+<li> which bits are used for the mantissa,
+<li> which bits are used for the exponent, and
+<li> what bias or excess is used in the storage of exponents.<p>
+
+</ul>
+
+<li>
+<p>
+When the decimal number 0.1 (one tenth) is converted to binary, the resulting
+floating-point number is the repeating sequence
+0.000110011001100110011001100... (just as the decimal representation of one
+third is the repeating sequence 0.333333333333... ).
+</p>
+
+<p>
+Use <tt>~walker/c/data-rep.c</tt> to determine the floating-point number
+stored for that is actually stored for the decimal number 0.1 (one
+tenth). Note how this differs from the actual binary number.  
+</p>
+
+<li>
+<p>
+Use your knowledge of the storage of real numbers to determine what
+real number comes "immediately after" 3.0 and 10.0 on this system.  That
+is, look at the mantissa to determine what change would yield the smallest
+number above 3.0 and 10.0.
+</p>
+
+<p>
+<i>Hint:</i>  When running the <tt>data-rep</tt> program, toggle an
+    appropriate bit and look at what results.
+</p>
+
+</ol>
+
+<h3>Floating-point Numbers and Loops</h3>
+
+<p>
+Inaccuracies in representing floating-point numbers with a limited number
+of digits of accuracy have an impact on how programs are written and how
+they run.  This section of the lab explores some of these consequences.
+</p>
+
+<ol start=5>
+<li>
+<p>
+Copy <a href="float-loop.c">float-loop.c</a> to your account.  The idea of
+this program is to work through a loop, starting a 0.0, incrementing by 0.1
+each time through the loop, and continuing while the number is not 1.0.
+</p>
+
+<ol class="withloweralpha">
+<li>
+<p>
+Read through this program.  Write on paper what should be printed
+(including the expected value of <tt>sum</tt> to be printed each time).
+</p>
+
+<li>
+<p>
+Run this program, and describe what happens.<br>
+<b>Note:</b> You can stop any running program by holding down the Control
+key (<i>ctrl</i>) and pressing the <i>c</i> key concurrently.
+</p>
+
+<li>
+<p>
+Review the first part of the output printed to determine why the program
+ran the way it did.
+</p>
+
+<p>
+<i>Hint:</i>  After compiling the program, you might use the following line
+to run the program and look at the first several lines of output:
+</p>
+
+<pre>
+./float-loop | more
+</pre>
+
+<li>
+<p>
+Change the loop condition to <tt>(val &lt;= end)</tt>. Again, explain what
+happens.  What is the last value printed within the loop?   What sum is
+actually computed?
+</p>
+
+</ol>
+
+<li>
+<p>
+Change <tt>float-loop.c</tt> so that the variables are declared
+as <tt>double</tt> rather than <tt>float</tt>, and repeat Steps 4a-d.  What
+happens this time.
+</p>
+
+<li>
+<p>
+The program <tt>float-loop.c</tt> illustrates that loops may or may not
+repeat the number of times expected, when the variables within the loop
+condition are floating-point numbers.  One common way to resolve this
+problem is to change the loop control variables to an integer.  For
+example, for <tt>float-loop.c</tt>, we could use an <tt>int</tt>
+variable <tt>i</tt> to control the loop.  Effectively, <tt>i</tt> has the
+value of 10 times the value we intend for <tt>val</tt>.  The main loop
+might be
+</p>
+
+<pre>
+int i;
+for (i = 0; i &lt;=10; i++)
+{
+   val = i / 10.0;
+   ...
+
+)
+</pre>
+
+<p>
+Here, the <tt>int i</tt> is always computed exactly, so the loop always
+runs exactly the desired number of times, and the value of <tt>val</tt> is
+recomputed from the exact number <tt>i</tt> each time so inaccuracies in
+the storage of 0.1 do not compound.
+</p>
+
+<p>
+Rewrite <tt>float-loop.c</tt> to replace the <tt>while (val &lt end)</tt>
+loop with a <tt>for</tt> construction using an integer as the loop control
+variable. Then run the program to confirm it produces the desired output.
+</p>
+
+</ol>
+
+<h2>Homework</h2>
+
+<h3>More Floating-point Numbers and Loops</h3>
+
+<p>
+Your experience with <tt>float-loop.c</tt> illustrates that some issues
+that arise with <tt>float</tt> numbers may be resolved with <tt>double</tt>
+numbers.  The extra digits of accuracy sometimes can make a substantial
+difference.  This section explores this observation further.
+</p>
+
+<ol start=8>
+<li>
+<p>
+Program <a href="double-loop.c">double-loop.c</a> is similar
+to <a href="float-loop.c">float-loop.c</a>, except that its variables
+are <tt>double</tt>, the range of numbers for the loop is 1000 to 1001, and
+the condition is <tt>val &lt;= end</tt> as in Step 4c.  Copy this program
+to your account.
+</p>
+
+<ol class="withloweralpha">
+<li>
+<p>
+Read through this program.  Write on paper what should be printed
+(including the expected value of <tt>sum</tt> to be printed each time).
+</p>
+
+<li>
+<p>
+Run this program, and describe what happens.
+</p>
+
+<li>
+<p>
+What, if anything, happens if the variables are changed to <tt>float</tt>
+type?
+</p>
+</ol>
+</ol>
+
+
+<h3>Computing Area Under y = x<sup>2</sup>:</h3>
+
+<p>
+[The following is an edited version of Section 5.5 from <i>Introduction
+to Computing and Computer Science with Pascal</i> by Henry M. Walker,
+Little, Brown, and Company, 1986 and is used with permission of the
+copyright holder.]
+</p>
+
+<p>
+Suppose we are given a function <i>y = f(x)</i>, and we want to find the
+area under the graph between <i>x = a</i> and <i>x = b</i>.  <br>
+(The following figure illustrates the area under the curve between <i>x =
+1</i> and <i>x = 3</i> when <i>f(x) = x<sup>2</sup></i>.)  </p>
+
+
+<IMG SRC="area1.gif"
+ALT="Area under f(x) = x^2 between x=1 and x=3"> 
+
+<p>
+Using calculus, the exact size of this area is 8 2/3 or 8.666666666... .
+</p>
+
+<h3>Discussion</h3>  
+
+<p>
+In what follows, we will not try to compute the desired area exactly.
+Rather, we will consider a fairly simple approach, called the
+<i>trapezoidal rule</i>, which can give good approximations to the area.
+In this approach, we break down a large area into small pieces and
+approximate each of the small pieces by a trapezoid (as shown below).
+</p> 
+
+<IMG SRC="area2.gif"
+ALT="Approximating Area by Trapezoids"> 
+
+<p>
+From geometry, we we can compute the area of a trapezoid:
+</p>
+
+<IMG SRC="area3.gif"
+ALT="Area of a Trapezoid is (b1 + b2) h / 2"> 
+
+<p>
+Then we can approximate the entire area under the curve by adding up the
+areas of the trapezoids.
+</p>
+
+<p>
+More precisely, we first divide the interval <i>[a, b]</i> into <i>n</i>
+equal pieces <i> a=x<sub>0</sub>, x<sub>1</sub>, x<sub>2</sub>, 
+.&nbsp;.&nbsp;., x<sub>n</sub>=b</i>.  
+Then we use the pieces to divide the overall areas into trapezoids.  After
+we compute the area of each trapezoids, we add up these small areas.  The
+final formula is 
+</p>
+
+<p>
+<i>Approximate Area = h[f(x<sub>0</sub>)/2 + f(x<sub>1</sub>) 
++ f(x<sub>2</sub>) + .&nbsp;.&nbsp;. + f(x<sub>n-1</sub>) 
++ f(x<sub>n</sub>)/2)]</i>
+</p>
+
+<p>
+where <i>h = (b - a) / n</i> and <i>x<sub>j</sub> = a + jh</i>
+for <i>j = 0, 1, 2, &nbsp;.&nbsp;., n</i>.  This is the formula trapezoidal
+rule.  (The interested reader should consult books in calculus or numerical
+methods for the details of this and other methods.)
+</p>
+
+<p>
+To make this formula more concrete, we apply it to <i>f(x) =
+x<sup>2</sup></i> between <i>x = 1</i> and <i>x = 3</i> (as shown in an
+earlier figure), and we divide the interval <i>]1, 3]</i> into five pieces.
+This gives: <i>n = 5; a = 1; b = 3</i>.  The overall interval <i>[1, 3]</i>
+has length <i>2</i>; we divide it into five subintervals of length <i>h =
+2/5 = 0.4</i>.  The <i>x</i> values are <i>x<sub>0</sub>&nbsp;=&nbsp;1,
+x<sub>1</sub>&nbsp;=&nbsp;1.4, x<sub>2</sub>&nbsp;=&nbsp;1.8,
+x<sub>3</sub>&nbsp;=&nbsp;2.2, x<sub>4</sub>&nbsp;=&nbsp;2.6,
+x<sub>5</sub>&nbsp;=&nbsp;3</i>.  The trapezoidal rule gives: </p>
+
+<table>
+<tr>
+<td><i>Approx. Area </i><td><i>= h[f(x<sub>0</sub>)/2 + f(x<sub>1</sub>)
++ f(x<sub>2</sub>)+ f(x<sub>3</sub>)+ f(x<sub>4</sub>)+
+f(x<sub>5</sub>)/2)]</i>
+</tr>
+
+<tr>
+<td><td><i>= 0.4[f(1)/2 + f(1.4) + f(1.8) + f(2.2) + f(2.6) + f(3)/2]</i>
+</tr>
+
+<tr>
+<td><td><i>= 0.4]1<sup>2</sup>/2 + (1.4)<sup>2</sup> + (1.8)<sup>2</sup> 
++ (2.2)<sup>2</sup> + (2.6)<sup>2</sup> + 3<sup>2</sup>/2]</i>
+</tr>
+
+<tr>
+<td><td><i>= 8.72</i>
+</tr>
+</table>
+
+<h4>Theoretical Accuracy of the Trapezoidal Rule</h4>
+
+<p>
+While it is hard to predict the accuracy of approximations with the
+trapezoidal rule, we can make several useful observations.
+</p>
+
+<ul>
+<li>
+<p>The trapezoidal rule relies upon the actual area under the graph being
+close to the area under the trapezoid.<p>
+<li>
+If the graph of the function is a straight line, then the trapezoids should
+give exact results.  Otherwise the trapezoidal rule cannot be expected to
+be exactly correct.<p>
+<li>
+If we divide the interval <i>[a, b]</i> into a large number of pieces, we
+can expect each trapezoid to be close to the actual area under the graph.
+<p>
+<li>
+As <i>n</i> gets bigger, the approximation of area using the trapezoidal
+rule should get better.
+</ul>
+
+<h4>Practical Implications of Floating Point Error</h4>
+
+<p>
+Since floating-point numbers are not stored exactly, work with any
+individual floating point number may involve a small amount of error.
+If these numbers are combined in many arithmetic operations, such small
+numerical errors sometimes can come together to significantly affect
+results.
+</p>
+
+<h4>Programming</h4>  
+
+<p>
+This part of the lab asks you to run and expand
+program <a href="trap-rule.c">trap-rule.c</a> that computes area using the
+trapezoidal rule. You then will experiment with this program to investigate
+the effect of numerical errors.
+</p>
+
+<ol start=9>
+<li>
+<p>
+Copy <a href="trap-rule.c">trap-rule.c</a> to your account, and then
+compile and run it.
+</p>
+
+<ol class="withloweralpha">
+<li>
+<p>
+Review the program and describe how it works.  For example, how the
+table is produced? Why does the function <tt>area_l_to_r</tt> use the
+variable <tt>i</tt>? Why does the computation for <tt>xvalue</tt> give
+appropriate values for x values in the trapezoidal rule?
+</p>
+
+<li>
+<p>
+As noted above, the correct value of this area is 8 2/3 or
+8.6666666666... as determined with calculus.  Discuss how the computed
+approximations compare to this exact value as the number of intervals
+increases.
+</p>
+</ol>
+</ol>
+
+<p>
+Procedure <tt>area_l_to_r</tt> adds terms in the Trapezoidal Rule from
+first to last.  For the function given, the terms get steadily larger as
+the function is increasing from left to right.  A natural question arises
+regarding what might happen if the terms were added in the opposite order.
+</p>
+
+<ol start=10>
+<li>
+<p>
+Modify the program to include another function <tt>area_r_to_l</tt> which
+adds the terms in the Trapezoidal Rule from last to first  (i.e., from the
+nth term toward the initial term).  Then, in the main loop, add another
+column to the table, for "Computing from R to L".
+</p>
+
+<ol class="withloweralpha">
+<li>
+<p>
+Run the revised program, showing the results of both left-to-right and
+right-to-left computations.
+</p>
+
+<li>
+<p>
+Compare the results of the left-to-right and right-to-left computations.
+What patterns do you observe?
+What, if any, differences do you identify?  Briefly explain what you see.
+</p>
+
+<li>
+<p>
+If this lab is to be turned in, include your program for this step as well
+as your explanations and other work.
+</ol>
+</ol>
+
+<!--#include file="body-footer.inc" -->
+</div>
+<div class="footer">
+
+<hr><p>
+
+This document is available on the World Wide Web as
+
+<PRE>
+     http://www.cs.grinnell.edu/~walker/courses/161.sp14/lab-floats.shtml
+</PRE>
+
+<hr>
+<table width="100%">
+<tr><td>
+   <em>created 17 September 2001 by Henry M. Walker</em><br>
+   <em>revised 6 October 2011 by Henry M. Walker</em><br>
+   <em>revised 29 October 2011, 13 October 2013 by Henry M. Walker</em><br>
+   <em>revised 17-18 January 2014 by Henry M. Walker</em><br>
+   <em>hint added to Step 4 on 25 February 2014, 5 March 2014 
+     by Henry M. Walker</em>
+   </td>
+   <td rowspan="2" align="right">
+   <a href="http://validator.w3.org/check/referer"><img border="0"
+      src="/~walker/valid-html401-blue.png" alt="Valid HTML 4.01!" height="31"
+      width="88"></a>
+   <a href="http://jigsaw.w3.org/css-validator/"><img border="0"
+       src="/~walker/vcss-blue.png"
+       alt="Valid CSS!" height="31"
+       width="88"></a>
+   </td>
+</tr>
+<tr><td>
+   For more information, please contact
+   <a class="footer-a" href="/~walker/">Henry M. Walker</a> at
+   <a class="footer-a" href="mailto:walker@cs.grinnell.edu">walker@cs.grinnell.edu</a>.
+   </tr>
+</table>
+
+<hr>
+<!--#include file="copyright-notice.inc"-->
+
+</div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,41 @@
+#include <stdio.h>
+#include "MyroC.h"
+#include "eSpeakPackage.h"
+
+/* compile with the line
+   gcc -leSpeakPackage -lMyroC -o scribbler-espeak scribbler-espeak.c
+*/
+
+int main ()
+{
+  printf ("program to make the Scribbler robot move and beep\n");
+
+  /* initialize both the robot and eSpeak */
+  rConnect ("/dev/rfcomm0");
+  eSpeakConnect();
+  rSetForwardnessTxt ("fluke-forward");
+
+  /* Move left and right, with associated beeps */
+  printf ("turning to the right\n");
+  eSpeakTalk ("Turn right and beep");
+  rTurnRight (0.5, 1.0);  /* turn right at half speed for 1 second */
+  rBeep (1.0, 880);       /* beep a middle C for 1 second */
+
+  /* Move forward and backward */
+  printf ("moving forward and backward\n");
+  eSpeakTalk ("Move forward and backward");
+  rForward (1.0, 1.0);
+  rBackward (1.0, 1.0);
+
+  /* Move left and right, with associated beeps */
+  printf ("turning to the left\n");
+  eSpeakTalk ("Turn left and beep");
+  rTurnLeft (0.75, 1.0);  /* turn left at 3/4 speed for 1 second */
+  rBeep (1.0, 1760);      /* beep an octive above middle C for 1 second */
+
+  /* Finish up with both the robot and eSpeak*/
+  rDisconnect ();
+  eSpeakDisconnect ();
+
+  return 0;
+}

@@ -1,0 +1,114 @@
+#!/bin/bash
+
+#start:  midnight ------------------------------
+echo ""
+echo "midnight start ##########################################"
+echo ""
+#test case:  midnight to early morning:     7.50 ok
+test-case-script 12 0 a 6 0 a
+
+#test case:  midnight to late morning:     11.00 ok
+test-case-script 12 0 a 10 0 a
+
+#test case:  midnight to early afternoon:  14.00 ok
+test-case-script 12 0 a 2 0 p
+
+#test case:  midnight to evening:          26.25 ok
+test-case-script 12 0 a 10 0 p
+
+#test case:  midnight to midnight:         30.25 ok
+test-case-script 12 0 a 12 0 a
+
+#start:  1:15 am ------------------------------
+echo ""
+echo "1:15 am start ##########################################"
+echo ""
+
+#test case:  1:15 to early morning:     5.94 ok
+test-case-script 1 15 a 6 0 a
+
+#test case:  1:15 to late morning:      9.44 ok
+test-case-script 1 15 a 10 0 a
+
+#test case:  1:15 to early afternoon:  12.44 ok
+test-case-script 1 15 a 2 0 p
+
+#test case:  1:15 to evening:          24.69 ok
+test-case-script 1 15 a 10 0 p
+
+#test case:  1:15 to midnight:         28.69 ok
+test-case-script 1 15 a 12 0 a
+
+#test case:  1:15 to 12:15 a           29.00 ok
+test-case-script 1 15 a 12 15 a
+
+#start:  7:00 am ------------------------------
+echo ""
+echo " 7:00 am start ##########################################"
+echo ""
+
+#test case:  7:00 to early morning:    29.31 ok
+test-case-script 7 00 a 6 15 a
+
+#test case:  7:00 to late morning:      2.25 ok
+test-case-script 7 00 a 10 0 a
+
+#test case:  7:00 to early afternoon:   5.25 ok
+test-case-script 7 00 a 2 0 p
+
+#test case:  7:00 to evening:          17.50 ok
+test-case-script 7 00 a 10 0 p
+
+#test case:  7:00 to midnight:         21.50 ok
+test-case-script 7 00 a 12 0 a
+
+#test case:  7:00 to 12:15 a           21.81 ok
+test-case-script 7 00 a 12 15 a
+
+#start:  1:00 pm ------------------------------
+echo ""
+echo " 1:00 pm start ##########################################"
+echo ""
+
+#test case:  1:00 to early morning:    28.00 ok
+test-case-script 1 00 p 6 15 a
+
+#test case:  1:00 to late morning:      2.25 ok
+test-case-script 1 00 p 10 0 a
+
+#test case:  1:00 to early afternoon:   0.75 ok
+test-case-script 1 00 p 2 0 p
+
+#test case:  1:00 to evening:          13.00 ok
+test-case-script 1 00 p 10 0 p
+
+#test case:  1:00 to midnight:         17.00 ok
+test-case-script 1 00 p 12 0 a
+
+#test case:  1:00 to 12:15 a           17.31 ok
+test-case-script 1 00 p 12 15 a
+
+#start:  7:00 pm ------------------------------
+echo ""
+echo " 7:00 pm start ##########################################"
+echo " 7:00 pm start ##########################################"
+echo ""
+
+#test case:  7:00 to early morning:    17.81 ok
+test-case-script 7 00 p 6 15 a
+
+#test case:  7:00 to late morning:     21.00 ok
+test-case-script 7 00 p 10 0 a
+
+#test case:  7:00 to early afternoon:  24.00 ok
+test-case-script 7 00 p 2 0 p
+
+#test case:  7:00 to evening:           6.00 ok
+test-case-script 7 00 p 10 0 p
+
+#test case:  7:00 to midnight:         10.00 ok
+test-case-script 7 00 p 12 0 a
+
+#test case:  7:00 to 12:15 a            10.31 ok
+test-case-script 7 00 p 12 15 a
+

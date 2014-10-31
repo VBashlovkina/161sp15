@@ -1,0 +1,265 @@
+<center><i>Martin<br>Luther<br>King<br>Day</i></center>
+
+Introduction
+&nbsp;&nbsp;&nbsp;<font style="color:#990000">Problem-Solving Process</font>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000"><a href="modules/getting-started/getting-started.shtml"><font style="color:#990000"><font style="color:#990000">Module 000: Linux Intro.</font></font></a></font>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000">Linux Examples</font>
+
+<a href="modules/getting-started/lab-linux-basics.shtml"><font style="color:#990000">Module 000: Linux Basics</font></a>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000"><tt>Laboratory Exercise:</tt> </font>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000">Terminal window, <tt>emacs</tt></font>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000">Setting up <tt>.bashrc</tt></font>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000">commands: </font>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000">&nbsp;&nbsp;&nbsp;<tt>mkdir, cd, ls, mv, cp</tt></font>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000">Help, printing</font>
+
+<a href="modules/getting-started/lab-intro-c.shtml"><font style="color:#990000">Module 000: Intro. to C </font></a>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000">Overview of C</font>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000">&nbsp;&nbsp;&nbsp;Syntax, compiling, running</font>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000"><tt>Laboratory Exercise:</tt></font>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000">Getting Started with C</font>
+
+<a href="modules/getting-started/lab-more-intro-c.shtml"><font style="color:#990000">Module 000: More Intro. C</font></a>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000"><tt>Laboratory Exercise</tt></font>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000">C Examples</font>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000">eSpeak</font>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000">More Linux Capabilities</font>
+
+<a href="modules/getting-started/lab-scribbler.shtml"><font style="color:#990000">Module 000: Programming the Scribbler 2</font></a>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000"><tt>Laboratory Exercise</tt></font>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000">Scribbler 2:  connect, disconnect, sound</font>
+
+<a href="modules/getting-started/getting-started.shtml#project0"><font style="color:#990000">Module 000:  Project</font></a>  <sup><b>[Required]</b></sup>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000">Program a Song</font>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000">(class devoted to collaboration)</font>
+
+<a href="modules/cond-loops-motion/cond-loops-motion.shtml"><font style="color:#990000">Module 001:  Examples</font></a>
+
+<a href="modules/cond-loops-motion/lab-types-variables.shtml"><font style="color:#990000">Module 001:  Types, variables</font></a>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000"><tt>Laboratory Exercise</tt></font>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000">Casting</font>
+<font style="color:#990000"><b>Due:  Module 000 Project</b></font>
+
+<a href="modules/cond-loops-motion/lab-conditionals.shtml"><font style="color:#990000">Module 001:  Conditionals</font></a>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000"><tt>Laboratory Exercise</tt></font>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000">Scribbler 2:  &nbsp;&nbsp;&nbsp;Motion, Sensors</font>
+
+<a href="modules/cond-loops-motion/lab-loops.shtml"><font style="color:#990000">Module 001:  Loops</font></a> <sup><b>[Extra Credit]</b></sup>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000"><tt>Laboratory Exercise</tt></font>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000">Loops</font>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000">Scribbler 2 Movement</font>
+
+<a href="modules/cond-loops-motion/cond-loops-motion.shtml#project1"><font style="color:#990000">Module 001:  Project</font></a>    <sup><b>[Required]</b></sup>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000">Song and Dance</font>
+<font style="color:#990000"><b>Due:  <a href="suppl-prob.shtml#1"><font style="color:#990000">Supp. Problem 1</font></a></b></font>
+
+<a href="modules/arrays-functions/arrays-functions.shtml"><font style="color:#990000">Module 010:  Examples</font></a>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000">Functions with parameters</font>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000">Passing values and addresses as parameters</font>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000">Use of Scribbler 2 sensors</font>
+
+&nbsp;
+<b>Hour Test 1</b>
+
+<a href="modules/arrays-functions/lab-functions-1.shtml"><font style="color:#990000">Module 010:  functions</font></a>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000"><tt>Laboratory Exercise</tt></font>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000">Functions with, w/o parameters</font>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000">Passing value as parameters</font>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000"><tt>void</tt> functions</font>
+
+<a href="modules/arrays-functions/lab-functions-1.shtml"><font style="color:#990000">Module 010: functions with value parameters, continued</font></a>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000">More examples</font>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000">Clarify/review </font>
+Introduction to passing address as parameters
+Start <tt>Laboratory Exercise</tt>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000"><a href="modules/arrays-functions/lab-functions-2.shtml"><font style="color:#990000">More functions</font></a></font>
+<font style="color:#990000"><b>Due:  Module 001 Project</font></b>
+
+<a href="modules/arrays-functions/lab-functions-2.shtml"><font style="color:#990000">Module 010:  more functions</font></a>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000"><tt>Laboratory Exercise</tt></font>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000">Values and addresses as parameters</font>
+
+<a href="modules/arrays-functions/lab-arrays.shtml"><font style="color:#990000">Module 010:  one-dim. arrays</font></a>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000"><tt>Laboratory Exercise</tt></font>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000"> 1-dimensional arrays</font>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000"> Functions with arrays</font>
+
+<a href="modules/arrays-functions/lab-testing.shtml"><font style="color:#990000">Module 010:  functions, testing</font></a>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000"><tt>Laboratory Exercise</tt></font>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000">Function pointers </font>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000">Testing</font>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000">More values and addresses as parameters</font>
+[<i><small>Deadline:  Ex. Cr. Lab on Loops</small></i>]
+
+<a href="data-representation/data-representation.shtml"><font style="color:#990000">Representation of Numbers</font></a>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000">binary integers</font>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000">&nbsp;&nbsp;&nbsp; sign/magnitude, </font>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000">&nbsp;&nbsp;&nbsp; ones complement</font>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000">&nbsp;&nbsp;&nbsp; twos complement</font>
+<font style="color:#990000"><b>Due:  <a href="suppl-prob.shtml#2"><font style="color:#990000">Supp. Problem 2</font></a></b></bont>
+
+<a href="data-representation/lab-integer-proc.shtml"><font style="color:#990000">Data Representation</font></a> <sup><b>[Extra Credit]</b></sup>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000"><tt>Laboratory Exercise</tt></font>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000">Integer representation</font>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000">&nbsp;&nbsp;&nbsp; Non-negatives</font>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000">&nbsp;&nbsp;&nbsp; Sign-magnitude notation</font>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000">&nbsp;&nbsp;&nbsp; Ones- and twos-complement</font>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000">bitwise operations</font>
+
+<a href="modules/arrays-functions/arrays-functions.shtml#project2"><font style="color:#990000">Module 010:  Project</font></a>  <sup><b>[Required]</b></sup>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000">Follow a moving object</font>
+
+<a href="data-representation/lab-floats.shtml"><font style="color:#990000">Data Representation</font></a> <sup><b>[required]</b></sup>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000"><tt>Laboratory Exercise</tt></font>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000">Floating-point numbers</font>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000">Roundoff errors</font>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000">Numerical errors</font>
+
+<a href="modules/chars-io/chars-io.shtml"><font style="color:#990000">Module 011:  Examples</font></a>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000">characters</font>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000">strings</font>
+<font style="color:#990000"><b>Due:  Module 010 Project</b></font>
+
+<a href="modules/chars-io/lab-charsNstrings.shtml"><font style="color:#990000">Module 011:  characters &amp; strings</font></a>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000"><tt>Laboratory Exercise</tt></font>
+
+<a href="modules/chars-io/lab-io-first.shtml"><font style="color:#990000">Module 011:  Input with <tt>scanf</tt></font></a>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000"><tt>Laboratory Exercise</tt></font>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000">Formatted input:  <tt>scanf</tt></font>
+<b>Due:  Floating-Point Lab</b>
+
+<a href="modules/chars-io/lab-io-second.shtml"><font style="color:#990000">Module 011: Character-by-character input and output</font></a>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000"><tt>Laboratory Exercise</tt></font>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000">Character-by-character input/output: <tt>getchar, putchar</TT></font>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000">Formatted output: <tt>printf</tt></font>
+
+<a href="modules/chars-io/chars-io.shtml#project3"><font style="color:#990000">Module 011:  Project</a> <sup><b>[required]</b></sup>, Continued</font>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000">Robot follows interactive commands</font>
+
+<a href="modules/struct-2d-arrays/struct-2d-arrays.shtml"><font style="color:#990000">Module 100:  Examples</font></a>
+
+<a href="modules/struct-2d-arrays/lab-structs.shtml"><font style="color:#990000">Module 100:  Transform a Pixel</font></a>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000"><tt>Laboratory Exercise</tt></font>
+&nbsp;
+[<i><small>Deadline:  Ex. Cr. Lab on Integer Representation</small></i>]
+
+<a href="modules/struct-2d-arrays/lab-2D-array.shtml"><font style="color:#990000">Module 100:  Two-Dim. Arrays</font></a> <sup><b>[required]</b></sup>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000"><tt>Laboratory Exercise</tt></font>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000">Processing pixels in a picture</font>
+
+&nbsp;
+<b>Hour Test 2</b>
+
+Spring Break
+
+Spring Break
+
+Spring Break
+
+Spring Break
+
+Spring Break
+
+Spring Break
+
+Spring Break
+
+Spring Break
+
+<a href="modules/struct-2d-arrays/lab-insertion-sort.shtml"><font style="color:#990000">Module 100:  Insertion Sort</font></a>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000"><tt>Laboratory Exercise</tt></font>
+<font style="color:#990000"><b>Due:  Module 011 Project</b></font>
+
+<a href="modules/struct-2d-arrays/lab-bit-ops.shtml"><font style="color:#990000">Module 100:  Machine-level operations</font></a>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000">Bitwise operations</font>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000">Unions</font>
+
+<a href="modules/struct-2d-arrays/struct-2d-arrays.shtml#project4"><font style="color:#990000">Module 100:  Project</a> <sup><b>[required]</b></sup></font>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000">Picture Transformation</font>
+<font style="color:#990000"><b>Due:  <a href="suppl-prob.shtml#3"><font style="color:#990000">Supp. Problem 3</font></a></b></font>
+
+<a href="modules/lists/lists.shtml"><font style="color:#990000">Module 101:  Examples</font></a>
+
+<a href="modules/lists/lab-pointers.shtml"><font style="color:#990000">Module 101:  Pointers</font></a>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000"><tt>Laboratory Exercise</tt></font>
+
+<a href="modules/lists/lab-lists-c-1.shtml"><font style="color:#990000">Module 101:  Scheme-like Lists</font></a><b>[required]</b></sup>
+Getting started
+Examples
+<font style="color:#990000"><b>Due:  Module 100 Project</b></font>
+
+<a href="modules/lists/lab-lists-c-2.shtml"><font style="color:#990000">Module 101:  Linked Lists</font></a> <sup><b>[required]</b></sup>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000"><tt>Laboratory Exercise</tt> </font>
+
+<a href="modules/lists/lab-lists-c-movie.shtml"><font style="color:#990000">Module 101:  Linked Lists</font></a> <sup><b>[Extra Credit]</b></sup>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000"><tt>Laboratory Exercise</tt> </font>
+&nbsp;
+[<i><small>Deadline:  Ex. Cr. Lab on 2-D Arrays</small></i>]
+
+<a href="modules/lists/lab-prog-mgmt.shtml"><font style="color:#990000">Module 101: Program Mgmt.</font></a> <sup><b>[Extra Credit]</b></sup>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000"><tt>Laboratory Exercise</tt> </font>
+&nbsp;
+<b>Due:  Lab on Scheme-Like Lists</b>
+
+<a href="modules/lists/lists.shtml#project5"><font style="color:#990000">Module 101: Project</a> <sup><b>[extra&nbsp;creedit]</b></sup></font>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000">Insert theme into song</font>
+<font style="color:#990000"><b>Due:  Linked Lists </b></font>
+
+<a href="modules/pointers-stacks-queues/pointers-stacks-queues.shtml"><font style="color:#990000">Module 110:  Examples</font></a>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000">Stacks</font>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000">Queues</font>
+
+<a href="modules/pointers-stacks-queues/lab-stacks.shtml"><font style="color:#990000">Module 110: Stacks - lists</font></a>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000"><tt>Laboratory Exercise</tt></font>
+
+<a href="modules/pointers-stacks-queues/lab-queues.shtml"><font style="color:#990000">Module 110:  Queues - arrays</font></a> <sup><b>[required]</b></sup>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000"><tt>Laboratory Exercise</tt></font>
+<font style="color:#990000"><b>Due:  <a href="suppl-prob.shtml#4"><font style="color:#990000">Supp. Problem 4</font></a></b></font>
+
+<a href="modules/pointers-stacks-queues/lab-queues.shtml"><font style="color:#990000">Module 110:  Queues - lists</font></a> <sup><b>[required]</b></sup>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000"><tt>Laboratory Exercise</tt></font>
+Lab continued
+
+<a href="modules/pointers-stacks-queues/lab-bash-scripts.shtml"><font style="color:#990000">Module 110:  Bash scripts</font></a> <sup><b>[Extra Credit]</b></sup>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000"><tt>Laboratory Exercise</tt></font>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000">use with testing</font>
+
+&nbsp;
+<b>Hour Test 3</b>
+
+<a href="modules/pointers-stacks-queues/pointers-stacks-queues.shtml#project6"><font style="color:#990000">Module 110:  Project</a> <sup><b>[required]</b></sup></font>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000">Stack implementations</font>
+[<i><small>Deadline:  Ex. Cr. Lab on Program Management</small></i>]
+[<i><small>Deadline:  Ex. Cr. Project for Module 101</small></i>]
+
+<a href="modules/comm-line-files/comm-line-files.shtml"><font style="color:#990000">Module 111:  Examples</font></a>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000">bitwise operations</font>
+<b>Due:  Queues' Lab (both list and queue implementations)</b>
+
+<a href="modules/comm-line-files/lab-command-line.shtml"><font style="color:#990000">Module 111:  Comm.-line Args</font></a>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000"><tt>Laboratory Exercise</tt></font>
+
+<a href="modules/comm-line-files/lab-files-1.shtml"><font style="color:#990000">Module 111:  Files</font></a>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000"><tt>Laboratory Exercise</tt></font>
+read and write to files
+<font style="color:#990000"><b>Due:  Module 110 Project</b></font>
+
+<a href="modules/comm-line-files/lab-files-2.shtml"><font style="color:#990000">Module 111:  Files</font></a>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000"><tt>Laboratory Exercise</tt></font>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000"> <tt>include</tt></font>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000"> separate compilation, separate linking</font>
+
+<a href="modules/comm-line-files/comm-line-files.shtml#project7"><font style="color:#990000">Module 111:  Project</a> <sup><b>[required]</b></sup></font>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000">robot motion with logging</font>
+<font style="color:#990000"><b>Due:  <a href="suppl-prob.shtml#5"><font style="color:#990000">Supp. Problem 5</font></a></b></font>
+[<i><small>Deadline:  Ex. Cr. Lab on Bash Scripts</small></i>]
+
+<a href="modules/comm-line-files/comm-line-files.shtml#project7"><font style="color:#990000">Module 111:  Project</a> <sup><b>[required]</b></sup></font>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000">robot motion with logging</font>
+
+Semester Wrap-Up
+&nbsp;&nbsp;&nbsp;<font style="color:#990000">Questions, Review</font>
+&nbsp;&nbsp;&nbsp;<font style="color:#990000">End-of-course evaluations</font>
+<b>Due:  Module 111 Project</b>
+[<i><small>5:00 pm Deadline:  Ex. Cr. Supplemental Problems</small></i>]
+<b>Absolute deadline for <u>all</u> course work:  5:00 pm</b>

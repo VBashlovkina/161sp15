@@ -1,0 +1,690 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html>
+<head>
+  <meta http-equiv="Content-Type" 
+        content="text/html; charset=ISO-8859-1" >
+  <link rel="stylesheet" type="text/css" href="style.css" >
+   <title>CSC 161 Lab. Conditionals</title>  
+  <link rev="made" href="mailto:walker@cs.grinnell.edu" >
+</head>
+<body>
+<div class="body">
+<!--#include file="header.inc"-->
+    
+<div class="labcontent">
+
+<h1>Laboratory Exercise: Conditionals</h1>
+
+<h2>Goals</h2>
+
+<p>
+The purpose of this lab is to introduce different types of conditional
+statements in C, practice simple control flow, and gain experience using
+the Scribbler 2 sensors.
+</p>
+
+<h2>Preparation before Class</h2>
+
+<ul>
+<li>Reading from Text
+    <ul>
+    <li>King: Sections 5.1-5.2, pages 73-86, OR
+    <li>Kernighan & Ritchie, 1.5, 3.1-3.4
+    </ul>
+<li>Reading:  <a href="reading-boolean.shtml">Boolean Values and Expressions</a>
+<li>Reading:  <a href="reading-motion.shtml">Scribbler 2 Motion reading</a>
+<li>Examples:
+    <ul>
+    <li><a href="conditional-battery.c">conditional-battery.c</a>
+    <li><a href="second-counter.c">second-counter.c </a>
+    </ul>
+</ul>
+
+<h2>Introduction</h2>
+
+<p>
+Programs that don't make decisions are of limited usefulness.
+Sophisticated programs are able to make decisions based on the results of
+various tests and act according to the input data or current state of
+execution.  To perform these tests and manage the flow of execution, C
+provides <em>conditional statements</em>:
+</p>
+<ul>
+<li>
+  <tt>if</tt>
+<li> <tt>if else</tt>
+<li> <tt>else if</tt>
+<li>
+<tt>switch</tt>. 
+</ul>
+
+<p>
+  When using the Scribbler 2 robots, activities may depend upon the
+  immediate environment of the robot.  To learn about this environment,
+  Scribbler 2 robots contain several sensors.  This lab utilizes four types
+  of sensors to provide experience with conditional statements.  
+</p>
+
+<p>
+<b>Be sure to review the course's description of
+<a href="../../scribbler2-sensors.shtml">Sensors for the Scribbler 2
+  Robot</a> before proceeding in this lab.</b>  As you will see, some
+  sensors are located on the robot itself, and some are located on the
+  Fluke that plugs into the robot.  A common error for beginners is to
+  program based on sensors located in a different place than expected.
+</p>
+
+<p>
+ For this lab, we will focus upon four types of sensors. When working with the
+ Scribbler robots, conditionals are how the robot can be programmed to make
+ decisions based on data gathered from its sensors.
+</p>
+
+<h2>Quick Review of the Syntax for <tt>if</tt> Statements and Variations</h2>
+        
+<p>
+The statements <tt>if</tt>, <tt>if else</tt>, and <tt>else if</tt> share
+the same foundation.  The following notes are based on comments by David Cowden.
+</p>
+        
+<h3>The <tt>if</tt> Statement</h3>
+
+<p>
+  The syntax of a standard if statement is as follows:
+</p>
+
+<div class="block">
+<pre>
+  if (TEST)
+     result();
+</pre>
+</div>
+        
+<p>
+  The <tt>result</tt> will only execute if the <tt>TEST</tt> evaluates to
+  true.  In C, true means anything that is not <tt>0</tt>.  Thus, a
+  statement:
+</p>
+<div class="block">
+<pre>
+  if ( 1 )
+     result();
+</pre>
+</div>
+
+<p>
+  will always execute.
+</p>
+<p>
+  <i>Note:</i> An <tt>if</tt> will only determine the execution of the
+    statement directly following it.  To group multiple statements together
+    into one, curly brackets: <tt>{</tt> and <tt>}</tt> are used.  For
+    example, consider the code segment:
+</p>
+
+
+<div class="block">
+<pre>
+  if (TEST)
+     {
+        result1();
+        result2();
+     }
+</pre>
+</div>
+
+<p>
+  Here, both <tt>result1()</tt> and <tt>result2()</tt> will be executed
+  if <tt>TEST</tt> is true, and neither of these statements will be
+  executed if <tt>TEST</tt> is false.  In contrast, consider the following
+  code: 
+  segment
+</p>
+<div class="block">
+<pre>
+  if (TEST)
+     result1();
+     result2();
+</pre>
+</div>
+<p>
+  Here, only <tt>result1()</tt> is considered as being part of
+  the <tt>if</tt> (indenting notwithstanding).  Thus, if <tt>TEST</tt> is
+  true, then <tt>result1()</tt> and <tt>result2()</tt> are executed.
+  However, if <tt>TEST</tt> is false, then only <tt>result1()</tt> is
+  skipped.  Since <tt>result2()</tt> is outside the <tt>if</tt>
+  statement, <tt>result2()</tt> will be executed whether or
+  not <tt>TEST</tt> is true.
+</p>
+
+<h2>Using Sensors</h2>
+
+<p>
+As electrical instruments, all sensors are subject to experimental error.
+That is, multiple queries to a sensor may yield different results.  For
+some sensors, this variability may be modest, but for other sensors,
+successive queries may produce substantially different results.
+</p>
+
+<p>
+One approach for managing some variability is to take several readings and
+average.  The original MyroC package and the evolving MyroCDev package
+under development take different approaches for this work.
+</p>
+
+<ul>
+<li>
+<p>
+The MyroC functions return a single reading from a sensor.  Thus, if the
+programmer wants to average three readings, the programmer would call the
+same function three times and average.  For example, the function
+call <tt>rGetLightTxt("left")</tt>  returns the value of a light sensor on
+the body of the Scribbler 2.  To average three calls, one might use the
+code:
+
+</p>
+<div class="block">
+<pre>
+  int value1 = rGetLightTxt("left");
+  int value2 = rGetLightTxt("left");
+  int value3 = rGetLightTxt("left");
+  int avgValue = (value1 + value2 + value3)/3;
+</pre>
+</div>
+
+<p>
+More simply, one might write
+</p>
+
+<div class="block">
+<pre>
+  int avgValue = (rGetLightTxt("left")+rGetLightTxt("left")+rGetLightTxt("left")) /3;
+</pre>
+</div>
+
+<li>
+<p>
+The MyroCDev functions add a second parameter that specifies how many
+values from the sensor should be averaged.  The call for the above example
+therefore simplifies to 
+</p>
+
+<div class="block">
+<pre>
+  int avgValue = rGetLightTxt("left", 3);
+</pre>
+</div>
+
+<p>
+Of course, with this syntax, getting a single reading corresponds to giving
+the second parameter the value 1.
+</p>
+
+</ul>
+
+<h2>Work Started in Class</h2>
+
+<h3>Using Light Sensors</h3>
+
+<p>
+According to the course documentation
+  for <a href="../../scribbler2-sensors.shtml">Sensors for the Scribbler 2
+  Robot</a>, the light sensors on the front of the Scribbler 2 robots are
+  reasonably consistent, so we start there.  Note that the light sensors
+  return values near 0 for bright lights and large values (about 65,000)
+  when the area is quite dark.
+</p>
+
+
+
+<ol>
+  <li>    
+    <p>
+      Copy the programs  <a href="light-MyroC.c">light-MyroC.c</a> and 
+      <a href="light-MyroCDev.c">light-MyroCDev.c</a> to your account.
+      Both programs contain instructions regarding how to compile.
+    </p>
+
+    <p>
+      Run both programs, and then run them to determine how they work.
+    </p>
+    
+    <p>
+      Run the programs several more times:
+    </p>
+    <ul>
+      <li>
+        For some runs, do not move the robots, and examine the output to
+        determine what variability is present in the readings printed.
+      <li>
+        For some runs, move the robot so it is facing a relatively bright
+        light or a relatively dim area.  Again, compare the results
+        obtained.
+    </ul>
+
+  <li>
+    <p>
+      Add statements to determine the light levels in front of the robot
+      and on the right.  
+    </p>
+
+    <ul>
+      <li>
+        To what extent do the light levels seem to vary from the left to
+        the center and to the right?
+      <li>
+        How might you change the robot's environment (e.g., cover some
+        sensors, or create a shadow over part of the robot) to impact the
+        light readings?
+    </ul>
+
+</ol>
+
+<h3>Using the Obstacle Sensors</h3>
+
+<p>
+  One set of obstacle sensors utilize the IR sensors on the Scribbler 2
+  body, and another set of obstacle sensors utilize sensors on the fluke.
+  Again, review <a href="../../scribbler2-sensors.shtml">Sensors for the
+  Scribbler 2 Robot</a> for details.
+</p>
+
+<ol start=3>
+<li>
+<p>
+Use the IR sensors on the Scribbler 2 body to determine whether there is
+an obstacle in front of the robot.  This can be done using the
+the <tt>rGetIRTxt</tt> function.  Unlike the light sensors, the
+function returns only a one (<tt>true</tt>), or zero (<tt>false</tt>)
+depending on whether there is an obstacle close to the scribbler's IR
+sensors.
+</p>
+
+<p>
+As with the <tt>light-MyroC</tt> functions, report several readings, and
+comment upon the variability that you observe.
+</p>
+
+<li>
+<p>
+Change the robot's behavior, depending upon whether or not an obstacle is
+present.  If an obstacle is present, the program should beep three times at
+a high pitch.  If there are not obstacles in front of any of the
+sensors, it should move forward for 1 second.
+</p> 
+
+</ol>
+
+<h3>Avoiding Obstacles</h3>
+      
+<p>
+  Testing one sensor is great, but the robot has two IR sensors.  It would
+  be more interesting if we tested both the sensors and acted according to
+  the resulting values.  To do this you can employ an <tt>else if</tt>
+  test.
+</p>
+
+<ol start=5>
+<li>
+  <p>
+    Rather than beeping, consider telling the robot to turn if it senses an
+    obstacle in front of one of its sensors.  If there is an obstacle in
+    front of the left sensor, turn right, and if there is an obstacle in
+    front of the right sensor, turn left.  This is a simple, but effective,
+    way to avoid an obstacle.
+  </p>
+ 
+  <p>
+    Change your code so the robot behaves as described.  One way to proceed
+    would be to use the following form:
+    
+  </p>
+<div class="block">
+<pre>
+  if ( left sensor )
+      turn right;
+  else if ( right sensor )
+      turn left;
+</pre>
+</div>
+
+  <p>
+    Compile, run, and verify your code works before moving on. 
+  </p>
+
+  <p>
+    For future references (i.e., for the Homework section of the lab),
+    test what happens in the case where there is an obstacle in front of
+    both sensors.
+  </p>
+</ol>
+
+<h3>Another Approach for Conditionals:  the <tt>Switch</tt> Statement</h3>
+        
+<p>
+Again, initial notes are based on comments by David Cowden.
+</p>
+
+<p>
+  Sometimes you need to test a condition and perform one of many
+  results based on the value of a variable.  Rather than stringing a
+  bunch of <tt>else if</tt>s together, there is a <tt>switch</tt>
+  statement in C.  
+</p>
+<p>
+  <tt>switch</tt> operates a little differently than <tt>if</tt>.
+  Instead of evaluating a Boolean expression, switch operates on an
+  integer (or <tt>char</tt>) value as follows:
+</p>
+
+<div class="block">
+<pre>
+    switch (val) {
+    case 17: do_this_if_val=17();
+        break;
+    case 21: do_that_if_val=21();
+        break;
+    case 43: do_something_else_if_val=43();
+        break;
+    default: no_case_action();
+        break;
+    }
+</pre>
+</div>
+
+<p>
+  <tt>do_that();</tt> happens if <tt>val == 21</tt>.  The <tt>default:</tt>
+  is executed if no case is met.  <em>* Note: although a break after
+  the <tt>default:</tt> is not necessary, it is common practice to add it.
+  Further, execution continues until a <tt>break;</tt> statement is
+  reached. Leaving the <tt>break;</tt> out of a case causes the default to
+  be executed every time that case is also executed.</em>
+</p>
+
+<ol start="6">
+<li>
+  <p>
+    Programs <a href="light-MyroC-switch.c">light-MyroC-switch.c</a> and 
+    <a href="light-MyroCDev-switch.c">light-MyroCDev-switch.c</a> are
+    modified from the earlier light-sensing programs.  In the original
+    programs, categories of light intensities were identified through
+    nested <tt>if ... else if</tt> statements.  Since the categories were
+    organized in 10,000 groupings of light intensities, division of the
+    light intensity by 10000 provides a simple way to identify the relevant
+    category.  This gives rise to the use of a <tt>switch</tt> statement.
+  </p>
+
+  <p>
+    Compile and run these programs under different light conditions.  The
+    review the code to determine how they work.
+  </p>
+
+<li>
+  <p>
+    Remove the <tt>break</tt> statements from these programs, and run them
+    again.  Explain in your own words what purpose the <tt>break</tt>
+    statements address.
+  </p>
+</ol>
+
+<h2>Homework</h2>
+
+<h3>Testing Two Things at Once</h3>
+<p>
+As with earlier commentary in this lab, these notes are based on comments
+by David Cowden.
+</p>
+
+<p>
+Consider the where there is an obstacle in front of both sensors. Using the
+previous code, first it would check if there is an obstacle in front of the
+left sensor. Since there is one, it would turn right. Then it would go on
+to whatever comes next, which could be going forward. However, the left
+sensor could still have the same obstacle in front of it if the robot
+didn't turn enough. 
+</p>
+
+<p>
+How could we make this code work better?
+</p>
+<div class="block">
+<pre>
+    if ( left sensor && !right sensor)
+        turn right;
+    else if ( !left sensor && right sensor)
+        turn left;
+    else if ( left sensor && right sensor )
+        turn 180 degrees;
+    else 
+        go forward;
+</pre>
+</div>
+<p>
+This checks for any situation that might occur and tells the robot what to
+do in each one.
+</p>
+
+<p>
+The problem becomes even more prevalent if the data from the sensors was
+gathered beforehand (as they should be), and then the tests were
+executed:
+</p>
+
+<div class="block">
+<pre>   
+    int left  = rGetIRTxt ("left");
+    int right = rGetIRTxt ("right");
+    if ( left )
+        turn right;
+    else if ( right )
+        turn left;
+</pre>
+</div>
+
+<p>
+  In this case, if both were true, the robot would just turn
+  right, then turn left, and end back where it started.  
+</p>
+<p>
+  <em>It is very important that you consider <b>when</b> exactly
+    you are asking for sensor data from the robot.  The above example
+    illustrates the generally correct method of gathering data before
+    examining it.</em>  To illustrate the importance, consider the
+  following code:
+</p>
+<div class="block">
+<pre>
+    if ( rGetIRTxt("left") && other_condition1 )
+        result1();
+    else if ( rGetIRTxt("left") && other_condition2 )
+        result2();
+    else if ( rGetIRTxt("left") && other_condition3 )
+        result3();
+    else if ( rGetIRTxt("left") && other_condition4 )
+        result4();
+</pre>
+</div>
+
+<p>
+  By placing the call to the function <tt>rGetIRTxt</tt> in the if
+  statement, you are actually gathering the data four
+  <em>[different]</em> times. Calling the function many times is less
+  efficient than calling it once, giving the value to a variable, and just
+  using that variable.  Suppose the robot is moving beforehand.  When the
+  program gets to the first test, <tt>rGetIRTxt</tt> fails and so execution
+  moves on to the first else.  But, by now the robot has moved in range of
+  an obstacle.  The value for <tt>rGetIRTxt</tt> would then be different
+  when the robot is queried again -- causing the first <tt>else if</tt> to
+  pass based on the altered value of the IR sensor.  If you examine the
+  logic in the case that all <tt>other_condition</tt>s are true, the
+  program never should have gotten to the first <tt>else if</tt> if the
+  value of <tt>rGetIRTxt</tt> was initially <tt>false</tt> .
+</p> 
+<p>
+  To avoid the situation altogether, store the value from one
+  call to <tt>rGetIRTxt</tt> first.  Then perform all the tests on
+  that variable.
+</p>
+
+<h3>The <tt>&&</tt> and <tt>||</tt> Operators</h3>
+
+<p>
+  To combine two tests, use the <tt>&&</tt> (AND), and <tt>||</tt> (OR)
+  operators.  If you want certain code to execute only if <em>both</em>
+  tests are true, use the AND operator.  If your want to do something
+  if <em>either</em> test is true use the OR operator.
+</p>
+
+<ol start=8>
+
+<li>
+  <p>
+    Copy the program <a href="combine-tests.c">combine-tests.c</a> to your
+    working directory and open it in an editor.  This program is similar to
+    parts of what you may have done in Steps 3 and 4 of this lab.
+  </p>
+
+  <ol class="withloweralpha">
+    <li>
+      <p>
+        Replace the <tt>else if</tt> construct with a single test.  That
+        is, move both tests to the first <tt>if</tt> statement.
+      </p>
+      
+    <li>
+      <p>
+        Modify the program further, so that the robot moves backwards if both
+          sensors are blocked.  That is, 
+      </p>
+        <ul>
+          <li>
+            if both sensors are blocked, the robot should move backward
+          <li>
+            if only the left sensor is blocked, the robot should turn right
+          <li>
+            if only the right sensor is blocked, the robot should turn left
+        </ul>
+
+    <li>
+        <p>
+          As a further variation, insert the following code within your
+ program.
+        </p>
+ 
+<div class="block">
+<pre>
+    if ( left || right )
+      rBeep(1, 550);
+</pre>
+</div>     
+   
+        <p>
+          What happens when you put an obstacle in
+          front of any of the sensors?
+        </p> 
+
+</ol> 
+</ol> 
+
+<h3>Switch to avoid obstacles</h3>    
+
+<p>
+   Steps 3 and 4 used the IR sensors to infer whether or not an obstacle
+   was located in front of the Scribbler 2 body.  In this Step, you are
+   asked to use the obstacle sensors on the Fluke that plugs into the
+   Scribbler 2.  Values returned from the <tt>rGetObstacleTxt</tt>
+   function range from 0 to 6000.
+</p>
+
+
+<ol start="9">
+  <li>
+    <p>
+      Write a program that behaves in different ways, according to the data
+      obtained from the <tt>rGetObstacleTxt</tt> function.
+    </p>
+    <ol class="withloweralpha">
+      <li>
+        Query the robot for the value of its obstacle
+        sensors (these are the IR sensors located on the fluke dongle)
+      <li>
+        convert the result to a range from 0 to 5 (or 1 to 6).
+      <li>
+        use a <tt>switch</tt> statement that instructs the
+    robot to perform one of 6 actions based on the range of values
+    from <tt>rGetObstacleTxt</tt>. 
+    </ol>
+
+    <p>
+      Some ideas might include moving forward for longer amounts of time
+      the farther away the robot is from an obstacle, or beeping longer or
+      multiply times if the robot is closer to an object.
+    </p>
+    <p>
+      <i>Hint:</i> Remember integer division truncates any decimal in C.
+    </p>
+
+</ol>
+
+<!--#include file="body-footer.inc"-->
+ 
+</div> <!-- labcontent -->
+
+<div class="footer">
+<hr>
+<p>
+  This document is available on the World Wide Web as
+</p>
+
+<div class="address">
+<pre>
+     http://www.cs.grinnell.edu/~walker/courses/161.sp14/modules/cond-loops-testing/lab-conditionals.shtml<br>
+</pre>
+</div>
+
+<hr>
+
+<table width="100%">
+  <tr><td>
+      <em>created 22 July 2011 by David Cowden</em><br>
+      <em>last full revision 29 July 2011 by David Cowden</em><br>
+      <em>minor editing 24 August 2011 by Henry M. Walker</em><br>
+      <em>moderate editing 3 October 2011 by Henry M. Walker</em><br>
+      <em>moderate editing 5 October 2011 by Dilan Ustek</em><br>
+      <em>editing (wording for cp, html corrections) 20 July 2012 by Henry M. Walker</em><br>
+      <em>editing (updated URL) 10 September 2013 by Henry M. Walker</em><br>
+      <em>reorganized 25 January 2014 by Henry M. Walker</em><br>
+   <em>readings added 19 September 2014 by Henry M. Walker</em>
+    </td>
+    
+    <td rowspan="2" align="right">
+      <a href="http://validator.w3.org/check/referer">
+        <img border="0" src="/~walker/valid-html401-blue.png" 
+             alt="Valid HTML 4.01!" height="31" width="88">
+      </a>
+      <a href="http://jigsaw.w3.org/css-validator/">
+        <img border="0" src="/~walker/vcss-blue.png" 
+             alt="Valid CSS!" height="31" width="88"></a> 
+    </td>
+  </tr>
+  
+  <tr><td> 
+      For more information, please contact
+      <a class="footer-a" href="http://www.cs.grinnell.edu/%7Ewalker/"> 
+        Henry M. Walker
+      </a> 
+      at
+      <a class="footer-a" href="mailto:walker@cs.grinnell.edu">
+        walker@cs.grinnell.edu
+      </a>.
+  </td></tr>
+</table>
+
+<hr>
+<!--#include file="copyright-notice.inc"-->
+
+</div> <!-- footer -->
+</div> <!-- body -->
+</body>
+</html>

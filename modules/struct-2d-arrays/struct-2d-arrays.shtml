@@ -1,0 +1,260 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>CSC 161 Lab. Exercise on Image Processing</title>  
+    <link rev="made" href="mailto:walker@cs.grinnell.edu">
+</head>
+<body>
+<div class="body">
+<!--#include file="header.inc"-->
+
+<div class="labcontent">
+
+<h1>CSC 161 Module on Image Processing with the Scribbler 2</h1>
+
+<h2>Summary and Main Topics</h2>
+<p>
+This module introduces the customizable nature of self-written programs by
+using structs and 2-dimensional arrays, particularly emphasizing their uses
+with Myro Pictures.
+</p>
+
+<ol>
+<li>  Pictures
+<li>  Structs
+<li>  Pixels
+<li>  Two Dimensional Arrays
+<li>  Insertion Sort
+<li>  Machine-level operations
+</ol>
+
+<h2>Day-by-day Details</h2>
+
+<table border>
+
+<tr>
+  <th>Day
+  <th>Topic
+  <th>Preparation
+  <th>In-class
+  <th>Due Date
+  <th>Availability<br>for<br>Extra<br>Credit
+</tr>
+
+<tr>
+  <td valign=top>Wednesday, October&nbsp;15
+  <td valign=top>Module on Pictures<br>
+  <td valign=top>&nbsp;
+  <td valign=top>Examples
+    <ul class="index">
+      <li><a href="square-move-1.c">square-move-1.c</a>
+      <li><a href="square-move-2.c">square-move-2.c</a>
+      <li><a href="square-move-3.c">square-move-3.c</a>
+      <li><a href="square-move-4.c">square-move-4.c</a>
+      <li><a href="square-move-5.c">square-move-5.c</a>
+      <li><a href="picture-splice.c">picture-splice.c</a>
+      <li><a href="2D-array-alt.c">2D-array-alt.c</a>
+    </ul>
+  <td valign=top>&nbsp;
+  <td valign=top>&nbsp;
+</tr>
+
+<tr>
+  <td valign=top>Friday, October&nbsp;17
+  <td valign=top><b>Hour Test 2</b>
+  <td valign=top colspan=2>Covers through Module on Characters and Strings
+  <td valign=top>&nbsp;
+  <td valign=top>&nbsp;
+</tr>
+
+<tr>
+  <td valign=top>Monday, October&nbsp;27
+  <td valign=top>Structs:  Transform a Pixel
+  <td valign=top>
+    <ul class="index">
+      <li><a href="reading-structs.shtml">reading</a>
+      <li><a href="square-move-1.c">square-move-1.c</a>
+      <li><a href="square-move-2.c">square-move-2.c</a>
+      <li><a href="square-move-3.c">square-move-3.c</a>
+      <li><a href="square-move-4.c">square-move-4.c</a>
+      <li><a href="square-move-5.c">square-move-5.c</a>
+        <li>King, Sections 16.1-16.2
+      <li>K&amp;R 6.1 - 6.2, 6.7
+    </ul>
+  <td valign=top> <a href="lab-structs.shtml">lab exercise</a>
+  <td valign=top>&nbsp;
+  <td valign=top>&nbsp;
+</tr>
+
+<tr>
+  <td valign=top>Tuesday, October&nbsp;28
+  <td valign=top>Two Dimensional Arrays
+  <td valign=top><ul class="index">
+      <li>King, Section 8.2
+      <li>K&amp;R 5.7, 6.3 - 6.4
+      <li><a href="2D-array-with-proc.c">2D-array-with-proc.c</a>
+      <li><a href="2D-array.c">2D-array.c</a>
+      <li><a href="array-move.c">array-move.c</a>
+      </ul>
+  <td valign=top><a href="lab-2D-array.shtml">lab exercise</a>
+  <td valign=top>&nbsp;
+  <td valign=top>Tuesday, November&nbsp;11
+</tr>
+
+<tr>
+  <td valign=top>Wednesday, October&nbsp;29
+  <td valign=top>Insertion Sort
+  <td valign=top>
+    <ul class="index">
+      <li><a href="reading-insertion-sort.shtml">Insertion
+      Sort Reading</a>
+    </ul>
+  <td valign=top><a href="lab-insertion-sort.shtml">lab exercise</a>
+  <td valign=top>&nbsp;
+  <td valign=top>&nbsp;
+</tr>
+
+<tr>
+  <td valign=top>Friday, October&nbsp;31
+  <td valign=top>Bitwise operations and unions
+  <td valign=top><ul class="index">
+      <li>King, Sections 16.4, 20.1
+      <li>K&amp;R 2.9, 6.8
+      </ul>
+  <td valign=top><a href="lab-bit-ops.shtml">lab exercise</a>
+  <td valign=top>&nbsp;
+  <td valign=top>&nbsp;
+</tr>
+
+<tr>
+  <td valign=top>Monday, November&nbsp;3
+  <td valign=top><a href="../../suppl-prob.shtml#3"><b>Supplemental
+  Problem&nbsp;3</b></a>
+  <td valign=top>&nbsp;
+  <td valign=top><a href="../../suppl-prob.shtml#3">Supplemental
+  Problem&nbsp;3</a> (done individually) 
+  <td valign=top>Monday, November&nbsp;3
+  <td valign=top>
+    <!--<a href="../../c/route-cipher/">Discussion of solutions</a>-->&nbsp;
+</tr>
+
+<tr>
+  <td valign=top>Monday, November&nbsp;3
+  <td valign=top>Module Project
+  <td valign=top>&nbsp;
+  <td valign=top><a href="#project4">project</a>
+  <td valign=top>Friday, November&nbsp;7
+  <td valign=top>&nbsp;
+</tr>
+
+</table>
+
+<a name="project4"></a>
+<h2>Project: Picture Suite</h2>
+<p>
+For this project, you will write the following series of functions which
+modify a picture. Each function should include tests and examples of
+pictures which it modifies.
+</p>
+
+<ul>
+  <li>
+    <h3><tt>void pixelStrip (Picture * pic, char color)</tt></h3>
+    <p>This function should set the R, G, or B value of every pixel in the
+    picture to 0 (depending on what <tt>char color</tt> is).<br>  For
+    example if parameter <tt>color</tt> is 'G', then this procedure should
+    change the 'G' component of each pixel in the picture to 0; the 'R' and
+    'B' components would remain unchanged.
+</p>
+  <li>
+    <h3><tt>void pictureRedder (Picture * pic)</tt>
+    <br>
+    <tt>void pictureGreener (Picture * pic)</tt>
+    <br>
+    <tt>void pictureBluer (Picture * pic)</tt></h3>
+    <p>These functions should increase the intensity of their respective colors
+    (red, green, or blue). This increase should never go past 255. The color
+    should increase less when it is already high than when it is low.</p>
+  <li>
+    <h3><tt>void circleSelect (Picture * pic, int xCenter, int yCenter,
+    int radius)</tt></h3>
+    <p>This function should select a circle from your picture and turn each
+    pixel within that circle to the corresponding grayscale value.</p>
+  <li>
+    <h3><tt>a creative function of your choosing</tt></h3>
+    <p>This function should do something interesting and creative to your
+    picture. It should not just be a rehashing of a previous exercise or lab,
+    and there should be a good amount of thought and effort placed into this
+    function.</p>
+</ul>
+
+
+<h4>Grading</h4>
+
+<ul>
+<li>
+<a href="grading-form.pdf">General Grading Form</a>
+<li>
+<a href="image-processing-grading-form.shtml">Project-specific Grading Form</a>
+</ul>
+
+
+</div>
+
+<div class="footer">
+
+<hr><p>
+
+This document is available on the World Wide Web as
+
+<BLOCKQUOTE>
+<PRE>
+http://www.cs.grinnell.edu/~walker/courses/161.sfa13/modules/struct-2d-arrays/struct-2d-arrays.shtml
+</PRE>
+</BLOCKQUOTE>
+
+<hr>
+
+<p>
+<table width="100%">
+<tr><td>
+
+   <em>created 19 July 2011 by Erik Opavsky</em><br>
+   <em>full revision 8 August 2011 by Erik Opavsky</em><br>
+   <em>edited 2 September 2011 by Henry M. Walker</em><br>
+   <em>revised 14 March 2012 by Henry M. Walker</em><br>
+   <em>revised 16 August 2012 by Henry M. Walker</em><br>
+   <em>revised 1 September 2012 by Henry M. Walker</em><br>
+   <em>dates updated 31 December 2012 by Henry M. Walker</em><br>
+   <em>grading notes updated 26 October 2013 by Henry M. Walker</em><br>
+   <em>corrected dates 12 March 2014 by Henry M. Walker</em><br>
+   <em>dates updated 12 June 2014 by Henry M. Walker</em>
+   </td>
+   <td rowspan="2" align="right">
+   <a href="http://validator.w3.org/check/referer"><img border="0" 
+      src="/~walker/valid-html401-blue.png" alt="Valid HTML 4.01!" height="31"
+      width="88"></a>
+   <a href="http://jigsaw.w3.org/css-validator/"><img border="0"
+       src="/~walker/vcss-blue.png" 
+       alt="Valid CSS!" height="31"
+       width="88"></a>
+   </td>
+</tr>
+
+<tr><td>
+   For more information, please contact
+   <a class="footer-a" href="http://www.cs.grinnell.edu/%7Ewalker/">Henry M. Walker</a> at
+   <a class="footer-a" href="mailto:walker@cs.grinnell.edu">walker@cs.grinnell.edu</a>.
+   </td></tr>
+</table>
+
+<hr>
+<!--#include file="copyright-notice.inc"-->
+
+</div>
+</div>
+</body>
+</html>
+

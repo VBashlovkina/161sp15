@@ -1,0 +1,731 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>CSC 161 Lab. Exercise on Program Correctness and Program
+    Design</title> 
+    <link rev="made" href="mailto:walker@cs.grinnell.edu">
+</head>
+<body BGColor="eaeaea">
+<div class="title-header">
+<table width="100%">
+<tr>
+<td class="font-tiny" width="33%" align="left">CSC 161</td>
+<td class="font-tiny" width="33%" align="center">Grinnell College</td>
+<td class="font-tiny" width="33%" align="right">Spring, 2010</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td colspan="3" class="font-large" align="left">
+Imperative Problem Solving and Data Structures</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+</tr>
+</table>
+</div>
+<P>
+
+
+<h1>Program Correctness and Program Testing</h1>
+
+<h2>Abstract</h2> 
+
+<p>
+This reading discusses several elements of program correctness and testing:
+</p>
+
+<p>
+<ul>
+<li>
+the specification of procedures using <a href="#pre-post"> pre- and
+post-conditions,</a> 
+<li>
+<a href="#testing?">philosophies</a>  behind checking or not testing post
+conditions,
+<li>
+<a href="#assert">the use of the <tt>assert</tt> procedure</a>
+<li>
+<a href="#frame-of-mind">a frame of mind for testing,</a>
+<li>
+<a href="#test-cases">choosing test cases,</a>
+</ul>
+
+<h2>Introduction</h2>
+
+<p>
+We begin with a short program and simple question:  Is the following
+program correct?
+</p>
+
+<pre>
+   /* a simple C program */
+   #include &lt;stdio.h&gt;
+   
+   /* Declare conversion constant */
+   /* const tells C compiler this variable may not be changed */
+   const float CONVERSION_FACTOR = (float) 1.056710;   /*quarts to liters */
+   
+   int main()
+   {
+     /* input */
+     float quarts, liters;
+     printf ("Enter a value:  ");
+     scanf ("%f", &amp;quarts);
+   
+     /* process value read */
+     liters = quarts / CONVERSION_FACTOR;
+   
+     /* output */
+     printf ("Result: %f quarts = %f liters\n", quarts, liters);
+   
+     return 0;
+   }
+</pre>
+
+<p>
+The answer is "Maybe &mdash; the program may or may not be correct";
+to expand, the correctness of this program depends upon what problem is to
+be solved.  
+</p>
+
+<p>
+The program is correct, IF
+</p>
+
+<ul>
+<li>
+one is trying to convert a value in quarts to the corresponding value of
+liters, AND
+<li>
+<tt>float</tt> data type has adequate precision.
+</ul>
+
+<p>
+However, the program is incorrect otherwise:
+</p>
+
+<ul>
+<li>
+The program likely is not correct if we want 25 digits of accuracy in the
+answer.
+<li>
+The program certainly is not correct if the problem was to determine
+whether or not it will rain tomorrow.
+</ul>
+
+<p>
+<b>Point:</b>  Discussions about problem solving and the correction
+of solutions depend upon a careful specification of the problem.
+</p>
+
+<h2><a name="pre-post">Pre- and Post-Conditions</a></h2>
+
+<p>
+In order to solve any problem, the first step always should be to develop a
+clear statement of what initial information may be available and what results
+are wanted.  For complex problems, this problem clarification may require
+extensive research, ending in a detailed document of requirements.  (I know
+of one commercial product, for example, where the requirements documents
+filled 3 dozen notebooks and occupied about 6 feet of shelf space.)  
+Even for simple problems, we need to know what is expected.  
+</p>
+
+<p>
+Within the context of introductory courses, assignments often give
+reasonably complete statements of the problems under consideration, and a
+student may not need to devote much time to determining just what needs to
+be done.  In real applications, however, software developers may spend
+considerable time and energy working to understand the various activities
+that must be integrated into an overall package and to explore the needed
+capabilities.
+</p>
+
+<p>
+Once an overall problem is clarified, a natural approach in Scheme or C
+programming is to divide the work into various segments &mdash; often
+involving multiple procedures or functions.  For each code segment,
+procedure, or function, we need to understand the nature of the information
+we will be given at the start and what is required of our final results.
+Conditions upon initial data and final results are called
+<i>pre-conditions</i> and <i>post-conditions</i>, respectively.
+</p>
+
+<ul>
+<li>
+<p>
+<i>Pre-Conditions</i> are constraints on the types or values of its
+arguments.  
+</p>
+
+<li>
+<p>
+<i>Post-conditions</i> specify what should be true at the end of a
+procedure.  In Scheme or C, a post-condition typically is a statement of
+what a procedure should return.
+</p>
+</ul>
+
+<p>
+More generally, an <i>assertion</i> is a statement about variables at a
+specified point in processing.  Thus, a pre-condition is an assertion about
+variable values at the start of processing, and a post-condition is an
+assertion at the end of a code segment.
+
+<p>
+It is good programming style to state the pre- and post-conditions for each 
+procedure or function as comments. 
+
+<h3>Pre- and Post-Conditions as a Contract</h3>
+
+<p>
+One can think of pre- and post-conditions as a type of contract between the 
+developer of a code segment or function and the user of that function.
+</p>
+
+<p>
+<ul>
+<li>
+The user of a function is obligated to meet a function's pre-conditions
+when calling the function.
+<li>
+Assuming the pre-conditions of a function are met, the developer is
+obligated to perform processing that will produce the specified
+post-conditions.
+</ul>
+
+<p>
+As with a contract, pre- and post-conditions also have implications 
+concerning who to blame if something goes wrong.
+</p>
+
+<p>
+<ul>
+<li>
+The developer of a function should be able to assume that pre-conditions
+are met.
+<li>
+If the user of a function fails to satisfy one or more of its pre-conditions, 
+the developer of a function has no obligations whatsoever &mdash; the 
+developer is blameless if the function crashes or returns incorrect results.
+<li>
+If the user meets the pre-conditions, then any errors in processing or in
+the function's result are the sole fault of the developer.
+</ul>
+
+<h3>Example:  The Bisection Method</h3>
+
+<p>
+Suppose we are given a continuous function <i>f</i>, and we want to
+approximate a value <i>r</i> where <i>f(r)=0</i>.  While this can be a
+difficult problem in general, suppose that we can guess two points <i>a</i>
+and <i>b</i> (perhaps from a graph) where <i>f(a)</i> and <i>f(b)</i> have
+opposite signs. The four possible cases are shown below: 
+</p>
+
+<img src="http://www.cs.grinnell.edu/~walker/courses/161.sp10/readings/bisection.gif" alt="four cases for the bisection method">
+
+<p>
+We are given <i>a</i> and <i>b</i> for which <i>f(a)</i> and <i>f(b)</i>
+have opposite signs.  Thus, we can infer that a root <i>r</i> must lie in
+the interval <i>[a, b]</i>. In one step, we can cut this interval in half
+as follows. If <i>f(a)</i> and <i>f(m)</i> have opposite signs, then
+<i>r</i> must lie in the interval <i>[a, m]</i>; otherwise,
+<i>r</i> must lie in the interval <i>[m, b]</i>.
+</p>
+
+<h4>Finding Square Roots</h4>
+
+<p>
+As a special case, consider the function <i>f(x) = x<sup>2</sup> - a</i>.  
+A root of this function occurs when <i>a = x<sup>2</sup></i>, or <i>x =
+sqrt(a).</i>  Thus, we can use the above algorithm to compute the square
+root of a non-negative number.  A simple program using this bisection
+method follows:
+</p>
+
+<pre>
+   /* Bisection Method for Finding the Square Root of a Positive Number */
+
+   #include &lt;stdio.h&gt;
+
+   int main () {
+     /*  pre-conditions:  t will be a positive number
+      * post-conditions:  code will print an approximation of the square root of t
+      */
+   
+     double t;        /* we approximate the square root of this number */
+     double a, b, m;  /* the desired root will be in interval [a,b] with midpoint m */
+     double fa, fb, fm;  /* for f(x) = x^2 - t, the values f(a), f(b), f(m), resp. */
+     double accuracy = 0.0001;  /* desired accuracy of result */
+     
+     /* Getting started */
+     printf ("Program to compute a square root\n");
+     printf ("Enter positive number: ");
+     scanf ("%lf", &amp;t);
+   
+     /* set up initial interval for the bisection method */
+     a = 0;
+     if (t < 2.0)
+       b = 2.0;
+     else
+       b = t;
+   
+     fa = a*a - t;
+     fb = b*b - t;
+   
+     while (b - a > accuracy) {
+       m = (a + b) / 2.0;  /* m is the midpoint of [a,b] */
+       fm = m*m - t;
+       if (fm == 0.0) break;  /* stop loop if we have the exact root */
+   
+       if ((fa * fm) < 0.0) { /* check if f(a) and f(m) have opposite signs */
+         b = m;
+         fb = fm;
+       }
+       else {
+         a = m;
+         fa = fm;
+       }
+     }
+
+     printf ("The square root of %lf is approximately %lf\n", t, m);
+     return 0;
+   }
+</pre>
+
+<p>
+As this program indicates, the program assumes that we are finding the
+square root of a positive number:  thus, a pre-condition for this code is
+that the data entered will be a positive number.  At the end, the program
+prints an approximation to a square root, and this is stated as a
+post-condition. 
+
+<h2><a name="testing?">To Test Pre-Conditions or Not?</a></h2>
+   
+<p>
+Although the user of a function has the responsibility for meeting its
+pre-conditions, computer scientists continue to debate whether functions
+should check that the pre-conditions actually are met.  Here, in summary,
+are the two arguments.
+</p>
+
+<ul>
+<li>
+<p>
+Pre-conditions should always be checked as a safety matter; a function
+should be sufficiently robust that it will detect variances in incoming
+data and respond in a controlled way.
+</p>
+
+<li>
+<p>
+Since meeting pre-conditions is a user's responsibility, a developer should 
+not add complexity to a function by handling unnecessary cases; further, 
+the execution time should not be increased for a responsible user just to
+check situations that might arise by careless users.
+</p>
+</ul>
+
+<p>
+Actual practice tends to acknowledge both perspectives in differing
+contexts.  More checking is done when applications are more critical.  As
+an extreme example, in software to launch a missile or administer drugs
+to a patient, software may perform extensive tests of correctness before
+taking an action &mdash; the cost of checking may be much less than the
+consequences resulting from unmet pre-conditions.
+</p>
+
+<p>
+As a less extreme position, it is common to check pre-conditions once &mdash;
+especially when checking is relatively easy and quick, but not to check
+repeatedly when the results of a check can be inferred.
+</p>
+
+
+<h2><a name="assert">The <tt>assert</tt> function in C</a></h2>
+
+<p>
+At various points in processing, we may want to check that various
+pre-conditions or assertions are being met.  C's <tt>assert</tt> function
+serves this purpose.
+</p>
+
+<p>
+The <tt>assert</tt> function takes a Boolean expression as a parameter.  If
+the expression is true, processing continues as planned.  However, if the
+expression is false, <tt>assert</tt> discovers the undesired condition, and
+processing is halted with an error message.
+</p>
+
+<p>
+For our square root example, two types of assertions initially come to
+mind.
+</p>
+
+<ul>
+<li>
+The user is expected to enter a positive number; entering zero or a
+negative number violates the contract of the program &mdash; the
+pre-condition.
+<li>
+During processing, numbers <i>a</i> and <i>b</i> are supposed to be
+endpoints of an interval, over which the function <i>f(x) = x*x - t</i>
+changes sign.  The bisection method fails if <i>f(a)</i> and
+<i>f(b)</i> have the same sign.
+</ul>
+
+<p>
+The following version of the root-finding program adds assertion statements
+to check both of these conditions.
+</p>
+
+<pre>
+   /* Bisection Method for Finding the Square Root of a Positive Number */
+
+   #include &lt;stdio.h&gt;
+   #include &lt;assert.h&gt;
+
+   int main () {
+     /*  pre-conditions:  t will be a positive number
+      * post-conditions:  code will print an approximation of the square root of t
+      */
+
+     double t;        /* we approximate the square root of this number */
+     double a, b, m;  /* the desired root will be in interval [a,b] with midpoint m */
+     double fa, fb, fm;  /* for f(x) = x^2 - t, the values f(a), f(b), f(m), resp. */
+     double accuracy = 0.0001;  /* desired accuracy of result */
+  
+     /* Getting started */
+     printf ("Program to compute a square root\n");
+     printf ("Enter positive number: ");
+     scanf ("%lf", &amp;t);
+     assert (t > 0);
+
+     /* set up initial interval for the bisection method */
+     a = 0;
+     if (t < 2.0)
+       b = 2.0;
+     else
+       b = t;
+
+     fa = a*a - t;
+     fb = b*b - t;
+
+     while (b - a > accuracy) {
+       assert (fa * fb < 0);  /* x^2 - t must have opposite signs at a and b */
+    
+       m = (a + b) / 2.0;  /* m is the midpoint of [a,b] */
+       fm = m*m - t;
+       if (fm == 0.0) break;  /* stop loop if we have the exact root */
+
+       if ((fa * fm) < 0.0) { /* check if f(a) and f(m) have opposite signs */
+         b = m;
+         fb = fm;
+       }
+       else {
+         a = m;
+         fa = fm;
+       }
+     }
+
+     printf ("The square root of %lf is approximately %lf\n", t, m);
+
+   }
+</pre>
+
+<p>
+When a user runs this program entering the value 2, the program runs
+normally and prints:
+</p>
+
+<pre>
+   The square root of 2.000000 is approximately 1.414246
+</pre>
+
+<p>
+However, when a user runs the program with -2, the program stops
+abruptly, printing:
+</p>
+
+<pre>
+   square-root-assert: square-root-assert.c:20: main: Assertion `t > 0' failed.
+   Aborted
+</pre>
+
+<h2><a name="frame-of-mind">A "Testing" Frame of Mind</a></h2>
+
+<p>
+Once we know what a program is supposed to do, we must consider how we know
+whether it does its job.  There are two basic approaches:
+</p>
+
+<ul>
+<li>
+<b>Verification:</b>   Develop a formal, mathematical proof that
+the program always does exactly what has been specified.
+<li>
+<b>Testing:</b> Run the program with a range of data, in each case
+checking the results with what we know to be correct.
+</ul>
+
+<p>
+Although a very powerful and productive technique, formal verification
+suffers from several practical difficulties:
+</p>
+
+<ul>
+<li>
+We must be able to specify formally all pre- and post-conditions, and this
+may require extensive development.  
+<li>
+Formal proof techniques require extensive development and are beyond 
+the scope of this course.
+<li>
+Formal verification typically assumes that compilers are correct &mdash; as
+assumption that sometimes is incorrect.
+</ul>
+
+<p>
+Altogether, for many programs and in many environments, we often try to
+infer the correctness of programs through testing.  However, it is only
+possible to test all possible cases for only the simplest programs.  Even
+for our relatively-simple program to find square roots, we cannot
+practically try all possible positive, double-precision numbers as input.
+</p>
+
+<p>
+Our challenge for testing, therefore, is to select test cases that have
+strong potential to identify any errors.  The goal of testing is not to
+show the program is correct &mdash; there are too many possibilities.
+Rather, <i>the goal of testing is to locate errors.</i>  In developing tests, we
+need to be creative in trying to break the code; how can we uncover an error?
+ </p>
+
+<h2><a name="test-cases">Choosing Testing Cases</a></h2>
+
+<p>
+As we have discussed, our challenge in selecting tests for a program
+centers on how to locate errors.  Two ways to start look at the problem
+specifications and at the details of the code:</p>
+
+<ul>
+<li>
+<p>
+<i>Black-Box Testing:</i>  The problem is examined to determine the logical 
+cases that might arise.  Test cases are developed without reference to
+details of code.
+</p>
+<li>
+<p>
+<i>White-Box Testing:</i>  Code is examined to determine each of the
+possible conditions that may arise, and tests are developed to exercise
+each part of the code.
+</p>
+</ul>
+
+<p>
+A list of potential situations together with specific test data that check
+each of those situations is called a <i>test plan</i>.
+</p>
+
+<h4>A Sample Test Plan</h4>
+<p>
+To be more specific, let's consider how we might select test cases for the
+square-root function.
+</p>
+
+<ul>
+<li>
+<p>
+Black-box Testing of the Square-Root Program
+</p>
+Since we can choose any values we wish, we will choose values for which we
+already know the answer.  Often we choose some small values and some large ones.
+<ul>
+<li>
+Input: 0.25  (answer should be 0.5 &mdash; (1/2)<sup>2</sup> is 1/4)
+<li>
+Input: 9  (answer should be 3)
+</ul>
+
+<li>
+White-box Testing<br>
+We want to exercise the various parts of the code.<br><br>
+The program sets <i>b</i> to 2 when finding the square root of a
+small number, so we want to cover that case:
+<ul>
+<li>
+Input: 0.25  (from above &mdash; value smaller than 1)
+<li>
+Input: 1.44 (1.2 squared &mdash; value larger than 1, but smaller than 2)
+</ul>
+Similarly, the program sets <i>b</i> to <i>t</i> for larger numbers, and we
+want to cover that case:
+<ul>
+<li>
+Input: 9  (from above)
+</ul>
+
+The main loop stops if the loop discovers the square root exactly, so we
+want to select cases that have this property:
+<ul>
+<li>
+Input:  1 (should reach this result on the first iteration)
+<li>
+Input:  16 (should reach this result when <i>b</i> moves from 16 to 8 to 4)
+</ul>
+
+The main loop sometimes changes <i>a</i> and sometimes changes <i>b</i>, so
+we want input that guarantees we will check both of those code segments.
+<ul>
+<li>
+Input:  0.25  (for numbers smaller than 1, the square root is larger than
+the number, so <i>a</i> will have to move right in the loop)
+<li>
+Input:  9  (for numbers larger than 1, the square root is smaller than the
+number, so <i>b</i> will have to move left in the loop)
+</ul>
+</ul>
+
+<p>
+Putting these situations together, we seem to test the various parts of the
+code with these test cases:
+</p>
+
+<ul>
+<li>
+Input: 0.25
+<li>
+Input:  1
+<li>
+Input:  1.44
+<li>
+Input:  9
+<li>
+Input:  16
+</ul> 
+
+<p>
+Each of these situations examines a different part of typical processing.
+More generally, before testing begins, we should identify different types 
+of circumstances that might occur.  Once these circumstances are
+determined, we should construct test data for each situation, so that our
+testing will cover a full range of possibilities.  
+</p>
+
+<h3>Debugging</h3>
+
+<p>
+While the initial running of a program has been known to produce helpful
+and correct results, your past programming experience probably suggests
+that some errors usually arise somewhere in the problem-solving process.
+Specifications may be incomplete or inaccurate, algorithms may contain
+flaws, or the coding process may be incorrect.  Edsger Dijkstra, a very
+distinguished computer scientist, once observed&sup1; that in most
+disciplines such difficulties are called <i>errors</i> or <i>mistakes</i>,
+but that in computing this terminology is usually softened, and flaws are
+called <i>bugs</i>.  (It seems that people are often more willing to
+tolerate errors in computer programs than in other products.)&sup2;
+
+<p>
+Novice programmers sometimes approach the task of finding and correcting an
+error by trial and error, making successive small changes in the source code
+("tweaking" it), and reloading and re-testing it after each change,
+without giving much thought to the probable cause of the error or to how
+making the change will affect its operation.  <em>This approach to
+debugging is ineffective</em>, for two reasons:
+</p>
+
+<ul>
+<li>
+<p>
+Tweaking is time-consuming.  Novice programmers tend to have a naive
+confidence that the next small change in the source code, whatever it is,
+will fix the problem.  This is seldom the case.  If you detect an error in
+a procedure, and the first tweak doesn't fix it, the next twelve tweaks
+probably won't either -- so <em>don't bother with them</em>.  Push yourself
+away from the keyboard and study the context.  Don't make even one more
+change in the source code until you're ready to test a well-thought-out
+hypothesis about the cause of the error.  (This is also a good time to make
+a separate copy of the procedure, in Emacs, so that you can backtrack to
+the current version if subsequent experimentation requires extensive
+temporary rewriting.)
+</p>
+</li>
+
+<li>
+<p> 
+Tweaking usually fixes only a specific, local problem.  Very often an error
+is a symptom of a general misunderstanding on the part of the programmer,
+one that affects the operation of the procedure in cases other than the one
+being tested.  Unless you address this general problem, tweaking a
+procedure in such a way that it passes the particular test that it formerly
+failed is likely to make your program worse instead of better.  </p></li>
+</ul>
+
+<p>
+A much more time-efficient approach to debugging is to examine exactly what
+code is doing.  While a variety of tools can help you analyze code, a
+primary technique involves carefully tracing through what a procedure is
+actually doing.  We will discuss various approaches for code tracing and
+analysis throughout the semester.
+</p>
+
+
+<hr>
+<h2>Notes</h2>
+<ol>
+<li>
+Edsger Dijkstra, "On the Cruelty of Really Teaching Computer Science,"
+<i>Communications of the ACM</i>, Volume 32, Number 12, December 1989,
+p. 1402.
+<li>
+Paragraph modified from Henry M. Walker, <i>The Limits of Computing</i>,
+Jones and Bartlett, 1994, p. 6.
+</ol>
+
+
+<hr><p>
+
+This document is available on the World Wide Web as
+
+<BLOCKQUOTE>
+<PRE>
+http://www.cs.grinnell.edu/~walker/courses/161.sp09/readings/reading-testing.shtml
+</PRE>
+</BLOCKQUOTE>
+
+<hr>
+
+<table width="100%">
+<tr><td>
+   <em>created 18 May 2008</em> by Henry M. Walker<br> 
+   <em>last revised 7 February 2010</em>
+   </td>
+   <td rowspan="2" align="right">
+   <a href="http://validator.w3.org/check/referer"><img border="0" 
+      src="/~walker/valid-html401-blue.png" alt="Valid HTML 4.01!" height="31"
+      width="88"></a>
+   <a href="http://jigsaw.w3.org/css-validator/"><img border="0"
+       src="/~walker/vcss-blue.png" 
+       alt="Valid CSS!" height="31"
+       width="88"></a>
+   </td>
+</tr>
+
+<tr><td>
+   For more information, please contact
+   <a href="http://www.cs.grinnell.edu/%7Ewalker/">Henry M. Walker</a> at
+   <a href="mailto:walker@cs.grinnell.edu">walker@cs.grinnell.edu</a>.
+   </td></tr>
+</table>
+
+<hr>
+<!--#include file="copyright-notice-reading-black.inc"-->
+
+</body>
+</html>

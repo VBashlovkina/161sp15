@@ -1,0 +1,20 @@
+#!/bin/bash
+gcc -o word-grid word-grid.c
+
+word-grid << !
+14 21
+    SYSTEM            
+COMPUTER             
+   PROGRAM           
+MEMORY NETWORK    E  
+   STRING   A     Q  
+    A  L    L     U  
+    R CO    G     A  
+ TP R AG    E     TS 
+ HH A LI    B     IC 
+ EY Y CC    R     OH 
+ OS   U     A     NEW
+GRINNELL           M 
+ YC   U            E 
+  S   S                                      
+!

@@ -1,0 +1,294 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>CSC 161 Lab. Exercise Structuring Structs</title>  
+    <link rev="made" href="mailto:walker@cs.grinnell.edu">
+  </head>
+  <body>
+        <div class="body">
+          <!--#include virtual="header.inc"-->
+
+<div class="labcontent">
+<h1>Laboratory Exercise Working with Structs and Pixels</h1>
+
+
+<h2>Introduction</h2>
+
+<p>
+C groups variables together using <tt>struct</tt>s. Using
+a <tt>struct</tt>, you can simplify parameters, organize data, and protect
+information. Please refer to your textbook and
+the <a href="reading-structs.shtml">reading on <tt>struct</tt>s</a> for
+details regarding <tt>struct</tt>s in C.
+</p>
+
+<p>
+Conceptually, <tt>struct</tt>s allow a programmer to group related data
+together; pragmatically, the programmer needs to be able to work with the
+collection of data at some times and with individual pieces at other
+times.  Within a program, the use of <tt>struct</tt>s draws upon basic
+syntax and semantics.  
+</p>
+
+<h2>Preparation before Class</h2>
+
+<ul>
+<li>Reading from Text:
+    <ul>
+    <li>King, Sections 16.1-16.2
+    <li>K&amp;R 6.1 - 6.2, 6.7 
+    </ul>
+<li>Reading:  <a href="reading-structs.shtml">Structs</a>
+<li>Examples:
+    <ul>
+    <li><a href="square-move-1.c">square-move-1.c</a>
+    <li><a href="square-move-2.c">square-move-2.c</a>
+    <li><a href="square-move-3.c">square-move-3.c</a>
+    <li><a href="square-move-4.c">square-move-4.c</a>
+    <li><a href="square-move-5.c">square-move-5.c </a>
+    </ul>
+</ul>
+
+<h2>Work Started in Class</h2>
+
+<h3>Simple Structs</h3>
+
+<ol>
+<li>
+<p>
+Declare a simple <tt>Point</tt> <tt>struct</tt> which contains an <tt>int
+x</tt> and an <tt>int y</tt> coordinate. What scope (where it has to be
+declared) will you want this structure to be in if you plan on using it
+in <tt>main()</tt> and your other functions?
+</p>
+</ol>
+
+<h3>Setting a Pixel</h3>
+
+<ol start=2>
+<li>
+<p>
+Create a file named <tt>structs-practice.c</tt> in your directory for this
+lab and set it up in the standard way. Save the blank white picture,
+<a href="blank.jpg">blank.jpg</a>, into your directory, load it
+into your program with the <tt>rLoadPicture()</tt> function and save it as
+a <tt>Picture *</tt> variable. 
+</p>
+
+<p>
+<i>Note: You don't have to connect to the robot to do this.</i>
+</p>
+
+<li>
+<p>
+Look at the declaration of the Pixel structure in section 3
+of <a href="../../MyroC.h">MyroC.h</a>
+or <a href="../../MyroCDev.h">MyroCDev.h</a>.
+</p>
+
+<ol class="withloweralpha">
+<li>
+<p>
+Declare a black Pixel (rgb of 0, 0, 0).
+</p>
+
+<li>
+<p>
+Why are you able to declare your <tt>struct</tt> as just
+a <tt>Pixel</tt> as opposed to a <tt>struct Pixel</tt>?
+</p>
+
+<p>
+<i>Hint:  Look over typedef from the reading.</i>
+</p>
+</ol>
+
+<li>
+<p>
+Draw a black pixel in the middle of the picture using 
+<tt>rSetPicturePixel()</tt> and then show the modified picture.
+</p>
+
+</ol>
+
+<h3>Using Your Point</h3>
+
+<ol start=5>
+
+<li>
+<p>
+Write a function 
+</p>
+
+<div class="block">
+<pre>
+void drawPoint (Picture * pic, struct Point p, Pixel pix)
+</pre>
+</div> 
+
+<p>
+which will draw a pixel onto the <tt>Picture</tt> at the given
+<tt>Point</tt>. Then draw your black pixel again somewhere on the
+<tt>Picture</tt>.
+</p>
+
+</ol>
+
+<h3>Drawing a Rectangle</h3>
+
+<ol start=6>
+<li>
+<p>
+Before drawing a rectangle, it would be convenient to be able to use
+our <tt>Point</tt> without having to explicitly say <tt>struct</tt>.
+Change your <tt>struct Point</tt> declaration so it is in the following
+format:
+</p>
+
+<div class="block">
+<pre>
+ typedef struct {
+     <i>variables</i>
+} Point;
+</pre>
+</div>
+
+<p>
+This defines a new data type for you to use freely within your program.
+</p>
+
+<li>
+<p>
+Consider a rectangle with sides being horizontal and vertical.  Such a
+rectangle can be fully specified if one knows the coordinates of the
+upper-left corner and the coordinates of the lower-right corner.  
+</p>
+
+<p>
+Declare a rectangle structure using the type <tt>Point</tt>. You can freely nest
+structs within structs, so make a <tt>Rect</tt> struct which contains
+two <tt>Point</tt> structs.  
+</p>
+
+</ol>
+
+<h2>Homework</h2>
+
+<h3>Drawing Rectangles, Continued</h3>
+
+<ol start=8>
+
+<li>
+<p>
+Write the function <tt>drawRectangle (Rect r)</tt> which will draw a
+rectangle on your picture (just the outline, you don't have to fill the
+rectangle in). It may help to make the precondition of your function that
+the points in your rectangle are in a particular order (e.g. top left,
+bottom left, bottom right, top right).
+
+</p>
+
+<ol class="withloweralpha">
+<li>
+<p>
+Test your function with various <tt>Rect</tt>s to make sure it works.
+</p>
+
+<li>
+<p>
+Make your rectangle have bolder lines so that it is more distinct.
+</p>
+</ol>
+</ol>
+
+<h4>Optional, Challenge Problem</h4>
+
+<ol start=9>
+<li>
+<p>
+To be more general, a rectangle would not need to have its sides horizontal
+and vertical.  Declare a general rectangle <tt>struct</tt> to specify a
+rectangle at any angle.
+</p>
+
+<ol class="withloweralpha">
+<li>
+One approach would be to record four <tt>Point</tt>s for the corners.
+<br>
+With four corners specified, one would need a function <tt>isRectangle</tt>
+that would check if the sides connecting the corners were perpendicular. 
+<li>
+A second approach would record <tt>Point</tt>s for three corners and
+compute the location of the fourth corner.
+<br>
+With three corners specified, one would need a
+function <tt>fourthPoint</tt> that would compute the coordinates of the
+fourth corner, given the locations (in order) of the other three.
+</ol>
+
+<p>
+Using one (or both) of these two approaches for a general rectangle, write
+a function <tt>drawGeneralRectangle</tt> that would draw the outline of a
+general rectangle.
+</p>
+ 
+</ol>
+
+<!--#include file="body-footer.inc" -->
+
+
+</div>
+
+<div class="footer">
+
+<hr><p>
+
+This document is available on the World Wide Web as
+
+<blockquote>
+<pre>
+http://www.cs.grinnell.edu/~walker/courses/161.fa14/modules/struct-2d-arrays/structs-lab.shtml
+</pre>
+</blockquote>
+
+<hr>
+
+<p>
+<table width="100%">
+<tr><td>
+
+   <em>created 1 August 2011 by Erik Opavsky</em><br>
+   <em>revised 8 August 2011 by Erik Opavsky</em><br>
+   <em>revised 14 November 2011 by Erik Opavsky</em><br>
+   <em>minor editing 14 November 2011 by Henry M. Walker</em><br>
+   <em>reading reference added 17 August 2012 by Henry M. Walker</em><br>
+   <em>modest reformatting 1-2 February 2014 by Henry M. Walker</em><br>
+   <em>readings added 19 September 2014 by Henry M. Walker</em>
+   </td>
+   <td rowspan="2" align="right">
+   <a href="http://validator.w3.org/check/referer"><img border="0" 
+      src="/~walker/valid-html401-blue.png" alt="Valid HTML 4.01!" height="31"
+      width="88"></a>
+   <a href="http://jigsaw.w3.org/css-validator/"><img border="0"
+       src="/~walker/vcss-blue.png" 
+       alt="Valid CSS!" height="31"
+       width="88"></a>
+   </td>
+</tr>
+
+<tr><td>
+   For more information, please contact
+   <a class="footer-a" href="http://www.cs.grinnell.edu/%7Ewalker/">Henry M. Walker</a> at
+   <a class="footer-a" href="mailto:walker@cs.grinnell.edu">walker@cs.grinnell.edu</a>.
+   </td></tr>
+</table>
+
+<hr>
+<!--#include file="copyright-notice.inc"-->
+
+</div>
+</div>
+</body>
+</html>

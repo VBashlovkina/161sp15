@@ -1,0 +1,277 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>Laboratory Exercise on Machine-level Operations, 
+      Bit Manipulation, and Unions</title>
+    <link rev="made" href="mailto:walker@cs.grinnell.edu">
+</head>
+
+<body>
+<div class="body">
+<!--#include file="header.inc"-->
+<div class="labcontent">
+
+<H1>Machine-level Operations, Bit Manipulation, and Unions</H1>
+
+<h2>Goals</h2>  
+
+<p>
+This lab provides practice in working with data at the bit level in C.
+Specific work involves the representation of integers, the manipulation of
+bits in C, and the use of <tt>union</tt>s in C to view bit patterns in
+multiple ways.
+<p>
+
+<h2>Bit Operations</h2>
+
+<p>
+The C programming language contains the following bitwise operations:
+</p>
+
+<center>
+<table>
+<tr><th>operation&nbsp;&nbsp; <th align=left>comment</tr>
+<tr><td>&                     <td>bitwise and</tr>
+<tr><td>|                     <td>bitwise or</tr>
+<tr><td>^                     <td>bitwise exclusive or</tr>
+<tr><td>~                     <td>ones complement</tr>
+<tr><td>&lt;&lt;              <td>shift left</tr>
+<tr><td>&gt;&gt;              <td>shift right</tr>
+</table>
+</center>
+
+<h2>Work Started in Class</h2>
+
+<ol>
+<li>
+<p>
+In the <a href="../../data-representation/lab-integer-proc.shtml">Lab on Integer Processing</a>, 
+we used the C program <a
+href="/~walker/fluency-book/labs/c/integer-rep.c">~walker/c/fluency-book/integer-rep.c</a> to examine
+the bit representations of integers.  Review that program, and explain how
+the <tt>print_binary</tt> procedure works.  As part of your explanation,
+include an example for the printing of the decimal number 11.
+</p>
+
+</ol>
+
+
+<h3>Binary Representation of Integers and the <tt>data-rep.c</tt> Program</h3>
+
+<ol start=2>
+<li>
+<p>
+Program <a href="data-rep.c">~walker/c/data-rep.c</a> 
+provides an alternative framework for examining the bit representations of 
+integers and floating point numbers.
+</p>
+
+<ol class="withloweralpha">
+<li>
+<p>
+Write (on paper) the floating point numbers &plusmn 5.0 and &plusmn 11.0
+using the <a href="/~stone/courses/fundamentals/IEEE-reals.html">IEEE
+floating-point representation of real numbers.</a>
+</p>
+
+<li>
+<p>
+Run program <a href="data-rep.c">~walker/c/data-rep.c</a> to determine the
+internal representation of the integers from part 1, as actually stored on
+PC/Linux computers, and write a paragraph that explains the bits involved
+with the sign, mantissa, and exponent of these numbers.
+</p>
+
+</ol>
+
+<li>
+<p>
+Program <a href="data-rep.c">~walker/c/data-rep.c</a> uses a <tt>union</tt>
+in C as the basis of its processing. 
+</p>
+
+<ol class="withloweralpha">
+<li>
+What can be stored or accessed in a <tt>DATA</tt> type?
+<li>
+A <tt>typedef</tt> statement allows the type <tt>union DATA</tt>
+to be identified more simply as a <tt>data</tt> type.  Explain what
+data may be stored in variable <tt>d</tt> and how that data can be
+accessed.
+</ol>
+
+<li>
+<p>
+The main part of this program consists of a single loop.
+</p>
+
+<ol class="withloweralpha">
+<li>
+What is the significance of the number 1 in the <tt>while (1)</tt>
+expression?
+
+<li>
+Under what circumstances does the program terminate, and how is this made
+to happen?
+
+<li>
+[Note that <tt>continue</tt> is used in place of <tt>break</tt> in
+the default option, so execution at that spot will jump back to the top of
+the loop rather than continuing with the printing that follows.]<p>
+</ol>
+
+<li>
+<p>
+Explain how numbers are set in options 0, F, and I.  
+</p>
+
+<li>
+<p>
+Why is the number -1 used for option 1?
+</p>
+
+<li>
+<p>
+After each number is set, its value is printed using several
+representations.  While the <tt>printf</tt> statements are straight
+forward, the <tt>printBitGroups</tt> function may require some thought.
+The first use of this function comes from the call <tt>
+printBitGroups (d, 1)</tt>.  Using <tt>bitGroups</tt> as 1,
+trace the execution of <tt>printBitGroups</tt>.
+</p>
+
+<ol type="a">
+<li>
+Identify the initial values of <tt>value, mask</tt> and
+<tt>iterations</tt>.
+(Variable <tt>a</tt> is an array of integers, with subscripts between 0
+and 31.)
+<li>
+Describe the final value of variable <tt>mask</tt> after the first loop
+terminates, and explain how that bit pattern is achieved.
+<li>
+Explain what processing is done in the second loop; what are the final
+values placed in the <tt>a</tt> array, and how are these values
+determined.
+<li>
+Why do you think the <tt>value</tt> variable is declared as
+<tt>d.integer</tt>, rather than using <tt>d.integer</tt> directly
+in the second loop of <tt>printBitGroups</tt>.
+</ol>
+
+<li>
+<p>
+Explain the purpose of the call <tt>printBitGroups (d, 4)</tt>, and
+discuss how this purpose is achieved.
+</p>
+
+<ol class="withloweralpha">
+<li>
+What is the purpose of the number 4 in this call?
+<li>
+Describe the final value of variable <tt>mask</tt> after the first loop
+terminates, and explain how that bit pattern is achieved.
+<li>
+Explain what processing is done in the second loop; what are the final
+values placed in the <tt>a</tt> array, and how are these values
+determined.
+</ol>
+
+<li>
+<p>
+Write (in English) appropriate pre- and post-condidtions for function
+<tt>printBitGroups</tt>.  These conditions should be inserted as
+comments to follow the function's header, but they need NOT be checked in
+the code using <tt>assert</tt> statements or other executed tests.
+</p>
+
+</ol>
+
+<h2>Homework</h2>
+
+<ol start=10>
+
+<li>
+<p>
+Add a menu option to this program, so that the integer value of variable
+<tt>d</tt> is changed to its ones complement.
+</p>
+
+<li>
+<p>
+Add a menu option to this program that begins with the value in variable
+<tt>d</tt> and successively toggles successive bits of the variable
+&mdash; printing the binary, hexadecimal, integer, and float values of the
+results in a table.  Toggling of the bits should progress from left to
+right.  Thus, the output might have the form:
+</p>
+
+<table>
+<tr><td>binary<td>hexadecimal<td>integer form<td>float form</tr>
+<tr><td>00000000000000000000000000000000
+    <td align=right>00000000
+    <td align=right>0
+    <td align=right>0.0</tr>
+<tr><td>10000000000000000000000000000000
+    <td align=right>80000000
+    <td align=right>-2147483648
+    <td align=right>-0.0</tr>
+<tr><td>01000000000000000000000000000000
+    <td align=right>40000000
+    <td align=right>1073741824
+    <td align=right>2.0</tr>
+<tr><td>...</tr>
+</table>
+
+</ol>
+
+<!--#include file="body-footer.inc" -->
+
+</div>
+
+<div class="footer">
+
+<p>
+<hr><p>
+
+This document is available on the World Wide Web as
+
+<PRE>
+  http://www.cs.grinnell.edu/~walker/courses/161.sp12/modules/struct-2d-arrays/lab-bit-ops.shtml
+</PRE>
+
+<hr>
+<table width="100%">
+<tr><td>
+   <em>created 11 September 2001</em><br>
+   <em>revised 16 March 2010 by Henry M. Walker</em><br>
+    <em>revised 12 December 2011 by Henry M. Walker</em><br>
+    <em>minor reformatting 2 February 2014 by Henry M. Walker</em>
+  </td>
+   <td rowspan="2" align="right">
+   <a href="http://validator.w3.org/check/referer"><img border="0"
+      src="/~walker/valid-html401-blue.png" alt="Valid HTML 4.01!" height="31"
+      width="88"></a>
+   <a href="http://jigsaw.w3.org/css-validator/"><img border="0"
+       src="/~walker/vcss-blue.png"
+       alt="Valid CSS!" height="31"
+       width="88"></a>
+   </td>
+</tr>
+<tr><td>
+   For more information, please contact
+   <a class="footer-a" href="/~walker/">Henry M. Walker</a> at
+   <a class="footer-a" href="mailto:walker@cs.grinnell.edu">walker@cs.grinnell.edu</a>.
+   </tr>
+</table>
+
+<hr>
+<!--#include file="copyright-notice.inc"-->
+
+</div>
+</div>
+</body>
+</html>
