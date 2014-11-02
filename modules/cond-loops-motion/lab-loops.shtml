@@ -297,15 +297,16 @@ The Scribbler 2 movement commands may be organized into two basic groups:
 <li>
 <p>
 <i>Limited Duration Commands:</i> A duration parameter is part of the
-commands <tt>rTurn</tt>, <tt>rTurnLeft</tt>, <tt>rTurnRight</tt>, 
+commands <tt>rTurnLeft</tt>, <tt>rTurnRight</tt>, 
 <tt>rForward</tt>, and <tt>rBackward</tt>.  For each of these commands, the
-robot follows the movement for a specified amount of time and then stops.
+robot follows the movement for a specified amount of time and then stops or
+in the non-blocking situation the movement will keep going until another
+motion command is given.
 </p>
 <li>
 <p>
 <i>Ongoing Duration Commands:</i>  No duration parameter is given for the
-commands <tt>rMotors</tt>, <tt>rMove</tt>, <tt>rRotate</tt>,
-<tt>rTranslate</tt>, and <tt>rStop</tt>. Once any of these commands is
+commands <tt>rMotors</tt> and <tt>rStop</tt>. Once any of these commands is
 given, the robot will continue to follow that motion until a subsequent
 command is given.
 </p>
