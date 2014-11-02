@@ -168,6 +168,9 @@ can take input and follow commands based on input, including
       way; if user values are requested, the input/output should be handled
       in the main procedure and values passed to the procedure controlling
       the action
+    <li>
+      <b>at least two actions should be blocking and at least two actions
+      should be non-blocking</b>
   </ul>
   <li>
     robot counts the number of actions taken and prints the number of actions
