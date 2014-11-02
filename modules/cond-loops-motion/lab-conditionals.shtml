@@ -36,7 +36,7 @@ the Scribbler 2 sensors.
 <li>Reading:  <a href="reading-motion.shtml">Scribbler 2 Motion reading</a>
 <li>Examples:
     <ul>
-    <li><a href="conditional-battery.c">conditional-battery.c</a>
+    <li><a href="conditional-lightSensor.c">conditional-lightSensor.c</a>
     <li><a href="second-counter.c">second-counter.c </a>
     </ul>
 </ul>
