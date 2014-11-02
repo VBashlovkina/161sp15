@@ -33,45 +33,10 @@ Scribbler 2 with eSpeak.
   <li>Annotated programs <a href="earsHangLow.c">earsHangLow.c</a>, 
     <a href="spirit-song.c">spirit-song.c</a>
   <li><a href="MyroC.h">MyroC.h header file</a>
-  <li><a href="MyroCDev.h">MyroCDev.h header file</a>
+  
 </ul>
 
 <h2>Work Started in Class</h2>
-
-<h3>Preface:  Two Versions</h3>
-
-<p>
-Scribbler 2 robots are controlled in C using one of two software packages
-developed at Grinnell College.
-</p>
-
-<ul>
-<li>
-<tt>MyroC</tt> was developed in Summer 2011 and has been used successfully
-in CSC 161 since Fall 2011.  Behind the scenes, <tt>MyroC</tt> utilizes
-materials written in C++, and it turns out that the environment for the C++
-limits the portability of <tt>MyroC</tt>.
-<li>
-<tt>MyroCDev</tt> has been under development since August 2011.  Work is
-not complete, but most operations are available (except work with the
-robot's camera).  
-</ul>
-
-<p>
-From a user's perspective, <tt>MyroC</tt> and <tt>MyroCDev</tt> should be
-extremely similar.  A few capabilities have been refined
-in <tt>MyroCDev</tt>, and camera functions are not yet available
-in <tt>MyroCDev</tt>.  Otherwise, you can use either package.
-</p>
-
-<p>
-Through the semester, <u>please use both <tt>MyroC</tt>
-    and <tt>MyroCDev</tt>, and report any difficulties that you
-    encounter!</u>  Feedback will be very helpful in refining
-    the <tt>MyroCDev</tt> package.
-</p>
-
-
 
 <h3>Getting Started with the Scribbler 2</h3>
 <p>
@@ -127,26 +92,11 @@ emacs scribblerlab.c &
     <p>
       For the <tt>MyroC</tt> environment, use the line:
 <pre>  
-gcc -lMyroC -o scribblerlab scribblerlab.c 
-</pre>
-    <p>
-      For the <tt>MyroCDev</tt> environment:
-    </p>
-
-<ul>
-<li>
-Change the <tt>include</tt> statement for the MyroC package to
-<pre>  
-#include "MyroCDev.h"
-</pre>
-<li>
-Compile with the line
-<pre>  
-gcc -lMyroCDev -lbluetooth -o scribblerlab scribblerlab.c 
+gcc -lMyroC -lbluetooth -o scribblerlab scribblerlab.c 
 </pre>
 
 <p>
-  The <tt>MyroCDev</tt> interacts directly with a <tt>bluetooth</tt>
+  The <tt>MyroC</tt> interacts directly with a <tt>bluetooth</tt>
   package for Bluetooth communication in Linux.  This requires the
   additional parameter <tt>-lbluetooth</tt>
 </p>
@@ -259,8 +209,7 @@ one of the following two lines:
 </p>
 
 <pre>
-gcc -lMyroC -leSpeakPackage -o scribbler-espeak scribbler-espeak.c
-gcc -lMyroCDev -lbluetooth -leSpeakPackage -o scribbler-espeak scribbler-espeak.c
+gcc -lMyroC -lbluetooth -leSpeakPackage -o scribbler-espeak scribbler-espeak.c
 </pre>
 
 <li>
@@ -281,8 +230,7 @@ program to check what happens.
 <ol start=12>
 <li>
 <p>
-Look in the <a href="MyroC.h"><tt>MyroC.h</tt></a>
-or <a href="MyroCDev.h"><tt>MyroCDev.h</tt></a> header file and find the
+Look in the <a href="MyroC.h"><tt>MyroC.h</tt></a> header file and find the
 function <tt>rBeep2()</tt>.  Write a simple program and test
 how <tt>rBeep2()</tt> works. If you finish this, go through the rest of the
 header file and see if there is anything else you want to try testing out.
