@@ -33,35 +33,26 @@ to change the forwardness of the robot is:
 </p>
 
 <pre>
-   rSetForwardnessTxt(char * direction);
-</pre> 
-
-<p>
-The new development MyroC also allows the simplified command
-</p>
-
-<pre>
    rSetForwardness(char * direction);
 </pre> 
 
 <p>
-The options are "scribbler-forward" or "fluke-forward". By default, you
-should have any program incorporating motion set the forwardness to
-"fluke-forward".
+
+The options are "scribbler-forward" or "fluke-forward". By default, forwardness is set to "scribbler-forward" by rConnect. 
 </p>
 
 <h2>Robot Commands</h2>
-
-<h3>Timed Commands</h3>
 <p>
-Timed motion commands are commands that include time as a variable, so the
-robot performs the motion for the specified time. These commands are
-blocking; that is, while the Scribbler 2 is performing these commands, it
-cannot perform other actions (such as beeping). Also, remember that speed
-ranges from 0 (no movement) to 1 (full speed), and the unit of time is
-seconds. 
+ Scribbler robots responds to several motion commands that include moving forward, backward, or turning. These commands can be classified as blocking or non-blocking. It is important to note that most motion commands can fall into either category, depending on the given parameters.
 </p>
-
+<h3>Blocking and non-blocking commands</h3>
+<p>
+A <b>blocking</b> command means that while the robot is excecuting this command, the program will not proceed until the command is completed. That is, while the Scribbler 2 is performing these commands, it
+cannot perform other actions (such as beeping). A <b>non-blocking</b> command is one that allows the robot to multi-task. For example, you could issue a non-blocking forward command and have the robot beep at the same time as it moves forward.  
+</p>
+<h3>Motion Commands with a Time Parameter</h3>
+<p>
+The following motion commands allow one to specify the time variable:
 <ul>
   <li><code>rTurnLeft (double speed, double time);</code></li>
   <li><code>rTurnRight (double speed, double time);</code></li>
@@ -73,7 +64,15 @@ seconds.
     <p>This command tells the robot to move forward at half speed for 3.7
       seconds.</p> </li>
   <li><code>rBackward (double speed, double time);</code></li>
+  <li><code>rFastForward (double time);</code></li>
 </ul>
+
+As we mentioned earlier, most motion commands perform as blocking or non-blocking depending on their parameters--and motion commands with a time parameter can do exactly that. If the time given is greater than 0, the robot will move for that amount of time while blocking other commands. If the time parameter is negative, then it will be a non-blocking command that will continue until it is stopped, allowing subsequent commands to be processed in the meantime. A time of 0 will result in no motion. 
+Also, remember that speed
+ranges from 0 (no movement) to 1 (full speed), and the unit of time is
+seconds. 
+</p>
+
 
 
 <h3>Continuous Commands</h3>
