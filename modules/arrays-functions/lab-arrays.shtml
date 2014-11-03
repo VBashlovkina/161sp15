@@ -141,7 +141,7 @@ to take a picture.
 
 <div class="block">
 <pre>
-  Picture * pic;
+  Picture pic;
 </pre>
 </div>
 
@@ -156,11 +156,11 @@ to take a picture.
 </div>
 
 <li>
-<p>This is how you show a Picture 
+<p>This is how you display a Picture 
 </p>
 <div class="block">
 <pre>
-  rShowPicture (pic);
+  rDisplayPicture (pic, duration);
 </pre>
 </div>
 
