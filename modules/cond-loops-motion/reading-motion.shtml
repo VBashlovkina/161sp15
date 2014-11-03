@@ -63,7 +63,17 @@ The following motion commands allow one to specify the time variable:
     <p><b>Example: </b><code>rForward (0.5, 3.7);</code></p>
     <p>This command tells the robot to move forward at half speed for 3.7
       seconds.</p> </li>
-  <li><code>rBackward (double speed, double time);</code></li>
+  <li><code>rBackward (double speed, double time);</code>
+    <p><b>Example: </b><code>rBackward (1.0, -1.0);</code></p>
+    <p><code>rBeep (550, 3);</code></p>
+    <p><code>rStop();</code></p>
+    <p>This command tells the robot to start moving backward at full
+      speed. 
+      Because the
+      time parameter of rBackward is negative, the program continues
+      executing after the call so the robot proceeds to beep for 3
+      seconds while moving backward. After the beeping command is
+      completed, the robot executes rStop and stops motion.</p></li>
   <li><code>rFastForward (double time);</code></li>
 </ul>
 
@@ -75,12 +85,12 @@ seconds.
 
 
 
-<h3>Continuous Commands</h3>
+<h3>Commands without a time variable</h3>
 <p>
 Continuous commands are commands that do not include time as a
-variable. The robot executes these commands until a command to stop is
-issued. These commands are non-blocking; that is, while the Scribbler 2 is
-performing these commands, it can perform other actions (such as beeping).
+variable. Such commands are automatically non-blocking; that is, while the
+Scribbler 2 is performing these commands, it can perform other actions
+(such as beeping). Current MyroC.h includes only one continious command:
 </p>
 
 <ul>
@@ -89,19 +99,9 @@ performing these commands, it can perform other actions (such as beeping).
     <p>The robot moves with the left wheel at 30% of full speed, and the
     right wheel at 70% of full speed, so the robot moves in a circular
     motion.</p></li>
-  <li><code>rMove (double translate, double rotate);</code>
-    <p><b>Example: </b><code>rMove (0.6, 1);</code></p>
-    <p>The robot moves forward at 60% of full speed, while turning at full
-    speed.</p></li> 
-  <li><code>rRotate (double amount);</code>
-       <p>Sets the robot's turn speed.</p></li>
-  <li><code>rTranslate (double amount);</code>
-       <p>Sets the robot's forward speed.</p></li>
 </ul>
 <p>
-Can you think of a way to calculate the size of a circle, based on the
-rotation and tranlation speed of the robot, or how to get the robot to turn
-at a specific angle? 
+
 </p>
 <h3>Stop Commands</h3>
 <p>
