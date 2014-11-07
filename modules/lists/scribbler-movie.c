@@ -11,14 +11,14 @@ int main (void) {
   /* program that takes a movie*/ 
   printf ("Starting program:  ");
   rConnect ("/dev/rfcomm0");
-  rSetForwardnessTxt("fluke-forward");
+  rSetForwardness("fluke-forward");
 
   printf ("program asking Scribbler 2 to take and display pictures\n");
   /* determine how many pictures */
   int numPics, i;
   printf ("enter number of pictures to be taken:  ");
   scanf ("%d", &numPics);
-  Picture * pics[numPics];
+  Picture pics[numPics];
   
   printf ("taking %d pictures, while turning left\n", numPics);
   for (i = 0; i < numPics; i++)
@@ -31,16 +31,15 @@ int main (void) {
   printf ("showing pictures in original order\n");
   for (i = 0; i < numPics; i++)
     {
-      rDisplayPicture(pics[i], "movieFrame");
-      sleep(1);
+      rDisplayPicture(pics[i], 1.0, "movieFrame");
     }
 
   sleep(1);
   printf ("showing pictures in reverse order\n");
   for (i = numPics-1; i >= 0; i--)
     {
-      rDisplayPicture(pics[i], "movieFrame");
-      sleep(1);
+      rDisplayPicture(pics[i], 1.0, "movieFrame");
+
     }
 
   printf ("Closing connection to robot....");

@@ -33,7 +33,7 @@ main (int argc, char *argv[])
 {
   rConnect("/dev/rfcomm0");
 
-  rSetForwardnessTxt ("fluke-forward");
+  rSetForwardness ("fluke-forward");
 
   double speed = 1; // default speed
   int i;

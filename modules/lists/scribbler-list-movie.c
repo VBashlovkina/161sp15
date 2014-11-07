@@ -10,7 +10,7 @@
 typedef struct node * movieList;
 
 typedef struct node {
-  Picture * pic;
+  Picture pic;
   movieList next;
 } movieNode;
 
@@ -24,7 +24,7 @@ typedef struct node {
       if first is NULL, first is changed to point to the new node
       otherwise, the next field of the last node is set to the new node
 */
-void addPicture (movieList * first, Picture * frame);
+void addPicture (movieList * first, Picture frame);
 
 /* the movie is printed from first item to last, with a short delay
    between successive frames */
@@ -40,7 +40,7 @@ int main (void) {
   /* program that takes a movie*/ 
   printf ("Starting program:  ");
   rConnect ("/dev/rfcomm0");
-  rSetForwardnessTxt("fluke-forward");
+  rSetForwardness("fluke-forward");
 
   printf ("program asking Scribbler 2 to take and display pictures\n");
   /* determine how many pictures */
@@ -52,7 +52,7 @@ int main (void) {
   while (1) 
     {
       /*take picture and turn left a little */
-      Picture * frame = rTakePicture();
+      Picture frame = rTakePicture();
       rTurnLeft (0.3, 0.3);
 
       /* add frame to movie */
@@ -84,7 +84,7 @@ int main (void) {
       if first is NULL, first is changed to point to the new node
       otherwise, the next field of the last node is set to the new node
 */
-void addPicture (movieList * first, Picture * frame)
+void addPicture (movieList * first, Picture frame)
 {
   printf ("not yet implemented\n");
 }
