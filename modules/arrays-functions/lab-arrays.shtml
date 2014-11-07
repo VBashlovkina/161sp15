@@ -160,26 +160,22 @@ to take a picture.
 </p>
 <div class="block">
 <pre>
-  rDisplayPicture (pic, duration);
+  rDisplayPicture (pic, duration, window-name);
 </pre>
 </div>
 
-<p>Note, however,  that <code>rShowPicture</code> is a blocking call;
-that is, when you call <code>rShowPicture</code>, the picture is displayed,
-and subsequent processing is suspended until you close the picture's
-window.
+<p>Note that <code>rDisplayPicture</code> has both blocking and non-blocking
+  functionality, which is dependent on the duration. Recall that a blocking
+  call stops the program from continuing, and a non-blocking call allows for
+  the program to keep going. So with a non-blocking call, you could have a
+  photo displayed and have the robot execute new commands. 
+<ul>
+ <li>If duration is positive, then it is a blocking call.</li>
+ <li>If duration is negative, then it is a non-blocking call.</li>
+ <li>duration 0, then non-blocking and non-terminating (you will have to
+ close the window manually).</li>
+</ul>  
 </p>
-<li>
-In contrast, this is how you show a Picture without blocking:
-
-<div class="block">
-<pre>
-  rDisplayPicture()
-</pre>
-</div>
-
-<p>When you use <code>rDisplayPicture</code>, the picture is displayed,
-and subsequent processing continues.</p>
 
 </ul>
 
@@ -200,7 +196,7 @@ this twice more.
 First uncomment the first commented out part , then run the program and
 observe. 
 <li>
-Next, comment back out <tt>rShowPicture</tt> part and uncomment
+Next, comment back out <tt>rDisplayPicture</tt> part and uncomment
 the second part of the code. 
 </ol>
 
