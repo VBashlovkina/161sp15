@@ -7,19 +7,19 @@
 
 
 //  make the pixels in array pix expand from the corner of pic
-void cornerExpandReorder (Picture * pic, Pixel pixArray []);
+void cornerExpandReorder (Picture pic, Pixel pixArray []);
 
 /* Convert a 1-dimensional array of Pixels to a Picture
 
    Precondition: Pixel * pixArray is a two dimensional array of size
-   [rGetPictureHeight (pic)][rGetPictureWidth (pic)] */
-void picToPix1DArray (Picture * pic, Pixel pixArray []);
+   [pic.width][pic.height] */
+void picToPix1DArray (Picture pic, Pixel pixArray []);
 
 /* Convert a 1-dimensional array of Pixels to a Picture
 
    Precondition: Pixel * pixArray is a two dimensional array of size
-   [rGetPictureHeight (pic)][rGetPictureWidth (pic)] */
-void pix1DArrayToPic (Picture * pic, Pixel pixArray []);
+   [pic.width][pic.height] */
+void pix1DArrayToPic (Picture pic, Pixel pixArray []);
 
 /* swap: interchange pix[i] and pix[j] */
 void  swap (Pixel pix [], int i, int j);
@@ -42,12 +42,12 @@ main ()
 
   int width, height;
   Picture * pic = rTakePicture();
-  width = rGetPictureWidth (pic);
-  height = rGetPictureHeight (pic);
+  width = pic.width;
+  height = pic.height;
   Pixel picArr[width * height];
   // 2D array for Pixels
 
-  rDisplayPicture (pic, "unsorted"); // before any changes to pic
+  rDisplayPicture (pic, 0, "unsorted"); // before any changes to pic
 
   picToPix1DArray (pic, picArr); // put Pixels from pic into array picArr
 
@@ -55,13 +55,11 @@ main ()
 
   pix1DArrayToPic (pic, picArr);
   
-  rDisplayPicture (pic, "sorted"); // after sorting, before corner expansion
+  rDisplayPicture (pic,0, "sorted"); // after sorting, before corner expansion
 
   cornerExpandReorder (pic, picArr); // expand sorted Pixels from corner of pic
 
-  rDisplayPicture (pic, "expanded"); // after both sorting and corner expansion
-
-  sleep (5);
+  rDisplayPicture (pic, 5, "expanded"); // after both sorting and corner expansion
 
   rDisconnect();
   return 0;
@@ -69,49 +67,49 @@ main ()
 
 
 //  make the pixels in array pix expand from the corner of pic
-void cornerExpandReorder (Picture * pic, Pixel pix [])
+void cornerExpandReorder (Picture pic, Pixel pix [])
 {
   int i, j, width, height;
   int pixCounter = 0; // counter for the current pixel
-  width = rGetPictureWidth (pic);
-  height = rGetPictureHeight (pic);
+  width = pic.width;
+  height = pic.height;
 
   for (i = 0; i < width * 2; i++)
     for (j = 0; j < i; j++)
       if ((j < width) && (i - j < height))
-        rSetPicturePixel (pic, j, i - j, pix [pixCounter++]);
+        pic.pix_array[j][i-j]= pix[pixCounter++];
 
 } // cornerExpandReorder
 
 /* Convert a Picture to a 1-dimensional array of Pixels
 
    Precondition: Pixel * pixArray is a two dimensional array of size
-   [rGetPictureHeight (pic)][rGetPictureWidth (pic)] */
+  [pic.width][pic.height] */
 
-void picToPix1DArray (Picture * pic, Pixel pixArray [])
+void picToPix1DArray (Picture pic, Pixel pixArray [])
 {
   int i, j;
-  int width = rGetPictureWidth (pic);
-  int height = rGetPictureHeight (pic);
+  int width = pic.width;
+  int height = pic.height;
 
   for (i = 0; i < height; i++)
     for (j = 0; j < width; j++)
-      pixArray[i*width + j] = rGetPicturePixel (pic, j, i);
+      pixArray[i*width + j] =pic.pix_array[j][i];
 }
 
 /* Convert a 1-dimensional array of Pixels to a Picture
 
    Precondition: Pixel * pixArray is a two dimensional array of size
-   [rGetPictureHeight (pic)][rGetPictureWidth (pic)] */
-void pix1DArrayToPic (Picture * pic, Pixel pixArray [])
+   [pic.width][pic.height] */
+void pix1DArrayToPic (Picture pic, Pixel pixArray [])
 {
   int i, j;
-  int width = rGetPictureWidth (pic);
-  int height = rGetPictureHeight (pic);
+  int width = pic.width;
+  int height = pic.height;
       
   for (i = 0; i < height; i++)
     for (j = 0; j < width; j++)
-      rSetPicturePixel (pic, j, i, pixArray[i * width + j]);
+      pic.pix_array[j][i]= pixArray[i * width + j];
 }
 
 /* swap: interchange pix[i] and pix[j] */
