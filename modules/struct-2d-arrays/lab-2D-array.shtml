@@ -204,8 +204,8 @@ have the form
 
 <div class="block">
 <pre>
-  Pixel rGetPicturePixel (Picture * pic, int row, int col);
-  void rSetPicturePixel (Picture * pic, int row, int col, Pixel pix);
+  Get a pixel of a Picture Pic:   Pic.pix_array[col][row]
+  Set Pixel pix to a Picture Pic: Pic.Pix_array[col][row]=pix
 </pre>
 </div>
 
