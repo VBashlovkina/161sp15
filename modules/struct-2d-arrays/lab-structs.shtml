@@ -84,8 +84,7 @@ a <tt>Picture *</tt> variable.
 <li>
 <p>
 Look at the declaration of the Pixel structure in section 3
-of <a href="../../MyroC.h">MyroC.h</a>
-or <a href="../../MyroCDev.h">MyroCDev.h</a>.
+of <a href="../../MyroC.h">MyroC.h</a>.
 </p>
 
 <ol class="withloweralpha">
@@ -107,8 +106,7 @@ a <tt>Pixel</tt> as opposed to a <tt>struct Pixel</tt>?
 
 <li>
 <p>
-Draw a black pixel in the middle of the picture using 
-<tt>rSetPicturePixel()</tt> and then show the modified picture.
+Draw a black pixel in the middle of the picture and then show the modified picture.
 </p>
 
 </ol>
