@@ -161,7 +161,7 @@ pictures which it modifies.
 
 <ul>
   <li>
-    <h3><tt>void pixelStrip (Picture * pic, char color)</tt></h3>
+    <h3><tt>void pixelStrip (Picture pic, char color)</tt></h3>
     <p>This function should set the R, G, or B value of every pixel in the
     picture to 0 (depending on what <tt>char color</tt> is).<br>  For
     example if parameter <tt>color</tt> is 'G', then this procedure should
@@ -169,16 +169,16 @@ pictures which it modifies.
     'B' components would remain unchanged.
 </p>
   <li>
-    <h3><tt>void pictureRedder (Picture * pic)</tt>
+    <h3><tt>void pictureRedder (Picture pic)</tt>
     <br>
-    <tt>void pictureGreener (Picture * pic)</tt>
+    <tt>void pictureGreener (Picture pic)</tt>
     <br>
-    <tt>void pictureBluer (Picture * pic)</tt></h3>
+    <tt>void pictureBluer (Picture pic)</tt></h3>
     <p>These functions should increase the intensity of their respective colors
     (red, green, or blue). This increase should never go past 255. The color
     should increase less when it is already high than when it is low.</p>
   <li>
-    <h3><tt>void circleSelect (Picture * pic, int xCenter, int yCenter,
+    <h3><tt>void circleSelect (Picture pic, int xCenter, int yCenter,
     int radius)</tt></h3>
     <p>This function should select a circle from your picture and turn each
     pixel within that circle to the corresponding grayscale value.</p>
