@@ -5,61 +5,61 @@
 /* Convert a Picture to a 2-dimensional array of Pixels
 
    Precondition: Pixel pixArray [][] is a two dimensional array of size
-   [rGetPictureHeight (pic)][rGetPictureWidth (pic)] */
+   [pic.width][pic.height] */
 
-void picToPix2DArray (Picture * pic, int width, Pixel pixArray [][width])
+void picToPix2DArray (Picture pic, int width, Pixel pixArray [width][])
 {
   int i, j;
-  int height = rGetPictureHeight (pic);
+  int height = pic.height;
 
   for (i = 0; i < height; i++)
     for (j = 0; j < width; j++)
-      pixArray[i][j] = rGetPicturePixel (pic, j, i);
+      pixArray[j][i] = pic.pix_array[j][i];
 }
 
 /* Convert a 2-dimensional array of Pixels to a Picture
 
    Precondition: Pixel pixArray [][] is a two dimensional array of size
-   [rGetPictureHeight (pic)][rGetPictureWidth (pic)] */
-void pix2DArrayToPic (Picture * pic, int width, Pixel pixArray [][width])
+    [pic.width][pic.height] */
+void pix2DArrayToPic (Picture * pic, int width, Pixel pixArray [width][])
 {
   int i, j;
-  int height = rGetPictureHeight (pic);
+  int height = pic.height;
       
   for (i = 0; i < height; i++)
     for (j = 0; j < width; j++)
-      rSetPicturePixel (pic, j, i, pixArray[i][j]);
+      pic.pix_array[j][i]=pixArray[j][i];
 }
 
 /* ....... Conversions involving 1-dimensional arrays ........... */
 /* Convert a Picture to a 1-dimensional array of Pixels
 
    Precondition: Pixel * pixArray is a two dimensional array of size
-   [rGetPictureHeight (pic)][rGetPictureWidth (pic)] */
+   [pic.width][pic.height] */
 void picToPix1DArray (Picture * pic, Pixel pixArray [])
 {
   int i, j;
-  int width = rGetPictureWidth (pic);
-  int height = rGetPictureHeight (pic);
+  int width = pic.width;
+  int height = pic.height;
 
   for (i = 0; i < height; i++)
     for (j = 0; j < width; j++)
-      pixArray[i*width + j] = rGetPicturePixel (pic, j, i);
+      pixArray[i*width + j] = pic.pix_array[j][i];
 }
 
 /* Convert a 1-dimensional array of Pixels to a Picture
 
    Precondition: Pixel * pixArray is a two dimensional array of size
-   [rGetPictureHeight (pic)][rGetPictureWidth (pic)] */
+   [pic.width][pic.height] */
 void pix1DArrayToPic (Picture * pic, Pixel pixArray [])
 {
   int i, j;
-  int width = rGetPictureWidth (pic);
-  int height = rGetPictureHeight (pic);
+  int width = pic.width;
+  int height = pic.height;
       
   for (i = 0; i < height; i++)
     for (j = 0; j < width; j++)
-      rSetPicturePixel (pic, j, i, pixArray[i * width + j]);
+      pic.pix_array[j][i]= pixArray[i * width + j];
 }
 
 
@@ -67,9 +67,9 @@ void pix1DArrayToPic (Picture * pic, Pixel pixArray [])
 void flipPicUpsideDown (Picture * pic)
 {
   /* use 2-dimensional processing */
-  int width = rGetPictureWidth (pic);
-  int height = rGetPictureHeight (pic);
-  Pixel pixArray [height][width];
+  int width =pic.width ;
+  int height =pic.height;
+  Pixel pixArray [width][height];
   
   picToPix2DArray (pic, width, pixArray);
   printf ("flipPicUpsideDown not fully implemented\n");
@@ -79,8 +79,8 @@ void flipPicUpsideDown (Picture * pic)
 void flipPicLeftToRight (Picture * pic)
 {
   /* use 1-dimensional processing */
-  int width = rGetPictureWidth (pic);
-  int height = rGetPictureHeight (pic);
+  int width = pic.width;
+  int height = pic.height;
   Pixel pixArray [height*width];
   
   picToPix1DArray (pic, pixArray);
@@ -98,15 +98,13 @@ int main ()
   Picture * pic1 = rTakePicture ();
   flipPicUpsideDown (pic1);
   printf ("displaying upsidedown picture\n");
-  rDisplayPicture (pic1, "upside down frame");
+  rDisplayPicture (pic1,5,"upside down frame");
 
   printf ("taking picture");
   Picture * pic2 = rTakePicture ();
   flipPicLeftToRight (pic2);
   printf ("displaying left-to-right picture\n");
-  rDisplayPicture (pic2, "Left to Right frame");
-
-  sleep(5);
+  rDisplayPicture (pic2, 5, "Left to Right frame");
 
   return 0;
 }
