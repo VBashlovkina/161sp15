@@ -3,7 +3,7 @@
  * Revised February 2014 by Henry M. Walker
  */
 
-#include "MyroC.h"
+#include "MyroCDev.h"
 
 
 //  make the pixels in array pix expand from the corner of pic
@@ -41,13 +41,13 @@ main ()
   rConnect ("/dev/rfcomm0");
 
   int width, height;
-  Picture * pic = rTakePicture();
+  Picture  pic = rTakePicture();
   width = pic.width;
   height = pic.height;
   Pixel picArr[width * height];
   // 2D array for Pixels
 
-  rDisplayPicture (pic, 0, "unsorted"); // before any changes to pic
+  rDisplayPicture (pic, 5, "unsorted"); // before any changes to pic
 
   picToPix1DArray (pic, picArr); // put Pixels from pic into array picArr
 
@@ -55,7 +55,7 @@ main ()
 
   pix1DArrayToPic (pic, picArr);
   
-  rDisplayPicture (pic,0, "sorted"); // after sorting, before corner expansion
+  rDisplayPicture (pic,5, "sorted"); // after sorting, before corner expansion
 
   cornerExpandReorder (pic, picArr); // expand sorted Pixels from corner of pic
 
